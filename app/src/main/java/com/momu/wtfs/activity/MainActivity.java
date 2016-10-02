@@ -1,6 +1,7 @@
 package com.momu.wtfs.activity;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.momu.wtfs.R;
+import com.momu.wtfs.SqliteHelper;
 import com.momu.wtfs.fragment.MainFragment;
 
 /**
@@ -22,10 +24,14 @@ import com.momu.wtfs.fragment.MainFragment;
  */
 public class MainActivity extends AppCompatActivity {
 
-    Toolbar toolBar;
+    public Toolbar toolBar;
     FragmentManager fragmentManager;
     FragmentTransaction transaction;
 
+    public SqliteHelper sqliteHelper;
+    private String DBNAME = "wtfs.db";
+    private int DBVERSION = 1;
+    public SQLiteDatabase db;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +41,9 @@ public class MainActivity extends AppCompatActivity {
 
         Fragment fragment=new MainFragment();       //처음 나올 Fragment 설정(MainFragment로)
         changeFragment(fragment);
+
+        sqliteHelper = new SqliteHelper(this,DBNAME,null,DBVERSION);
+        db = sqliteHelper.getWritableDatabase();
     }
 
     /**
