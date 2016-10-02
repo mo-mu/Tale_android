@@ -1,6 +1,7 @@
 package com.momu.wtfs.activity;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -18,6 +19,9 @@ import com.momu.wtfs.R;
 import com.momu.wtfs.SqliteHelper;
 import com.momu.wtfs.fragment.MainFragment;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Main Activity.<br>
  *     메인 화면 페이지
@@ -32,6 +36,10 @@ public class MainActivity extends AppCompatActivity {
     private String DBNAME = "wtfs.db";
     private int DBVERSION = 1;
     public SQLiteDatabase db;
+
+    Date now = new Date();
+    SimpleDateFormat format = new SimpleDateFormat("yyyy.MM.dd");
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +51,25 @@ public class MainActivity extends AppCompatActivity {
         changeFragment(fragment);
 
         sqliteHelper = new SqliteHelper(this,DBNAME,null,DBVERSION);
+
+
         db = sqliteHelper.getWritableDatabase();
+
+        //임시로 질문 데이터 저장하는 코드 삽입함
+        boolean isExist=false;
+        Cursor cursor =db.rawQuery("select * from question;",null);
+        while(cursor.moveToNext())
+            if(cursor.getString(1)!=null)
+                isExist=true;
+        if(!isExist) {
+            String sql = "insert into question (id, q, created_at) " +
+                    "values (1,'당신에게 가장 기억에 남는 여행지는 어디인가요?','" + format.format(now).toString() + "');";
+            db.execSQL(sql);
+            sql = "insert into question (id, q, created_at) " +
+                    "values (2,'당신에게 가장 기억에 남는 사람은 누구인가요?','" + format.format(now).toString() + "');";
+            db.execSQL(sql);
+        }
+        //end
     }
 
     /**

@@ -36,7 +36,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
     LinearLayout board;
     Date now = new Date();
     SimpleDateFormat format = new SimpleDateFormat("yyyy.MM.dd");
-    int answer_id, question_id=9;
+    int answer_id, question_id=1;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -96,7 +96,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         if(v.getId()==R.id.txtRefresh){
-            question_id=10;
+            question_id=2;
             questionSelect(question_id);      //테스트 위해 임의의 번호 넣음
         }
         else if(v.getId()==R.id.board){
