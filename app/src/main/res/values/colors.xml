@@ -3,4 +3,9 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="white">#ffffff</color>
+    <color name="mainQuestion">#464646</color>
+    <color name="writeQuestion">#9e7f66</color>
+    <color name="hintColor">#b1b1b1</color>
+    <color name="mainAnswer">#464646</color>
 </resources>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/txtRefresh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="#b1b1b1"
+            android:text="다른 질문 보여줘!"
+            />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp">
+
+
+        <ImageView
+            android:layout_width="84dp"
+            android:layout_height="84dp"
+            android:background="@drawable/fox_big_profile"
+            android:layout_marginLeft="6dp"
+            android:layout_marginBottom="11dp"/>
+
+        <LinearLayout
+            android:id="@+id/board"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:background="@color/white">
+            <TextView
+                android:id="@+id/txtQuestion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16dp"
+                android:textColor="@color/mainQuestion"
+                android:text ="당신에게 가장 기억에 남는 여행지는 어디인가요?"/>
+            <TextView
+                android:id="@+id/txtAnswer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:textSize="14dp"
+                android:textColor="@color/mainAnswer"
+                android:visibility="gone"/>
+        </LinearLayout>
+
+    </LinearLayout>
+</FrameLayout>
