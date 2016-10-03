@@ -24,6 +24,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
+ * WriteFragment<br>
+ *     질문에 답을 할 수 있는 페이지
+ *     이미 답을 했다면 수정 또는 삭제 가능
  * Created by songmho on 2016-10-01.
  */
 
@@ -36,7 +39,8 @@ public class WriteFragment extends Fragment {
     String sql;
     SQLiteDatabase db;
 
-    boolean isExist=false;
+    boolean isExist=false;      //오늘의 데이터 있는지 확인하는 변수
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,17 +60,25 @@ public class WriteFragment extends Fragment {
 
         db = ((MainActivity)getActivity()).sqliteHelper.getWritableDatabase();
 
-        //오늘 데이터가 있는지 확인
-        Cursor cursor =db.rawQuery("select * from answer where created_at='"+format.format(now).toString()+"';",null);
-        while(cursor.moveToNext())
-            if(cursor.getString(4)!=null)
-                isExist=true;       //있으면 isExist를 true로 변경
-
-        if(isExist)           //답이 있을 경우(수정을 하고 싶을 경우)
+        if(searchTodayAsw(format.format(now).toString()))           //답이 있을 경우(수정을 하고 싶을 경우)
             editAnswer.setText(getArguments().getString("answer").toString());
 
         setHasOptionsMenu(true);
         return v;
+    }
+
+    /**
+     * searchTodayAsw<br>
+     *     오늘의 답변 있는지 확인하는 메소드
+     * @param today 오늘 날짜
+     * @return boolean true : 있을 경우, false : 없을 경우
+     */
+    private boolean searchTodayAsw(String today) {
+        Cursor cursor =db.rawQuery("select * from answer where created_at='"+today+"';",null);
+        while(cursor.moveToNext())
+            if(cursor.getString(4)!=null)
+                return true;       //있으면 true
+        return false;
     }
 
     @Override
@@ -78,7 +90,7 @@ public class WriteFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        if(!isExist)    //추가
+        if(!searchTodayAsw(format.format(now).toString()))    //추가
             inflater.inflate(R.menu.menu_write, menu);
         else        //수정, 제거
             inflater.inflate(R.menu.menu_write_edit,menu);
