@@ -35,7 +35,7 @@ public class WriteFragment extends Fragment {
     EditText editAnswer;
 
     Date now = new Date();
-    SimpleDateFormat format = new SimpleDateFormat("yyyy.MM.dd");
+    SimpleDateFormat format = new SimpleDateFormat("yyyy/ MM/ dd");
     String sql;
     SQLiteDatabase db;
 

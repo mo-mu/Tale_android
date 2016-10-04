@@ -38,7 +38,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
     TextView txtRefresh, txtQuestion,txtAnswer;
     LinearLayout board;
     Date now = new Date();
-    SimpleDateFormat format = new SimpleDateFormat("yyyy.MM.dd");
+    SimpleDateFormat format = new SimpleDateFormat("yyyy/ MM/ dd");
     int answer_id, question_id;
 
     SQLiteDatabase db;
