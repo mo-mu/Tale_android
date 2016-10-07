@@ -43,7 +43,6 @@ public class PreviewActivity extends AppCompatActivity {
         items.add(item);
         items.add(item);
         items.add(item);
-        items.add(item);
 
         recyclerView.setAdapter(new PreviewAdapter(getApplicationContext(),items));
     }
