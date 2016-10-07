@@ -54,12 +54,21 @@ public class MainActivity extends AppCompatActivity {
         while(cursor.moveToNext())
             if(cursor.getString(1)!=null)
                 isExist=true;
-        if(!isExist) {
+        if(!isExist) {      //Question 데이터 생성(임의로)
             String sql = "insert into question (id, q, created_at) " +
                     "values (1,'당신에게 가장 기억에 남는 여행지는 어디인가요?','" + format.format(now).toString() + "');";
             db.execSQL(sql);
             sql = "insert into question (id, q, created_at) " +
                     "values (2,'당신에게 가장 기억에 남는 사람은 누구인가요?','" + format.format(now).toString() + "');";
+            db.execSQL(sql);
+            sql = "insert into question (id, q, created_at) " +
+                    "values (3,'당신이 가장 좋아하는 동물은 무엇인가요?','" + format.format(now).toString() + "');";
+            db.execSQL(sql);
+            sql = "insert into question (id, q, created_at) " +
+                    "values (4,'당신이 가장 좋아하는 음식은 무엇인가요?','" + format.format(now).toString() + "');";
+            db.execSQL(sql);
+            sql = "insert into question (id, q, created_at) " +
+                    "values (5,'당신에게 가장 좋았던 기억은 무엇인가요?','" + format.format(now).toString() + "');";
             db.execSQL(sql);
         }
         //end

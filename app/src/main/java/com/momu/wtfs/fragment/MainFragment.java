@@ -26,6 +26,7 @@ import com.momu.wtfs.activity.SetUpActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Random;
 
 /**
  * MainFragment<br>
@@ -39,7 +40,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
     LinearLayout board;
     Date now = new Date();
     SimpleDateFormat format = new SimpleDateFormat("yyyy/ MM/ dd");
-    int answer_id, question_id;
+    int answerId, questionId=-1;
 
     SQLiteDatabase db;
 
@@ -70,11 +71,9 @@ public class MainFragment extends Fragment implements View.OnClickListener {
             txtRefresh.setVisibility(View.GONE);
             txtAnswer.setVisibility(View.VISIBLE);
         }
-        else
-            question_id=1;      //임의의 번호가 들어가야 하는 부분. 우선적으로 1 넣음
 
-        questionSelect(question_id);      //테스트 위해 임의의 번호 넣음
-        answerSelect(question_id,format.format(now).toString());
+        questionSelect(getQstIdRand());      //테스트 위해 임의의 번호 넣음
+        answerSelect(questionId,format.format(now).toString());
 
         txtRefresh.setText(Html.fromHtml("<u>" + "다른 질문 보여줘!" + "</u>"));   //Underbar 넣기 위해 html 태그 사용
 
@@ -82,6 +81,29 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         return v;
     }
 
+
+    /**
+     * getQstIdRand<br>
+     *     랜덤으로 Question id를 생성해주는 메소드
+     *     현재 나와있는 질문만 중복시키지 않고 반환시킴
+     * @return int Question id를 랜덤으로 뿌려줌
+     */
+    private int getQstIdRand(){
+        int returnQstId,totalQst = -1;
+
+        Cursor cursor = db.rawQuery("select count(id) from question;",null);    //총 Question 수 가져오기
+        while(cursor.moveToNext())
+            totalQst=cursor.getInt(0);
+
+        Random random =new Random();
+        do
+            returnQstId=random.nextInt(totalQst);
+        while(questionId ==(returnQstId+1));
+
+        questionId=returnQstId+1;
+
+        return returnQstId+1;
+    }
     /**
      * searchTodayAsw<br>
      *     오늘의 답변 있는지 확인하는 메소드
@@ -93,7 +115,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         Cursor cursor =db.rawQuery("select * from answer where created_at='"+today+"';",null);
         while(cursor.moveToNext())
             if(cursor.getString(4)!=null){
-                question_id=cursor.getInt(1);   //question_id query받음
+                questionId =cursor.getInt(1);   //questionId query받음
                 return true;}       //있으면 true
         return false;
     }
@@ -108,7 +130,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         Cursor cursor =db.rawQuery("select id, a from answer where question_id="+question_id+" and created_at='"+date+"';",null);
         while (cursor.moveToNext())
             if(cursor.getString(1)!=null) {          //답글이 있을 때
-                answer_id=cursor.getInt(0);
+                answerId =cursor.getInt(0);
                 txtAnswer.setText("" + cursor.getString(1));
             }
     }
@@ -116,7 +138,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
     /**
      * questionSelect<br>
      * question id를 랜덤으로 입력받아 question을 textView에 출력.
-     * @param id question_id
+     * @param id questionId
      */
     private void questionSelect(int id) {
         SQLiteDatabase db = ((MainActivity)getActivity()).sqliteHelper.getReadableDatabase();
@@ -128,14 +150,13 @@ public class MainFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         if(v.getId()==R.id.txtRefresh){
-            question_id=2;
-            questionSelect(question_id);      //테스트 위해 임의의 번호 넣음
+            questionSelect(getQstIdRand());
         }
         else if(v.getId()==R.id.board){
             Fragment writeFragment=new WriteFragment();
             Bundle bundle=new Bundle();
-            bundle.putInt("question_id",question_id);
-            bundle.putInt("answer_id",answer_id);
+            bundle.putInt("questionId", questionId);
+            bundle.putInt("answerId", answerId);
             bundle.putString("question",txtQuestion.getText().toString());
             bundle.putString("answer",txtAnswer.getText().toString());
             writeFragment.setArguments(bundle);

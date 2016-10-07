@@ -39,7 +39,6 @@ public class WriteFragment extends Fragment {
     String sql;
     SQLiteDatabase db;
 
-    boolean isExist=false;      //오늘의 데이터 있는지 확인하는 변수
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -101,19 +100,19 @@ public class WriteFragment extends Fragment {
         ((MainActivity)getActivity()).changeFragment(recvFragment);
 
         if(item.getItemId()==R.id.action_check){    //추가
-            sql = "insert into answer (question_id, user_id, a, created_at) " +
-                    "values (" + getArguments().getInt("question_id") + ", 0, '" + editAnswer.getText().toString() + "', '" + format.format(now).toString() + "');";
+            sql = "insert into answer (questionId, user_id, a, created_at) " +
+                    "values (" + getArguments().getInt("questionId") + ", 0, '" + editAnswer.getText().toString() + "', '" + format.format(now).toString() + "');";
             db.execSQL(sql);
             Toast.makeText(getActivity().getApplicationContext(), "추가되었습니다.", Toast.LENGTH_SHORT).show();
         }
 
         else if(item.getItemId()==R.id.action_edit){        //수정
-            sql = "update answer set a = '"+editAnswer.getText().toString()+"' where id="+getArguments().getInt("answer_id")+";";
+            sql = "update answer set a = '"+editAnswer.getText().toString()+"' where id="+getArguments().getInt("answerId")+";";
             db.execSQL(sql);
             Toast.makeText(getActivity().getApplicationContext(), "수정되었습니다.", Toast.LENGTH_SHORT).show();
         }
         else if(item.getItemId()==R.id.action_remove){      //삭제
-            sql = "delete from answer where id="+getArguments().getInt("answer_id")+";";
+            sql = "delete from answer where id="+getArguments().getInt("answerId")+";";
             db.execSQL(sql);
             Toast.makeText(getActivity().getApplicationContext(), "삭제되었습니다.", Toast.LENGTH_SHORT).show();
         }
