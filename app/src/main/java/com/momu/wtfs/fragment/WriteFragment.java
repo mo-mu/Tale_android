@@ -100,7 +100,7 @@ public class WriteFragment extends Fragment {
         ((MainActivity)getActivity()).changeFragment(recvFragment);
 
         if(item.getItemId()==R.id.action_check){    //추가
-            sql = "insert into answer (questionId, user_id, a, created_at) " +
+            sql = "insert into answer (question_id, user_id, a, created_at) " +
                     "values (" + getArguments().getInt("questionId") + ", 0, '" + editAnswer.getText().toString() + "', '" + format.format(now).toString() + "');";
             db.execSQL(sql);
             Toast.makeText(getActivity().getApplicationContext(), "추가되었습니다.", Toast.LENGTH_SHORT).show();

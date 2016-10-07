@@ -70,10 +70,14 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         if(searchTodayAsw(format.format(now).toString())){  //내용이 있을 경우 refresh 안보이고, answer보여야
             txtRefresh.setVisibility(View.GONE);
             txtAnswer.setVisibility(View.VISIBLE);
+            questionSelect(questionId);
+            answerSelect(questionId,format.format(now).toString());
+        }
+        else {
+            questionSelect(getQstIdRand());
         }
 
-        questionSelect(getQstIdRand());      //테스트 위해 임의의 번호 넣음
-        answerSelect(questionId,format.format(now).toString());
+
 
         txtRefresh.setText(Html.fromHtml("<u>" + "다른 질문 보여줘!" + "</u>"));   //Underbar 넣기 위해 html 태그 사용
 
@@ -101,7 +105,6 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         while(questionId ==(returnQstId+1));
 
         questionId=returnQstId+1;
-
         return returnQstId+1;
     }
     /**
@@ -112,10 +115,10 @@ public class MainFragment extends Fragment implements View.OnClickListener {
      * @return boolean true : 있을 경우, false : 없을 경우
      */
     private boolean searchTodayAsw(String today) {
-        Cursor cursor =db.rawQuery("select * from answer where created_at='"+today+"';",null);
+        Cursor cursor =db.rawQuery("select question_id, a from answer where created_at='"+today+"';",null);
         while(cursor.moveToNext())
-            if(cursor.getString(4)!=null){
-                questionId =cursor.getInt(1);   //questionId query받음
+            if(cursor.getString(1)!=null){
+                questionId =cursor.getInt(0);   //questionId query받음
                 return true;}       //있으면 true
         return false;
     }
