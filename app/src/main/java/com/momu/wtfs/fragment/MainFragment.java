@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -37,6 +38,7 @@ import java.util.Random;
 
 public class MainFragment extends Fragment implements View.OnClickListener {
     TextView txtRefresh, txtQuestion,txtAnswer;
+    ImageView imgStar;
     LinearLayout board;
     Date now = new Date();
     SimpleDateFormat format = new SimpleDateFormat("yyyy/ MM/ dd");
@@ -61,6 +63,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         txtRefresh = (TextView)v.findViewById(R.id.txtRefresh);
         txtAnswer = (TextView)v.findViewById(R.id.txtAnswer);
         board = (LinearLayout)v.findViewById(R.id.board);
+        imgStar = (ImageView)v.findViewById(R.id.imgStar);
 
         db = ((MainActivity)getActivity()).sqliteHelper.getReadableDatabase();
 
@@ -70,6 +73,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         if(searchTodayAsw(format.format(now).toString())){  //내용이 있을 경우 refresh 안보이고, answer보여야
             txtRefresh.setVisibility(View.GONE);
             txtAnswer.setVisibility(View.VISIBLE);
+            imgStar.setVisibility(View.VISIBLE);
             questionSelect(questionId);
             answerSelect(questionId,format.format(now).toString());
         }

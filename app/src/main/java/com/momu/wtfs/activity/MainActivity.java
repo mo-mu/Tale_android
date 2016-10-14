@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     FragmentManager fragmentManager;
     FragmentTransaction transaction;
 
-    public SqliteHelper sqliteHelper;
+    public static SqliteHelper sqliteHelper;
     private String DBNAME = "wtfs.db";
     private int DBVERSION = 1;
     public SQLiteDatabase db;

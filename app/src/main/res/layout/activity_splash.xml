@@ -4,31 +4,19 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:layout_gravity="center"
-    android:background="#123342">
+    android:background="@drawable/splash_bg_img"
+    android:fitsSystemWindows="true">
 
-        <ImageView
-            android:layout_marginTop="116dp"
-            android:layout_width="84dp"
-            android:layout_height="70dp"
-            android:layout_gravity="center"
-            android:src="@drawable/fox_big_profile"/>
 
         <TextView
-            android:layout_width="wrap_content"
+            android:id="@+id/txtSaying"
+            android:layout_width="245dp"
             android:layout_height="wrap_content"
-            android:textSize="22dp"
-            android:text="중요한 것은 눈에 보이지 않아."
-            android:layout_marginTop="26dp"
+            android:textSize="17dp"
+            android:gravity="center"
+            android:text="네가 오후 네 시에 온다면 난 세 시부터 행복해지기 시작할거야"
+            android:layout_marginTop="128dp"
             android:layout_gravity="center"
             android:textColor="@color/white"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:textSize="19dp"
-        android:text="-Le petit France -"
-        android:layout_gravity="center"
-        android:id="@+id/textView"
-        android:textColor="@color/white" />
 </LinearLayout>

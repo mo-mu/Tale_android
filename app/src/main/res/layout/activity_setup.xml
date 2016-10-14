@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#123342">
+    android:background="@drawable/main_bg_img">
 
     <include
         layout="@layout/main_toolbar"

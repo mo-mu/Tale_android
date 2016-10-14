@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.momu.wtfs.activity.MainActivity"
-    android:background="#123342">
+    android:background="@drawable/main_bg_img"
+    android:fitsSystemWindows="true">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"

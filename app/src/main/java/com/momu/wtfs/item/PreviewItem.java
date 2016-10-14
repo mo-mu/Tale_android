@@ -8,7 +8,7 @@ package com.momu.wtfs.item;
 
 public class PreviewItem {
     String date, question;
-    int count;
+    int count, questionId;
 
     /**
      * getCount.<br>
@@ -34,15 +34,21 @@ public class PreviewItem {
         return question;
     }
 
+    public int getQuestionId() {
+        return questionId;
+    }
+
     /**
      * constructor (생성자)<br>
      * @param count 현재 Question의 Answer 갯수
      * @param date 현재 Question에서 최신 Answer의 날짜
      * @param question 현재 Question
+     * @param questionId 현재 question Id
      */
-    public PreviewItem(int count, String date, String question){
+    public PreviewItem(int count, String date, String question, int questionId){
         this.count=count;
         this.date=date;
         this.question =question;
+        this.questionId=questionId;
     }
 }
