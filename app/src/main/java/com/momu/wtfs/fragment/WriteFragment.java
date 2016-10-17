@@ -2,6 +2,7 @@ package com.momu.wtfs.fragment;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -55,6 +56,11 @@ public class WriteFragment extends Fragment {
 
         txtQuestion = (TextView)v.findViewById(R.id.txtQuestion);
         editAnswer = (EditText)v.findViewById(R.id.editAnswer);
+        Typeface typeFace1 = Typeface.createFromAsset(getActivity().getAssets(), "fonts/SeoulNamsanCL.ttf");
+        Typeface typeFace2 = Typeface.createFromAsset(getActivity().getAssets(), "fonts/YanoljaYacheRegular.ttf");
+
+        editAnswer.setTypeface(typeFace1);
+        txtQuestion.setTypeface(typeFace2);
         txtQuestion.setText(getArguments().getString("question"));
 
         db = ((MainActivity)getActivity()).sqliteHelper.getWritableDatabase();

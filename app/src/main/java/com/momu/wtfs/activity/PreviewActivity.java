@@ -42,7 +42,7 @@ public class PreviewActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         layoutManager=new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
-        Cursor cursor =db.rawQuery("SELECT count(answer.a), answer.created_at, question.q, question.id  FROM question, answer WHERE question.id=answer.question_id GROUP BY question.q;",null);
+        Cursor cursor =db.rawQuery("SELECT count(answer.a), answer.created_at, question.q, question.id  FROM question, answer WHERE question.id=answer.question_id GROUP BY question.q ORDER BY answer.created_at DESC;",null);
         while (cursor.moveToNext()){
             PreviewItem item=new PreviewItem(cursor.getInt(0),cursor.getString(1),cursor.getString(2),cursor.getInt(3));
             items.add(item);

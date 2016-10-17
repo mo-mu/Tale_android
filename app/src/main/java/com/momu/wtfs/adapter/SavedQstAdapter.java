@@ -1,6 +1,7 @@
 package com.momu.wtfs.adapter;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,6 +35,12 @@ public class SavedQstAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         SavedQstItem item = items.get(position);
+        Typeface typeFace1 = Typeface.createFromAsset(context.getAssets(), "fonts/SeoulNamsanCL.ttf");
+        Typeface typeFace2 = Typeface.createFromAsset(context.getAssets(), "fonts/YanoljaYacheRegular.ttf");
+
+        ((ViewHolder)holder).txtDate.setTypeface(typeFace1);
+        ((ViewHolder)holder).txtAnswer.setTypeface(typeFace1);
+        ((ViewHolder)holder).txtQuestion.setTypeface(typeFace2);
         if(position==0) {
             ((ViewHolder) holder).txtQuestion.setVisibility(View.VISIBLE);
             ((ViewHolder)holder).txtQuestion.setText(item.getQuestion());

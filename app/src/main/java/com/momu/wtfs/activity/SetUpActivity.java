@@ -3,6 +3,7 @@ package com.momu.wtfs.activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 
 import com.momu.wtfs.R;
 
@@ -18,6 +19,21 @@ public class SetUpActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setup);
+
+        Toolbar toolBar =(Toolbar)findViewById(R.id.toolBar);
+
+        setToolbar(toolBar);
+    }
+
+    /**
+     * setToolBar.<br>
+     *  툴바를 세팅하는 메소드.
+     */
+    private void setToolbar(Toolbar toolBar) {
+        setSupportActionBar(toolBar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolBar.setLogo(R.drawable.fox_small_profile);
+        getSupportActionBar().setTitle("");
     }
 }
 

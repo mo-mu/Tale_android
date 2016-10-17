@@ -3,6 +3,7 @@ package com.momu.wtfs.fragment;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
@@ -66,6 +67,12 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         imgStar = (ImageView)v.findViewById(R.id.imgStar);
 
         db = ((MainActivity)getActivity()).sqliteHelper.getReadableDatabase();
+
+        Typeface typeFace1 = Typeface.createFromAsset(getActivity().getAssets(), "fonts/SeoulNamsanCL.ttf");
+        Typeface typeFace2 = Typeface.createFromAsset(getActivity().getAssets(), "fonts/YanoljaYacheRegular.ttf");
+        txtRefresh.setTypeface(typeFace1);
+        txtAnswer.setTypeface(typeFace1);
+        txtQuestion.setTypeface(typeFace2);
 
         txtRefresh.setOnClickListener(this);
         board.setOnClickListener(this);

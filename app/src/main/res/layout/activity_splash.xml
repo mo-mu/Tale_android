@@ -10,13 +10,13 @@
 
         <TextView
             android:id="@+id/txtSaying"
-            android:layout_width="245dp"
+            android:layout_width="280dp"
             android:layout_height="wrap_content"
             android:textSize="17dp"
             android:gravity="center"
-            android:text="네가 오후 네 시에 온다면 난 세 시부터 행복해지기 시작할거야"
             android:layout_marginTop="128dp"
             android:layout_gravity="center"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white"
+          />
 
 </LinearLayout>

@@ -2,6 +2,7 @@ package com.momu.wtfs.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,6 +44,11 @@ public class PreviewAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         final PreviewItem item = items.get(position);
+        Typeface typeFace1 = Typeface.createFromAsset(context.getAssets(), "fonts/SeoulNamsanCL.ttf");
+        Typeface typeFace2 = Typeface.createFromAsset(context.getAssets(), "fonts/YanoljaYacheRegular.ttf");
+
+        ((ViewHolder)holder).txtDate.setTypeface(typeFace1);
+        ((ViewHolder)holder).txtQuestion.setTypeface(typeFace2);
         ((ViewHolder)holder).txtDate.setText(""+item.getDate());
         ((ViewHolder)holder).txtQuestion.setText(item.getQuestion());
         ((ViewHolder)holder).container.setOnClickListener(new View.OnClickListener() {
