@@ -9,7 +9,7 @@ import com.momu.wtfs.R;
 
 /**
  * SetUpActivity<br>
- *     설정 페이지
+ * 설정 페이지
  * Created by songmho on 2016-09-30.
  */
 
@@ -20,14 +20,13 @@ public class SetUpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setup);
 
-        Toolbar toolBar =(Toolbar)findViewById(R.id.toolBar);
-
+        Toolbar toolBar = (Toolbar) findViewById(R.id.toolBar);
         setToolbar(toolBar);
     }
 
     /**
      * setToolBar.<br>
-     *  툴바를 세팅하는 메소드.
+     * 툴바를 세팅하는 메소드.
      */
     private void setToolbar(Toolbar toolBar) {
         setSupportActionBar(toolBar);

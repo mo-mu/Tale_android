@@ -79,10 +79,17 @@ public class WriteFragment extends Fragment {
      * @return boolean true : 있을 경우, false : 없을 경우
      */
     private boolean searchTodayAsw(String today) {
-        Cursor cursor =db.rawQuery("select * from answer where created_at='"+today+"';",null);
-        while(cursor.moveToNext())
-            if(cursor.getString(4)!=null)
-                return true;       //있으면 true
+        Cursor cursor = null;
+        try {
+            cursor = db.rawQuery("select * from answer where created_at='" + today + "';", null);
+            while (cursor.moveToNext())
+                if (cursor.getString(4) != null)
+                    return true;       //있으면 true
+        } catch(Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) cursor.close();
+        }
         return false;
     }
 

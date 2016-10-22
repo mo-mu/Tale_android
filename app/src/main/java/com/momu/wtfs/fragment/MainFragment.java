@@ -32,18 +32,18 @@ import java.util.Random;
 
 /**
  * MainFragment<br>
- *     질문과 답글 볼 수 있는 페이지.
- *     글화면과 설정으로 이동 가능
+ * 질문과 답글 볼 수 있는 페이지.
+ * 글화면과 설정으로 이동 가능
  * Created by songmho on 2016-10-01.
  */
 
 public class MainFragment extends Fragment implements View.OnClickListener {
-    TextView txtRefresh, txtQuestion,txtAnswer;
+    TextView txtRefresh, txtQuestion, txtAnswer;
     ImageView imgStar;
     LinearLayout board;
     Date now = new Date();
     SimpleDateFormat format = new SimpleDateFormat("yyyy/ MM/ dd");
-    int answerId, questionId=-1;
+    int answerId, questionId = -1;
 
     SQLiteDatabase db;
 
@@ -57,16 +57,16 @@ public class MainFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         FrameLayout v = (FrameLayout) inflater.inflate(R.layout.fragment_main, container, false);
 
-        ((MainActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        ((MainActivity)getActivity()).toolBar.setLogo(null);
+        ((MainActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        ((MainActivity) getActivity()).toolBar.setLogo(null);
 
-        txtQuestion = (TextView)v.findViewById(R.id.txtQuestion);
-        txtRefresh = (TextView)v.findViewById(R.id.txtRefresh);
-        txtAnswer = (TextView)v.findViewById(R.id.txtAnswer);
-        board = (LinearLayout)v.findViewById(R.id.board);
-        imgStar = (ImageView)v.findViewById(R.id.imgStar);
+        txtQuestion = (TextView) v.findViewById(R.id.txtQuestion);
+        txtRefresh = (TextView) v.findViewById(R.id.txtRefresh);
+        txtAnswer = (TextView) v.findViewById(R.id.txtAnswer);
+        board = (LinearLayout) v.findViewById(R.id.board);
+        imgStar = (ImageView) v.findViewById(R.id.imgStar);
 
-        db = ((MainActivity)getActivity()).sqliteHelper.getReadableDatabase();
+        db = ((MainActivity) getActivity()).sqliteHelper.getReadableDatabase();
 
         Typeface typeFace1 = Typeface.createFromAsset(getActivity().getAssets(), "fonts/SeoulNamsanCL.ttf");
         Typeface typeFace2 = Typeface.createFromAsset(getActivity().getAssets(), "fonts/YanoljaYacheRegular.ttf");
@@ -77,17 +77,15 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         txtRefresh.setOnClickListener(this);
         board.setOnClickListener(this);
 
-        if(searchTodayAsw(format.format(now).toString())){  //내용이 있을 경우 refresh 안보이고, answer보여야
+        if (searchTodayAsw(format.format(now).toString())) {  //내용이 있을 경우 refresh 안보이고, answer보여야
             txtRefresh.setVisibility(View.GONE);
             txtAnswer.setVisibility(View.VISIBLE);
             imgStar.setVisibility(View.VISIBLE);
             questionSelect(questionId);
-            answerSelect(questionId,format.format(now).toString());
-        }
-        else {
+            answerSelect(questionId, format.format(now).toString());
+        } else {
             questionSelect(getQstIdRand());
         }
-
 
 
         txtRefresh.setText(Html.fromHtml("<u>" + "다른 질문 보여줘!" + "</u>"));   //Underbar 넣기 위해 html 태그 사용
@@ -99,84 +97,116 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
     /**
      * getQstIdRand<br>
-     *     랜덤으로 Question id를 생성해주는 메소드
-     *     현재 나와있는 질문만 중복시키지 않고 반환시킴
+     * 랜덤으로 Question id를 생성해주는 메소드
+     * 현재 나와있는 질문만 중복시키지 않고 반환시킴
+     *
      * @return int Question id를 랜덤으로 뿌려줌
      */
-    private int getQstIdRand(){
-        int returnQstId,totalQst = -1;
+    private int getQstIdRand() {
+        int returnQstId, totalQst = -1;
 
-        Cursor cursor = db.rawQuery("select count(id) from question;",null);    //총 Question 수 가져오기
-        while(cursor.moveToNext())
-            totalQst=cursor.getInt(0);
+        Cursor cursor = null;
+        try {
+            cursor = db.rawQuery("select count(id) from question;", null);    //총 Question 수 가져오기
+            while (cursor.moveToNext())
+                totalQst = cursor.getInt(0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) cursor.close();
+        }
+        Random random = new Random();
+        do returnQstId = random.nextInt(totalQst);
+        while (questionId == (returnQstId + 1));
 
-        Random random =new Random();
-        do
-            returnQstId=random.nextInt(totalQst);
-        while(questionId ==(returnQstId+1));
-
-        questionId=returnQstId+1;
-        return returnQstId+1;
+        questionId = returnQstId + 1;
+        return returnQstId + 1;
     }
+
     /**
      * searchTodayAsw<br>
-     *     오늘의 답변 있는지 확인하는 메소드
-     *     question_id를 query문에서 받아 변경해준다.
+     * 오늘의 답변 있는지 확인하는 메소드
+     * question_id를 query문에서 받아 변경해준다.
+     *
      * @param today 오늘 날짜
      * @return boolean true : 있을 경우, false : 없을 경우
      */
     private boolean searchTodayAsw(String today) {
-        Cursor cursor =db.rawQuery("select question_id, a from answer where created_at='"+today+"';",null);
-        while(cursor.moveToNext())
-            if(cursor.getString(1)!=null){
-                questionId =cursor.getInt(0);   //questionId query받음
-                return true;}       //있으면 true
+        Cursor cursor = null;
+        try {
+            cursor = db.rawQuery("select question_id, a from answer where created_at='" + today + "';", null);
+            while (cursor.moveToNext())
+                if (cursor.getString(1) != null) {
+                    questionId = cursor.getInt(0);   //questionId query받음
+                    return true;
+                }       //있으면 true
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) cursor.close();
+        }
         return false;
     }
 
     /**
      * answerSelect<br>
-     *     오늘의 답 찾는 메소드
+     * 오늘의 답 찾는 메소드
+     *
      * @param question_id
      * @param date
      */
     private void answerSelect(int question_id, String date) {
-        Cursor cursor =db.rawQuery("select id, a from answer where question_id="+question_id+" and created_at='"+date+"';",null);
-        while (cursor.moveToNext())
-            if(cursor.getString(1)!=null) {          //답글이 있을 때
-                answerId =cursor.getInt(0);
-                txtAnswer.setText("" + cursor.getString(1));
-            }
+        Cursor cursor = null;
+        try {
+            cursor = db.rawQuery("select id, a from answer where question_id=" + question_id + " and created_at='" + date + "';", null);
+            while (cursor.moveToNext())
+                if (cursor.getString(1) != null) {          //답글이 있을 때
+                    answerId = cursor.getInt(0);
+                    txtAnswer.setText("" + cursor.getString(1));
+                }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) cursor.close();
+        }
     }
 
     /**
      * questionSelect<br>
      * question id를 랜덤으로 입력받아 question을 textView에 출력.
+     *
      * @param id questionId
      */
     private void questionSelect(int id) {
-        SQLiteDatabase db = ((MainActivity)getActivity()).sqliteHelper.getReadableDatabase();
-        Cursor cursor =db.rawQuery("select * from question where id="+id+";",null);
-        while(cursor.moveToNext())
-              txtQuestion.setText(cursor.getString(1));
+        SQLiteDatabase db = MainActivity.sqliteHelper.getReadableDatabase();
+        Cursor cursor = null;
+        try {
+            cursor = db.rawQuery("select * from question where id=" + id + ";", null);
+            while (cursor.moveToNext())
+                txtQuestion.setText(cursor.getString(1));
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) cursor.close();
+        }
     }
 
     @Override
     public void onClick(View v) {
-        if(v.getId()==R.id.txtRefresh){
+        if (v.getId() == R.id.txtRefresh) {
             questionSelect(getQstIdRand());
-        }
-        else if(v.getId()==R.id.board){
-            Fragment writeFragment=new WriteFragment();
-            Bundle bundle=new Bundle();
+        } else if (v.getId() == R.id.board) {
+            Fragment writeFragment = new WriteFragment();
+            Bundle bundle = new Bundle();
             bundle.putInt("questionId", questionId);
             bundle.putInt("answerId", answerId);
-            bundle.putString("question",txtQuestion.getText().toString());
-            bundle.putString("answer",txtAnswer.getText().toString());
+            bundle.putString("question", txtQuestion.getText().toString());
+            bundle.putString("answer", txtAnswer.getText().toString());
             writeFragment.setArguments(bundle);
 
-            ((MainActivity)getActivity()).changeFragment(writeFragment);
-         }
+            ((MainActivity) getActivity()).changeFragment(writeFragment);
+        }
     }
 
     @Override
@@ -190,14 +220,13 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_main, menu);
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId()==R.id.action_preview){
-            startActivity(new Intent(getActivity(),PreviewActivity.class));
-        }
-
-        else if(item.getItemId()==R.id.action_setup){
-            startActivity(new Intent(getActivity(),SetUpActivity.class));
+        if (item.getItemId() == R.id.action_preview) {
+            startActivity(new Intent(getActivity(), PreviewActivity.class));
+        } else if (item.getItemId() == R.id.action_setup) {
+            startActivity(new Intent(getActivity(), SetUpActivity.class));
         }
         return super.onOptionsItemSelected(item);
     }

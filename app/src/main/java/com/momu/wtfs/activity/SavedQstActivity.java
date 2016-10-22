@@ -24,34 +24,41 @@ public class SavedQstActivity extends AppCompatActivity {
 
     LinearLayoutManager layoutManager;
     ArrayList<SavedQstItem> items = new ArrayList<>();
-    SQLiteDatabase db= MainActivity.sqliteHelper.getReadableDatabase();
+    SQLiteDatabase db = MainActivity.sqliteHelper.getReadableDatabase();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
 
-        Toolbar toolBar =(Toolbar)findViewById(R.id.toolBar);
-        RecyclerView recyclerView = (RecyclerView)findViewById(R.id.recyclerView);
+        Toolbar toolBar = (Toolbar) findViewById(R.id.toolBar);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         Intent getIntent = getIntent();
 
         setToolbar(toolBar);
 
         recyclerView.setHasFixedSize(true);
-        layoutManager=new LinearLayoutManager(getApplicationContext());
+        layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
 
-        Cursor cursor =db.rawQuery("SELECT created_at, a, id  FROM answer WHERE question_id="+getIntent.getIntExtra("questionId",-1)+";",null);
-        while (cursor.moveToNext()){
-            SavedQstItem item=new SavedQstItem(getIntent.getStringExtra("question"),cursor.getString(0),cursor.getString(1),cursor.getInt(2));
-            items.add(item);
+        Cursor cursor = null;
+        try {
+            cursor = db.rawQuery("SELECT created_at, a, id  FROM answer WHERE question_id=" + getIntent.getIntExtra("questionId", -1) + ";", null);
+            while (cursor.moveToNext()) {
+                SavedQstItem item = new SavedQstItem(getIntent.getStringExtra("question"), cursor.getString(0), cursor.getString(1), cursor.getInt(2));
+                items.add(item);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) cursor.close();
         }
-        recyclerView.setAdapter(new SavedQstAdapter(getApplicationContext(),items));
+        recyclerView.setAdapter(new SavedQstAdapter(getApplicationContext(), items));
     }
 
     /**
      * setToolBar.<br>
-     *  툴바를 세팅하는 메소드.
+     * 툴바를 세팅하는 메소드.
      */
     private void setToolbar(Toolbar toolBar) {
         setSupportActionBar(toolBar);
