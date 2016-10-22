@@ -31,7 +31,6 @@ import java.util.Date;
 import java.util.Random;
 
 /**
- * MainFragment<br>
  * 질문과 답글 볼 수 있는 페이지.
  * 글화면과 설정으로 이동 가능
  * Created by songmho on 2016-10-01.
@@ -66,7 +65,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         board = (LinearLayout) v.findViewById(R.id.board);
         imgStar = (ImageView) v.findViewById(R.id.imgStar);
 
-        db = ((MainActivity) getActivity()).sqliteHelper.getReadableDatabase();
+        db = MainActivity.sqliteHelper.getReadableDatabase();
 
         Typeface typeFace1 = Typeface.createFromAsset(getActivity().getAssets(), "fonts/SeoulNamsanCL.ttf");
         Typeface typeFace2 = Typeface.createFromAsset(getActivity().getAssets(), "fonts/YanoljaYacheRegular.ttf");
@@ -77,12 +76,12 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         txtRefresh.setOnClickListener(this);
         board.setOnClickListener(this);
 
-        if (searchTodayAsw(format.format(now).toString())) {  //내용이 있을 경우 refresh 안보이고, answer보여야
+        if (searchTodayAsw(format.format(now))) {  //내용이 있을 경우 refresh 안보이고, answer보여야
             txtRefresh.setVisibility(View.GONE);
             txtAnswer.setVisibility(View.VISIBLE);
             imgStar.setVisibility(View.VISIBLE);
             questionSelect(questionId);
-            answerSelect(questionId, format.format(now).toString());
+            answerSelect(questionId, format.format(now));
         } else {
             questionSelect(getQstIdRand());
         }
@@ -96,7 +95,6 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
 
     /**
-     * getQstIdRand<br>
      * 랜덤으로 Question id를 생성해주는 메소드
      * 현재 나와있는 질문만 중복시키지 않고 반환시킴
      *
@@ -124,7 +122,6 @@ public class MainFragment extends Fragment implements View.OnClickListener {
     }
 
     /**
-     * searchTodayAsw<br>
      * 오늘의 답변 있는지 확인하는 메소드
      * question_id를 query문에서 받아 변경해준다.
      *
@@ -150,7 +147,6 @@ public class MainFragment extends Fragment implements View.OnClickListener {
     }
 
     /**
-     * answerSelect<br>
      * 오늘의 답 찾는 메소드
      *
      * @param question_id
@@ -173,7 +169,6 @@ public class MainFragment extends Fragment implements View.OnClickListener {
     }
 
     /**
-     * questionSelect<br>
      * question id를 랜덤으로 입력받아 question을 textView에 출력.
      *
      * @param id questionId
@@ -230,6 +225,4 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         }
         return super.onOptionsItemSelected(item);
     }
-
-
 }

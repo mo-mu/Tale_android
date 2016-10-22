@@ -21,7 +21,6 @@ import java.util.ArrayList;
  */
 
 public class SavedQstActivity extends AppCompatActivity {
-
     LinearLayoutManager layoutManager;
     ArrayList<SavedQstItem> items = new ArrayList<>();
     SQLiteDatabase db = MainActivity.sqliteHelper.getReadableDatabase();
@@ -31,11 +30,27 @@ public class SavedQstActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
 
+        setToolbar();
+        initList();
+    }
+
+    /**
+     * 툴바를 세팅하는 메소드.
+     */
+    private void setToolbar() {
         Toolbar toolBar = (Toolbar) findViewById(R.id.toolBar);
+        setSupportActionBar(toolBar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolBar.setLogo(R.drawable.fox_small_profile);
+        getSupportActionBar().setTitle("");
+    }
+
+    /**
+     * recyclerView 레이아웃 및 리스트 데이터를 세팅하는 메소드
+     */
+    private void initList() {
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         Intent getIntent = getIntent();
-
-        setToolbar(toolBar);
 
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getApplicationContext());
@@ -54,16 +69,5 @@ public class SavedQstActivity extends AppCompatActivity {
             if (cursor != null) cursor.close();
         }
         recyclerView.setAdapter(new SavedQstAdapter(getApplicationContext(), items));
-    }
-
-    /**
-     * setToolBar.<br>
-     * 툴바를 세팅하는 메소드.
-     */
-    private void setToolbar(Toolbar toolBar) {
-        setSupportActionBar(toolBar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolBar.setLogo(R.drawable.fox_small_profile);
-        getSupportActionBar().setTitle("");
     }
 }

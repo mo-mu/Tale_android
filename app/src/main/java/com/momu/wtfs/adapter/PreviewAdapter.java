@@ -17,8 +17,7 @@ import com.momu.wtfs.item.PreviewItem;
 import java.util.ArrayList;
 
 /**
- * PreviewAdapter<br>
- *     지난 이야기에서 쓰는 recyclerView에 대한 adapter
+ * 지난 이야기에서 쓰는 recyclerView에 대한 adapter
  * Created by songmho on 2016-10-01.
  */
 public class PreviewAdapter extends RecyclerView.Adapter {
@@ -27,17 +26,18 @@ public class PreviewAdapter extends RecyclerView.Adapter {
 
     /**
      * constructor<br>
+     *
      * @param context context
-     * @param items 지난이야기 ArrayLIst
+     * @param items   지난이야기 ArrayLIst
      */
     public PreviewAdapter(Context context, ArrayList<PreviewItem> items) {
-        this.context=context;
-        this.items=items;
+        this.context = context;
+        this.items = items;
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_preview,parent,false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_preview, parent, false);
         return new ViewHolder(v);
     }
 
@@ -47,21 +47,21 @@ public class PreviewAdapter extends RecyclerView.Adapter {
         Typeface typeFace1 = Typeface.createFromAsset(context.getAssets(), "fonts/SeoulNamsanCL.ttf");
         Typeface typeFace2 = Typeface.createFromAsset(context.getAssets(), "fonts/YanoljaYacheRegular.ttf");
 
-        ((ViewHolder)holder).txtDate.setTypeface(typeFace1);
-        ((ViewHolder)holder).txtQuestion.setTypeface(typeFace2);
-        ((ViewHolder)holder).txtDate.setText(""+item.getDate());
-        ((ViewHolder)holder).txtQuestion.setText(item.getQuestion());
-        ((ViewHolder)holder).container.setOnClickListener(new View.OnClickListener() {
+        ((ViewHolder) holder).txtDate.setTypeface(typeFace1);
+        ((ViewHolder) holder).txtQuestion.setTypeface(typeFace2);
+        ((ViewHolder) holder).txtDate.setText("" + item.getDate());
+        ((ViewHolder) holder).txtQuestion.setText(item.getQuestion());
+        ((ViewHolder) holder).container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent gotoSaveQst = new Intent(context.getApplicationContext(), SavedQstActivity.class);
-                gotoSaveQst.putExtra("question",item.getQuestion());
-                gotoSaveQst.putExtra("questionId",item.getQuestionId());
+                gotoSaveQst.putExtra("question", item.getQuestion());
+                gotoSaveQst.putExtra("questionId", item.getQuestionId());
                 gotoSaveQst.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(gotoSaveQst);
             }
         });
-        ((ViewHolder)holder).txtCount.setText(""+item.getCount());
+        ((ViewHolder) holder).txtCount.setText("" + item.getCount());
     }
 
     @Override
@@ -71,22 +71,24 @@ public class PreviewAdapter extends RecyclerView.Adapter {
 
     /**
      * ViewHolder<br>
-     *     item holder class
-     *     멤버변수 : TextView(txtDate, txtQuestion)
+     * item holder class
+     * 멤버변수 : TextView(txtDate, txtQuestion)
      */
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
         TextView txtDate, txtQuestion, txtCount;
         LinearLayout container;
+
         /**
          * constructor<br>
+         *
          * @param itemView
          */
         public ViewHolder(View itemView) {
             super(itemView);
-            txtDate = (TextView)itemView.findViewById(R.id.txtDate);
-            txtQuestion = (TextView)itemView.findViewById(R.id.txtQuestion);
-            container = (LinearLayout)itemView.findViewById(R.id.container);
-            txtCount = (TextView)itemView.findViewById(R.id.txtCount);
+            txtDate = (TextView) itemView.findViewById(R.id.txtDate);
+            txtQuestion = (TextView) itemView.findViewById(R.id.txtQuestion);
+            container = (LinearLayout) itemView.findViewById(R.id.container);
+            txtCount = (TextView) itemView.findViewById(R.id.txtCount);
         }
     }
 }

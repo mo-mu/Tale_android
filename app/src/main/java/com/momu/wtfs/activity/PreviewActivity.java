@@ -17,13 +17,10 @@ import com.momu.wtfs.item.PreviewItem;
 import java.util.ArrayList;
 
 /**
- * PreviewActivity<br>
  * 지난이야기 보여주는 페이지.
  * Created by songmho on 2016-09-30.
  */
-
 public class PreviewActivity extends AppCompatActivity {
-
     RecyclerView.LayoutManager layoutManager;
     ArrayList<PreviewItem> items = new ArrayList<>();
 
@@ -34,11 +31,27 @@ public class PreviewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
 
+        setToolbar();
+        initList();
+    }
+
+
+    /**
+     * 툴바를 세팅하는 메소드.
+     */
+    private void setToolbar() {
         Toolbar toolBar = (Toolbar) findViewById(R.id.toolBar);
+        setSupportActionBar(toolBar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolBar.setLogo(R.drawable.fox_small_profile);
+        getSupportActionBar().setTitle("");
+    }
+
+    /**
+     * 리스트를 초기화하는 메소드
+     */
+    private void initList() {
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-
-        setToolbar(toolBar);
-
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
@@ -58,17 +71,5 @@ public class PreviewActivity extends AppCompatActivity {
         }
 
         recyclerView.setAdapter(new PreviewAdapter(getApplicationContext(), items));
-    }
-
-
-    /**
-     * setToolBar.<br>
-     * 툴바를 세팅하는 메소드.
-     */
-    private void setToolbar(Toolbar toolBar) {
-        setSupportActionBar(toolBar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolBar.setLogo(R.drawable.fox_small_profile);
-        getSupportActionBar().setTitle("");
     }
 }
