@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import com.momu.wtfs.R;
 import com.momu.wtfs.SqliteHelper;
 import com.momu.wtfs.fragment.MainFragment;
+import com.momu.wtfs.fragment.WriteFragment;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

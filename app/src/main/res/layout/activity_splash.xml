@@ -17,6 +17,7 @@
             android:layout_marginTop="128dp"
             android:layout_gravity="center"
             android:textColor="@color/white"
+            android:lineSpacingExtra="7dp"
           />
 
 </LinearLayout>

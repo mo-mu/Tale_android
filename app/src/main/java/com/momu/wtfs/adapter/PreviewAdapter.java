@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -61,8 +62,11 @@ public class PreviewAdapter extends RecyclerView.Adapter {
                 context.startActivity(gotoSaveQst);
             }
         });
-        ((ViewHolder) holder).txtCount.setText("" + item.getCount());
-    }
+
+        for(int i=0;i<item.getCount();i++){
+            ((ViewHolder)holder).imgTail[i].setVisibility(View.VISIBLE);
+        }
+      }
 
     @Override
     public int getItemCount() {
@@ -74,10 +78,10 @@ public class PreviewAdapter extends RecyclerView.Adapter {
      * item holder class
      * 멤버변수 : TextView(txtDate, txtQuestion)
      */
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView txtDate, txtQuestion, txtCount;
+    public class ViewHolder extends RecyclerView.ViewHolder{
+        TextView txtDate, txtQuestion;
         LinearLayout container;
-
+        ImageView[] imgTail;
         /**
          * constructor<br>
          *
@@ -88,7 +92,12 @@ public class PreviewAdapter extends RecyclerView.Adapter {
             txtDate = (TextView) itemView.findViewById(R.id.txtDate);
             txtQuestion = (TextView) itemView.findViewById(R.id.txtQuestion);
             container = (LinearLayout) itemView.findViewById(R.id.container);
-            txtCount = (TextView) itemView.findViewById(R.id.txtCount);
+            txtDate = (TextView)itemView.findViewById(R.id.txtDate);
+            txtQuestion = (TextView)itemView.findViewById(R.id.txtQuestion);
+            container = (LinearLayout)itemView.findViewById(R.id.container);
+            imgTail = new ImageView[6];
+            for(int i=0;i<5;i++)
+                imgTail[0] = (ImageView)itemView.findViewById(R.id.imgTail1+i);
         }
     }
 }

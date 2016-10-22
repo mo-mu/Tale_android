@@ -8,12 +8,14 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -71,6 +73,20 @@ public class WriteFragment extends Fragment {
             editAnswer.setText(getArguments().getString("answer"));
 
         setHasOptionsMenu(true);
+
+        v.setFocusableInTouchMode(true);
+        v.requestFocus();
+        v.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if(keyCode == KeyEvent.KEYCODE_BACK){
+                    Fragment recvFragment = new MainFragment();     //공통적으로 MainFragment로 전환시킴
+                    ((MainActivity)getActivity()).changeFragment(recvFragment);
+                    return true;
+                }
+                return false;
+            }
+        });
         return v;
     }
 
@@ -115,9 +131,12 @@ public class WriteFragment extends Fragment {
         Fragment recvFragment = new MainFragment();     //공통적으로 MainFragment로 전환시킴
         ((MainActivity) getActivity()).changeFragment(recvFragment);
 
-        switch (item.getItemId()) {
-            case R.id.action_check:     //추가
-                sql = "insert into answer (question_id, user_id, a, created_at) " +
+        InputMethodManager imm= (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(editAnswer.getWindowToken(), 0);
+
+        switch (item.getItemId()){
+              case R.id.action_check:     //추가
+                  sql = "insert into answer (question_id, user_id, a, created_at) " +
                         "values (" + getArguments().getInt("questionId") + ", 0, '" + editAnswer.getText().toString() + "', '" + format.format(now).toString() + "');";
                 db.execSQL(sql);
                 Toast.makeText(mContext, "추가되었습니다.", Toast.LENGTH_SHORT).show();

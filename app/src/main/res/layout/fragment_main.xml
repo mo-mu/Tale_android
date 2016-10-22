@@ -41,7 +41,7 @@
                 android:id="@+id/txtQuestion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="16dp"
+                android:textSize="20dp"
                 android:textColor="@color/question"/>
             <ImageView
                 android:id="@+id/imgStar"
@@ -49,14 +49,15 @@
                 android:layout_height="9dp"
                 android:src="@drawable/star_gray_img"
                 android:visibility="gone"
-                android:layout_marginTop="16dp"/>
+                android:layout_marginTop="14dp"/>
             <TextView
                 android:id="@+id/txtAnswer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:textSize="14dp"
+                android:layout_marginTop="14dp"
+                android:textSize="16dp"
                 android:textColor="@color/answer"
+                android:lineSpacingExtra="7dp"
                 android:visibility="gone"/>
         </LinearLayout>
 

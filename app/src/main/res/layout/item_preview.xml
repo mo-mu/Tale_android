@@ -19,16 +19,50 @@
             android:textColor="@color/white"
             android:layout_marginRight="7dp"/>
 
-        <TextView
-            android:id="@+id/txtCount"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="14dp"
-            android:textColor="@color/white"/>
+            android:orientation="horizontal">
+            <ImageView
+                android:id="@+id/imgTail1"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:layout_marginRight="5dp"
+                android:visibility="gone"
+                android:background="@drawable/tail_img"/>
+            <ImageView
+                android:id="@+id/imgTail2"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:layout_marginRight="5dp"
+                android:visibility="gone"
+                android:background="@drawable/tail_img"/>
+            <ImageView
+                android:id="@+id/imgTail3"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:layout_marginRight="5dp"
+                android:visibility="gone"
+                android:background="@drawable/tail_img"/>
+            <ImageView
+                android:id="@+id/imgTail4"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:layout_marginRight="5dp"
+                android:visibility="gone"
+                android:background="@drawable/tail_img"/>
+            <ImageView
+                android:id="@+id/imgTail5"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:layout_marginRight="5dp"
+                android:visibility="gone"
+                android:background="@drawable/tail_img"/>
+        </LinearLayout>
     </LinearLayout>
     <TextView
         android:id="@+id/txtQuestion"
-        android:textSize="16dp"
+        android:textSize="20dp"
         android:layout_marginTop="16dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -6,6 +6,6 @@
     <color name="white">#ffffff</color>
     <color name="question">#464646</color>
     <color name="hintColor">#b1b1b1</color>
-    <color name="answer">#b1b1b1</color>
+    <color name="answer">#464646</color>
     <color name="line">#464646</color>
 </resources>
