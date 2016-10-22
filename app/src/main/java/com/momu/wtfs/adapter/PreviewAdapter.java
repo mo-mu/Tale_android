@@ -97,7 +97,7 @@ public class PreviewAdapter extends RecyclerView.Adapter {
             container = (LinearLayout)itemView.findViewById(R.id.container);
             imgTail = new ImageView[6];
             for(int i=0;i<5;i++)
-                imgTail[0] = (ImageView)itemView.findViewById(R.id.imgTail1+i);
+                imgTail[i] = (ImageView)itemView.findViewById(R.id.imgTail1+i);
         }
     }
 }

@@ -1,12 +1,15 @@
 package com.momu.wtfs.fragment;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -17,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -56,10 +60,14 @@ public class WriteFragment extends Fragment {
         LinearLayout v = (LinearLayout) inflater.inflate(R.layout.fragment_write, container, false);
 
         ((MainActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        ((MainActivity) getActivity()).toolBar.setLogo(R.drawable.fox_small_profile);
+        ImageView logo = (ImageView) ((((MainActivity)getActivity()).toolBar)).findViewById(R.id.imgLogo);
+        logo.setVisibility(View.VISIBLE);
 
         txtQuestion = (TextView) v.findViewById(R.id.txtQuestion);
         editAnswer = (EditText) v.findViewById(R.id.editAnswer);
+
+        db = MainActivity.sqliteHelper.getWritableDatabase();
+
         Typeface typeFace1 = Typeface.createFromAsset(getActivity().getAssets(), "fonts/SeoulNamsanCL.ttf");
         Typeface typeFace2 = Typeface.createFromAsset(getActivity().getAssets(), "fonts/YanoljaYacheRegular.ttf");
 
@@ -67,7 +75,26 @@ public class WriteFragment extends Fragment {
         txtQuestion.setTypeface(typeFace2);
         txtQuestion.setText(getArguments().getString("question"));
 
-        db = MainActivity.sqliteHelper.getWritableDatabase();
+        ((MainActivity) getActivity()).toolBar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(editAnswer.getText().length()>0){
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setTitle("잠깐만");
+                    builder.setMessage("글쓰기를 취소하시겠어요?").setPositiveButton("네", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            changeFragment();
+                        }
+                    }).setNegativeButton("아니요.", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                        }
+                    }).show();
+                }else
+                    changeFragment();
+            }
+        });
 
         if (searchTodayAsw(format.format(now)))           //답이 있을 경우(수정을 하고 싶을 경우)
             editAnswer.setText(getArguments().getString("answer"));
@@ -80,8 +107,7 @@ public class WriteFragment extends Fragment {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if(keyCode == KeyEvent.KEYCODE_BACK){
-                    Fragment recvFragment = new MainFragment();     //공통적으로 MainFragment로 전환시킴
-                    ((MainActivity)getActivity()).changeFragment(recvFragment);
+                    changeFragment();
                     return true;
                 }
                 return false;
@@ -92,7 +118,6 @@ public class WriteFragment extends Fragment {
 
     /**
      * 오늘의 답변 있는지 확인하는 메소드
-     *
      * @param today 오늘 날짜
      * @return boolean true : 있을 경우, false : 없을 경우
      */
@@ -128,32 +153,52 @@ public class WriteFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Fragment recvFragment = new MainFragment();     //공통적으로 MainFragment로 전환시킴
-        ((MainActivity) getActivity()).changeFragment(recvFragment);
-
-        InputMethodManager imm= (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(editAnswer.getWindowToken(), 0);
-
         switch (item.getItemId()){
               case R.id.action_check:     //추가
                   sql = "insert into answer (question_id, user_id, a, created_at) " +
                         "values (" + getArguments().getInt("questionId") + ", 0, '" + editAnswer.getText().toString() + "', '" + format.format(now).toString() + "');";
-                db.execSQL(sql);
-                Toast.makeText(mContext, "추가되었습니다.", Toast.LENGTH_SHORT).show();
-                break;
+                  db.execSQL(sql);
+                  changeFragment();
+                  Toast.makeText(mContext, "추가되었습니다.", Toast.LENGTH_SHORT).show();
+                  break;
 
             case R.id.action_edit:      //수정
                 sql = "update answer set a = '" + editAnswer.getText().toString() + "' where id=" + getArguments().getInt("answerId") + ";";
                 db.execSQL(sql);
+                changeFragment();
                 Toast.makeText(mContext, "수정되었습니다.", Toast.LENGTH_SHORT).show();
                 break;
 
             case R.id.action_remove:    //삭제
-                sql = "delete from answer where id=" + getArguments().getInt("answerId") + ";";
-                db.execSQL(sql);
-                Toast.makeText(mContext, "삭제되었습니다.", Toast.LENGTH_SHORT).show();
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle("잠깐만");
+                builder.setMessage("글을 삭제하시겠어요?");
+                builder.setPositiveButton("네", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        sql = "delete from answer where id=" + getArguments().getInt("answerId") + ";";
+                        db.execSQL(sql);
+                        Toast.makeText(mContext, "삭제되었습니다.", Toast.LENGTH_SHORT).show();
+                        changeFragment();
+                    }
+                }).setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                      }
+                }).show();
+
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * 현재 프레그먼트를 MainFragment로 변경하는 메소드
+     */
+    private void changeFragment() {
+        Fragment recvFragment = new MainFragment();     //공통적으로 MainFragment로 전환시킴
+        ((MainActivity) getActivity()).changeFragment(recvFragment);
+        InputMethodManager imm= (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(editAnswer.getWindowToken(), 0);
     }
 }

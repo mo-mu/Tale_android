@@ -8,4 +8,10 @@
     android:minHeight="?attr/actionBarSize"
     local:theme="@style/ThemeOverlay.AppCompat.Dark"
     local:popupTheme="@style/ThemeOverlay.AppCompat.Dark">
+    <ImageView
+        android:id="@+id/imgLogo"
+        android:layout_width="42dp"
+        android:layout_height="35dp"
+        android:gravity="center"
+        android:src="@drawable/fox_small_profile"/>
 </android.support.v7.widget.Toolbar>

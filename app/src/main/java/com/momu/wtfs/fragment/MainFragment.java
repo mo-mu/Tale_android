@@ -57,7 +57,8 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         FrameLayout v = (FrameLayout) inflater.inflate(R.layout.fragment_main, container, false);
 
         ((MainActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        ((MainActivity) getActivity()).toolBar.setLogo(null);
+        ImageView logo = (ImageView) ((((MainActivity)getActivity()).toolBar)).findViewById(R.id.imgLogo);
+        logo.setVisibility(View.GONE);
 
         txtQuestion = (TextView) v.findViewById(R.id.txtQuestion);
         txtRefresh = (TextView) v.findViewById(R.id.txtRefresh);
