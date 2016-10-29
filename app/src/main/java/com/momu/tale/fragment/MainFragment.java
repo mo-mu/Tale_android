@@ -1,4 +1,4 @@
-package com.momu.wtfs.fragment;
+package com.momu.tale.fragment;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -9,7 +9,6 @@ import android.support.annotation.Nullable;
 
 import android.support.v4.app.Fragment;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,10 +20,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.momu.wtfs.R;
-import com.momu.wtfs.activity.MainActivity;
-import com.momu.wtfs.activity.PreviewActivity;
-import com.momu.wtfs.activity.SetUpActivity;
+import com.momu.tale.R;
+import com.momu.tale.activity.MainActivity;
+import com.momu.tale.activity.PreviewActivity;
+import com.momu.tale.activity.SetUpActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

@@ -1,4 +1,4 @@
-package com.momu.wtfs.item;
+package com.momu.tale.item;
 
 /**
  * 지난이야기 리스트 아이템

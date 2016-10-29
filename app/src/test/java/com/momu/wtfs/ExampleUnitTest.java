@@ -1,4 +1,4 @@
-package com.momu.wtfs;
+package com.momu.tale;
 
 import org.junit.Test;
 

@@ -1,4 +1,4 @@
-package com.momu.wtfs.activity;
+package com.momu.tale.activity;
 
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -8,7 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
-import com.momu.wtfs.R;
+import com.momu.tale.R;
 
 /**
  * SplashActivity<br>

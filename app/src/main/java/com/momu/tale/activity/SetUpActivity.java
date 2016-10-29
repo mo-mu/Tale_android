@@ -1,11 +1,11 @@
-package com.momu.wtfs.activity;
+package com.momu.tale.activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
-import com.momu.wtfs.R;
+import com.momu.tale.R;
 
 /**
  * 설정 페이지

@@ -1,17 +1,14 @@
-package com.momu.wtfs.fragment;
+package com.momu.tale.fragment;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -26,8 +23,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.momu.wtfs.R;
-import com.momu.wtfs.activity.MainActivity;
+import com.momu.tale.R;
+import com.momu.tale.activity.MainActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

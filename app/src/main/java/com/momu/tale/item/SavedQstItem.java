@@ -1,4 +1,4 @@
-package com.momu.wtfs.item;
+package com.momu.tale.item;
 
 /**
  * Created by songmho on 2016-10-15.

@@ -1,4 +1,4 @@
-package com.momu.wtfs.activity;
+package com.momu.tale.activity;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -10,10 +10,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
-import com.momu.wtfs.R;
-import com.momu.wtfs.SqliteHelper;
-import com.momu.wtfs.fragment.MainFragment;
-import com.momu.wtfs.fragment.WriteFragment;
+import com.momu.tale.R;
+import com.momu.tale.SqliteHelper;
+import com.momu.tale.fragment.MainFragment;
+import com.momu.tale.fragment.WriteFragment;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

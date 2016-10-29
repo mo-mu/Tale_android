@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="com.momu.wtfs"
+<manifest package="com.momu.tale"
           xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application
@@ -9,7 +9,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".activity.SplashActivity">
+        <activity android:name="com.momu.tale.activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -18,27 +18,27 @@
         </activity>
 
         <activity
-            android:name=".activity.MainActivity"
+            android:name="com.momu.tale.activity.MainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize">
 
         </activity>
 
-        <activity android:name=".activity.PreviewActivity">
+        <activity android:name="com.momu.tale.activity.PreviewActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.MainActivity"/>
+                android:value="com.momu.tale.activity.MainActivity"/>
         </activity>
 
-        <activity android:name=".activity.SetUpActivity">
+        <activity android:name="com.momu.tale.activity.SetUpActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.MainActivity"/>
+                android:value="com.momu.tale.activity.MainActivity"/>
         </activity>
 
-        <activity android:name=".activity.SavedQstActivity">
+        <activity android:name="com.momu.tale.activity.SavedQstActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.PreviewActivity"/>
+                android:value="com.momu.tale.activity.PreviewActivity"/>
         </activity>
     </application>
 

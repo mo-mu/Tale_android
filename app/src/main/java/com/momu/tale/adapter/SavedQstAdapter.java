@@ -1,4 +1,4 @@
-package com.momu.wtfs.adapter;
+package com.momu.tale.adapter;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -8,8 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.momu.wtfs.R;
-import com.momu.wtfs.item.SavedQstItem;
+import com.momu.tale.R;
+import com.momu.tale.item.SavedQstItem;
 
 import java.util.ArrayList;
 

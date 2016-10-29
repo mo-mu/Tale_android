@@ -1,4 +1,4 @@
-package com.momu.wtfs.adapter;
+package com.momu.tale.adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,9 +11,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.momu.wtfs.R;
-import com.momu.wtfs.activity.SavedQstActivity;
-import com.momu.wtfs.item.PreviewItem;
+import com.momu.tale.R;
+import com.momu.tale.activity.SavedQstActivity;
+import com.momu.tale.item.PreviewItem;
 
 import java.util.ArrayList;
 

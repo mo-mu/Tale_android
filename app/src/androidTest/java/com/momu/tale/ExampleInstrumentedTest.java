@@ -1,4 +1,4 @@
-package com.momu.wtfs;
+package com.momu.tale;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
