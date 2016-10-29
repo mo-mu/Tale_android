@@ -201,7 +201,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
             bundle.putString("answer", txtAnswer.getText().toString());
             writeFragment.setArguments(bundle);
 
-            ((MainActivity) getActivity()).changeFragment(writeFragment);
+            ((MainActivity) getActivity()).changeFragment(writeFragment, "WriteFragment");
         }
     }
 

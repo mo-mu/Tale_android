@@ -1,5 +1,6 @@
 package com.momu.wtfs.fragment;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.database.Cursor;
@@ -60,7 +61,7 @@ public class WriteFragment extends Fragment {
         LinearLayout v = (LinearLayout) inflater.inflate(R.layout.fragment_write, container, false);
 
         ((MainActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        ImageView logo = (ImageView) ((((MainActivity)getActivity()).toolBar)).findViewById(R.id.imgLogo);
+        ImageView logo = (ImageView) ((((MainActivity) getActivity()).toolBar)).findViewById(R.id.imgLogo);
         logo.setVisibility(View.VISIBLE);
 
         txtQuestion = (TextView) v.findViewById(R.id.txtQuestion);
@@ -78,21 +79,7 @@ public class WriteFragment extends Fragment {
         ((MainActivity) getActivity()).toolBar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(editAnswer.getText().length()>0){
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                    builder.setTitle("잠깐만");
-                    builder.setMessage("글쓰기를 취소하시겠어요?").setPositiveButton("네", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            changeFragment();
-                        }
-                    }).setNegativeButton("아니요.", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                        }
-                    }).show();
-                }else
-                    changeFragment();
+                checkBeforeExist();
             }
         });
 
@@ -106,7 +93,7 @@ public class WriteFragment extends Fragment {
         v.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if(keyCode == KeyEvent.KEYCODE_BACK){
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
                     changeFragment();
                     return true;
                 }
@@ -118,6 +105,7 @@ public class WriteFragment extends Fragment {
 
     /**
      * 오늘의 답변 있는지 확인하는 메소드
+     *
      * @param today 오늘 날짜
      * @return boolean true : 있을 경우, false : 없을 경우
      */
@@ -153,14 +141,16 @@ public class WriteFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-              case R.id.action_check:     //추가
-                  sql = "insert into answer (question_id, user_id, a, created_at) " +
-                        "values (" + getArguments().getInt("questionId") + ", 0, '" + editAnswer.getText().toString() + "', '" + format.format(now).toString() + "');";
-                  db.execSQL(sql);
-                  changeFragment();
-                  Toast.makeText(mContext, "추가되었습니다.", Toast.LENGTH_SHORT).show();
-                  break;
+        switch (item.getItemId()) {
+            case R.id.action_check:     //추가
+                if (editAnswer.getText().toString().trim().equals("")) {
+                    sql = "insert into answer (question_id, user_id, a, created_at) " +
+                            "values (" + getArguments().getInt("questionId") + ", 0, '" + editAnswer.getText().toString() + "', '" + format.format(now).toString() + "');";
+                    db.execSQL(sql);
+                    changeFragment();
+                    Toast.makeText(mContext, "추가되었습니다.", Toast.LENGTH_SHORT).show();
+                }
+                break;
 
             case R.id.action_edit:      //수정
                 sql = "update answer set a = '" + editAnswer.getText().toString() + "' where id=" + getArguments().getInt("answerId") + ";";
@@ -184,7 +174,7 @@ public class WriteFragment extends Fragment {
                 }).setNegativeButton("아니오", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                      }
+                    }
                 }).show();
 
                 break;
@@ -197,8 +187,29 @@ public class WriteFragment extends Fragment {
      */
     private void changeFragment() {
         Fragment recvFragment = new MainFragment();     //공통적으로 MainFragment로 전환시킴
-        ((MainActivity) getActivity()).changeFragment(recvFragment);
-        InputMethodManager imm= (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        ((MainActivity) getActivity()).changeFragment(recvFragment, "MainFragment");
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(editAnswer.getWindowToken(), 0);
+    }
+
+    /**
+     * 종료 전에 한번 더 확인한다.
+     */
+    public void checkBeforeExist() {
+        if (editAnswer.getText().length() > 0) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setTitle("잠깐만");
+            builder.setMessage("글쓰기를 취소하시겠어요?").setPositiveButton("네", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    changeFragment();
+                }
+            }).setNegativeButton("아니요.", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                }
+            }).show();
+        } else
+            changeFragment();
     }
 }

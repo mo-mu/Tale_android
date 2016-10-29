@@ -1,5 +1,6 @@
 package com.momu.wtfs.activity;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.app.Fragment;
@@ -21,10 +22,11 @@ import java.util.Date;
  * 메인 화면 페이지
  */
 public class MainActivity extends AppCompatActivity {
-
     public Toolbar toolBar;
     FragmentManager fragmentManager;
     FragmentTransaction transaction;
+    String currentFragmentName;
+    Fragment currentFragment;
 
     public static SqliteHelper sqliteHelper;
     private final String DBNAME = "wtfs.db";
@@ -34,15 +36,19 @@ public class MainActivity extends AppCompatActivity {
     Date now = new Date();
     SimpleDateFormat format = new SimpleDateFormat("yyyy.MM.dd");
 
+    Context mContext;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        mContext = this;
         setToolBar();
 
-        Fragment fragment = new MainFragment();       //처음 나올 Fragment 설정(MainFragment로)
-        changeFragment(fragment);
+        currentFragment = new MainFragment();       //처음 나올 Fragment 설정(MainFragment로)
+        changeFragment(currentFragment, "MainFragment");
+        currentFragmentName = "MainFragment";
 
         initDatabase(); //DB 초기화
     }
@@ -50,12 +56,14 @@ public class MainActivity extends AppCompatActivity {
     /**
      * MainActivity내 Fragment들을 변경시켜주는 메소드(Fragment 내에서도 사용 됨)
      *
-     * @param fragmentName
+     * @param fragment
      */
-    public void changeFragment(Fragment fragmentName) {
+    public void changeFragment(Fragment fragment, String fragmentName) {
+        currentFragmentName = fragmentName;
         fragmentManager = getSupportFragmentManager();
+        currentFragment = fragment;
         transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.fragment, fragmentName);
+        transaction.replace(R.id.fragment, currentFragment);
         transaction.commit();
     }
 
@@ -84,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
             while (cursor.moveToNext())
                 if (cursor.getString(1) != null)
                     isExist = true;
+
             if (!isExist) {      //Question 데이터 생성(임의로)
                 String sql = "insert into question (id, q, created_at) " +
                         "values (1,'당신에게 가장 기억에 남는 여행지는 어디인가요?','" + format.format(now) + "');";
@@ -106,5 +115,24 @@ public class MainActivity extends AppCompatActivity {
         } finally {
             if (cursor != null) cursor.close();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        //글 작성중이면 다이얼로그를 띄워서 한번 더 물어본다.
+        if (getCurrentFragmentName().equals("WriteFragment")) {
+            ((WriteFragment)currentFragment).checkBeforeExist();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    /**
+     * 현재 MainActivity에 붙어있는 Fragment 이름을 리턴한다
+     *
+     * @return Fragment 이름
+     */
+    public String getCurrentFragmentName() {
+        return currentFragmentName;
     }
 }

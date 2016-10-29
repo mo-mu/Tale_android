@@ -35,7 +35,6 @@ public class PreviewActivity extends AppCompatActivity {
         initList();
     }
 
-
     /**
      * 툴바를 세팅하는 메소드.
      */
