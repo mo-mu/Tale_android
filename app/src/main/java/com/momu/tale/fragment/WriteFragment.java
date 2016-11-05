@@ -58,8 +58,7 @@ public class WriteFragment extends Fragment {
         LinearLayout v = (LinearLayout) inflater.inflate(R.layout.fragment_write, container, false);
 
         ((MainActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        ImageView logo = (ImageView) ((((MainActivity) getActivity()).toolBar)).findViewById(R.id.imgLogo);
-        logo.setVisibility(View.VISIBLE);
+        ((MainActivity)getActivity()).getSupportActionBar().setLogo(R.drawable.fox_small_profile);
 
         txtQuestion = (TextView) v.findViewById(R.id.txtQuestion);
         editAnswer = (EditText) v.findViewById(R.id.editAnswer);
