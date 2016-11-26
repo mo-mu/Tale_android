@@ -15,6 +15,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -39,6 +40,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
     TextView txtRefresh, txtQuestion, txtAnswer;
     ImageView imgStar;
     LinearLayout board;
+    Button btWrite;
     Date now = new Date();
     SimpleDateFormat format = new SimpleDateFormat("yyyy/ MM/ dd");
     int answerId, questionId = -1;
@@ -55,14 +57,14 @@ public class MainFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         FrameLayout v = (FrameLayout) inflater.inflate(R.layout.fragment_main, container, false);
 
-        ((MainActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        ((MainActivity) getActivity()).getSupportActionBar().setLogo(null);
+        initToolBar();
 
         txtQuestion = (TextView) v.findViewById(R.id.txtQuestion);
         txtRefresh = (TextView) v.findViewById(R.id.txtRefresh);
         txtAnswer = (TextView) v.findViewById(R.id.txtAnswer);
         board = (LinearLayout) v.findViewById(R.id.board);
         imgStar = (ImageView) v.findViewById(R.id.imgStar);
+        btWrite = (Button)v.findViewById(R.id.btWrite);
 
         db = MainActivity.sqliteHelper.getReadableDatabase();
 
@@ -74,6 +76,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
         txtRefresh.setOnClickListener(this);
         board.setOnClickListener(this);
+        btWrite.setOnClickListener(this);
 
         if (searchTodayAsw(format.format(now))) {  //내용이 있을 경우 refresh 안보이고, answer보여야
             txtRefresh.setVisibility(View.GONE);
@@ -90,6 +93,15 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
         setHasOptionsMenu(true);
         return v;
+    }
+
+    /**
+     * Toolbar 생성 메소드<br>
+     */
+    private void initToolBar() {
+        ((MainActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        ImageView imgLogo = (ImageView) getActivity().findViewById(R.id.imgLogo);
+        imgLogo.setVisibility(View.GONE);
     }
 
 
@@ -190,7 +202,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         if (v.getId() == R.id.txtRefresh) {
             questionSelect(getQstIdRand());
-        } else if (v.getId() == R.id.board) {
+        } else if (v.getId() == R.id.btWrite) {
             Fragment writeFragment = new WriteFragment();
             Bundle bundle = new Bundle();
             bundle.putInt("questionId", questionId);

@@ -41,7 +41,7 @@ public class SavedQstActivity extends AppCompatActivity {
         Toolbar toolBar = (Toolbar) findViewById(R.id.toolBar);
         setSupportActionBar(toolBar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setLogo(R.drawable.fox_small_profile);
+   //     getSupportActionBar().setLogo(R.drawable.fox_small_profile);
         getSupportActionBar().setTitle("");
     }
 

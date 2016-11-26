@@ -42,7 +42,7 @@ public class PreviewActivity extends AppCompatActivity {
         setSupportActionBar(toolBar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("");
-        getSupportActionBar().setLogo(R.drawable.fox_small_profile);
+      //  getSupportActionBar().setLogo(R.drawable.fox_small_profile);
     }
 
     /**

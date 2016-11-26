@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -57,8 +58,7 @@ public class WriteFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         LinearLayout v = (LinearLayout) inflater.inflate(R.layout.fragment_write, container, false);
 
-        ((MainActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        ((MainActivity)getActivity()).getSupportActionBar().setLogo(R.drawable.fox_small_profile);
+        initToolBar();
 
         txtQuestion = (TextView) v.findViewById(R.id.txtQuestion);
         editAnswer = (EditText) v.findViewById(R.id.editAnswer);
@@ -97,6 +97,15 @@ public class WriteFragment extends Fragment {
             }
         });
         return v;
+    }
+
+    /**
+     * 툴바 생성 메소드 <br>
+     */
+    private void initToolBar() {
+        ((MainActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ImageView imgLogo = (ImageView) getActivity().findViewById(R.id.imgLogo);
+        imgLogo.setVisibility(View.VISIBLE);
     }
 
     /**
@@ -139,13 +148,13 @@ public class WriteFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_check:     //추가
-                if (editAnswer.getText().toString().trim().equals("")) {
+        //        if (editAnswer.getText().toString().trim().equals("")) {
                     sql = "insert into answer (question_id, user_id, a, created_at) " +
                             "values (" + getArguments().getInt("questionId") + ", 0, '" + editAnswer.getText().toString() + "', '" + format.format(now).toString() + "');";
                     db.execSQL(sql);
                     changeFragment();
                     Toast.makeText(mContext, "추가되었습니다.", Toast.LENGTH_SHORT).show();
-                }
+          //      }
                 break;
 
             case R.id.action_edit:      //수정

@@ -3,7 +3,8 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white"
+    android:background="@drawable/speech_bubble_img2"
+    android:id='@+id/container'
     android:padding="16dp"
     android:layout_marginTop="11dp"
     android:layout_marginLeft="16dp"
@@ -15,6 +16,7 @@
         android:layout_height="wrap_content"
         android:visibility="gone"
         android:textColor="@color/question"
+        android:layout_marginTop="22dp"
         android:textSize="20dp"
         android:layout_marginBottom="16dp"/>
 

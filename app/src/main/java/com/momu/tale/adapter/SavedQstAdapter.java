@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.momu.tale.R;
@@ -47,6 +48,12 @@ public class SavedQstAdapter extends RecyclerView.Adapter {
         }
         ((ViewHolder)holder).txtDate.setText(item.getDate());
         ((ViewHolder)holder).txtAnswer.setText(item.getAnswer());
+        ((ViewHolder)holder).container.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
     @Override
@@ -55,9 +62,11 @@ public class SavedQstAdapter extends RecyclerView.Adapter {
     }
 
     class ViewHolder extends RecyclerView.ViewHolder{
+        LinearLayout container;
         TextView txtQuestion, txtDate, txtAnswer;
         public ViewHolder(View itemView) {
             super(itemView);
+            container = (LinearLayout)itemView.findViewById(R.id.container);
             txtQuestion = (TextView)itemView.findViewById(R.id.txtQuestion);
             txtDate = (TextView)itemView.findViewById(R.id.txtDate);
             txtAnswer = (TextView)itemView.findViewById(R.id.txtAnswer);

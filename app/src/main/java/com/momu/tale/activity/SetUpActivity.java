@@ -30,7 +30,7 @@ public class SetUpActivity extends AppCompatActivity {
         setSupportActionBar(toolBar);
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolBar.setLogo(R.drawable.fox_small_profile);
+     //   toolBar.setLogo(R.drawable.fox_small_profile);
         getSupportActionBar().setTitle("");
     }
 }

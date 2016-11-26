@@ -27,7 +27,7 @@
             android:layout_width="62dp"
             android:layout_height="52dp"
             android:background="@drawable/fox_big_profile"
-            android:layout_marginLeft="18dp"
+            android:layout_marginLeft="38dp"
             android:layout_marginBottom="7dp"/>
 
         <LinearLayout
@@ -36,11 +36,12 @@
             android:layout_height="wrap_content"
             android:padding="16dp"
             android:orientation="vertical"
-            android:background="@color/white">
+            android:background="@drawable/speech_bubble_img">
             <TextView
                 android:id="@+id/txtQuestion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="22dp"
                 android:textSize="20dp"
                 android:textColor="@color/question"/>
             <ImageView
@@ -59,6 +60,13 @@
                 android:textColor="@color/answer"
                 android:lineSpacingExtra="7dp"
                 android:visibility="gone"/>
+            <Button
+                android:id="@+id/btWrite"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/write_btn"
+                android:layout_gravity="right"/>
         </LinearLayout>
 
     </LinearLayout>
