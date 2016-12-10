@@ -91,7 +91,7 @@ public class WriteFragment extends Fragment {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if (keyCode == KeyEvent.KEYCODE_BACK) {
-                    changeFragment();
+                    finishFragment();
                     return true;
                 }
                 return false;
@@ -153,7 +153,7 @@ public class WriteFragment extends Fragment {
                     sql = "insert into answer (question_id, user_id, a, created_at) " +
                             "values (" + getArguments().getInt("questionId") + ", 0, '" + editAnswer.getText().toString() + "', '" + format.format(now).toString() + "');";
                     db.execSQL(sql);
-                    changeFragment();
+                    finishFragment();
                     Toast.makeText(mContext, "추가되었습니다.", Toast.LENGTH_SHORT).show();
           //      }
                 break;
@@ -161,7 +161,7 @@ public class WriteFragment extends Fragment {
             case R.id.action_edit:      //수정
                 sql = "update answer set a = '" + editAnswer.getText().toString() + "' where id=" + getArguments().getInt("answerId") + ";";
                 db.execSQL(sql);
-                changeFragment();
+                finishFragment();
                 Toast.makeText(mContext, "수정되었습니다.", Toast.LENGTH_SHORT).show();
                 break;
 
@@ -175,7 +175,7 @@ public class WriteFragment extends Fragment {
                         sql = "delete from answer where id=" + getArguments().getInt("answerId") + ";";
                         db.execSQL(sql);
                         Toast.makeText(mContext, "삭제되었습니다.", Toast.LENGTH_SHORT).show();
-                        changeFragment();
+                        finishFragment();
                     }
                 }).setNegativeButton("아니오", new DialogInterface.OnClickListener() {
                     @Override
@@ -208,7 +208,7 @@ public class WriteFragment extends Fragment {
             builder.setMessage("글쓰기를 취소하시겠어요?").setPositiveButton("네", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-                    changeFragment();
+                    finishFragment();
                 }
             }).setNegativeButton("아니요.", new DialogInterface.OnClickListener() {
                 @Override
@@ -217,5 +217,15 @@ public class WriteFragment extends Fragment {
             }).show();
         } else
             changeFragment();
+    }
+
+    /**
+     * 이전 페이지 상태에 따라 현재 프래그먼트 종료 시 취해줄 액션 정해줌.
+     */
+    public void finishFragment(){
+        if(getArguments().getBoolean("isMain"))
+            changeFragment();
+        else
+            (getActivity()).finish();
     }
 }
