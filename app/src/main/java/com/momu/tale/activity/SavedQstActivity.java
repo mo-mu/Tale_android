@@ -60,7 +60,7 @@ public class SavedQstActivity extends AppCompatActivity {
         try {
             cursor = db.rawQuery("SELECT created_at, a, id  FROM answer WHERE question_id=" + getIntent.getIntExtra("questionId", -1) + ";", null);
             while (cursor.moveToNext()) {
-                SavedQstItem item = new SavedQstItem(getIntent.getStringExtra("question"), cursor.getString(0), cursor.getString(1), cursor.getInt(2));
+                SavedQstItem item = new SavedQstItem(getIntent.getStringExtra("question"), cursor.getString(0), cursor.getString(1), cursor.getInt(2),cursor.getInt(getIntent.getIntExtra("questionId", -1)));
                 items.add(item);
             }
         } catch (Exception e) {

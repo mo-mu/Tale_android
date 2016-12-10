@@ -61,9 +61,9 @@ public class SavedQstAdapter extends RecyclerView.Adapter {
             public void onClick(View v) {
                 Intent gotoSaveQst = new Intent(context.getApplicationContext(), MainActivity.class);
                 gotoSaveQst.putExtra("question", item.getQuestion());
-                gotoSaveQst.putExtra("questionId", item.getQuestion());
-                gotoSaveQst.putExtra("question", item.getQuestion());
-                gotoSaveQst.putExtra("questionId", item.getQuestion());
+                gotoSaveQst.putExtra("questionId", item.getQuestionId());
+                gotoSaveQst.putExtra("answer", item.getAnswer());
+                gotoSaveQst.putExtra("answerId", item.getAnswerId());
                 gotoSaveQst.putExtra("fragmentName","savedQst");
                 gotoSaveQst.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(gotoSaveQst);

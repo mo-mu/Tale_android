@@ -50,16 +50,26 @@ public class MainActivity extends AppCompatActivity {
      */
     public void changeFragment(Fragment fragment, String fragmentName) {
         currentFragmentName = fragmentName;
-        if(currentFragmentName.equals("first")){
-            currentFragment = new MainFragment();       //처음 나올 Fragment 설정(MainFragment로)
+        if(currentFragmentName.equals("first")){        //처음 프레그먼트 설정(splash에서 넘어올 경우)
+            currentFragment = new MainFragment();
             currentFragmentName = "MainFragment";
         }
-        else if(currentFragmentName.equals("savedQst")){
+        else if(currentFragmentName.equals("savedQst")){        //saveQst Activity에서 넘어올 경우
+            Fragment writeFragment = new WriteFragment();
+            Bundle bundle = new Bundle();
+            bundle.putInt("questionId", getIntent().getIntExtra("questionId",-1));
+            bundle.putInt("answerId", getIntent().getIntExtra("answerId",-1));
+            bundle.putString("question", getIntent().getStringExtra("question"));
+            bundle.putString("answer", getIntent().getStringExtra("answer"));
+            bundle.putBoolean("isMain",false);
+            writeFragment.setArguments(bundle);
 
+            currentFragment = writeFragment;
         }
-        else{
+        else{               //나머지 경우 (Fragment 간의 공유 등)
             currentFragment = fragment;
         }
+
         fragmentManager = getSupportFragmentManager();
         transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.fragment, currentFragment);
