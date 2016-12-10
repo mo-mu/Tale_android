@@ -50,9 +50,8 @@ public class MainActivity extends AppCompatActivity {
      */
     public void changeFragment(Fragment fragment, String fragmentName) {
         currentFragmentName = fragmentName;
-        if(currentFragment.equals("first")){
+        if(currentFragmentName.equals("first")){
             currentFragment = new MainFragment();       //처음 나올 Fragment 설정(MainFragment로)
-            changeFragment(currentFragment, "MainFragment");
             currentFragmentName = "MainFragment";
         }
         fragmentManager = getSupportFragmentManager();
