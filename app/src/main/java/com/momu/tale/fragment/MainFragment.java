@@ -25,6 +25,7 @@ import com.momu.tale.R;
 import com.momu.tale.activity.MainActivity;
 import com.momu.tale.activity.PreviewActivity;
 import com.momu.tale.activity.SetUpActivity;
+import com.momu.tale.activity.SplashActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -66,7 +67,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         imgStar = (ImageView) v.findViewById(R.id.imgStar);
         btWrite = (Button)v.findViewById(R.id.btWrite);
 
-        db = MainActivity.sqliteHelper.getReadableDatabase();
+        db = SplashActivity.sqliteHelper.getReadableDatabase();
 
         Typeface typeFace1 = Typeface.createFromAsset(getActivity().getAssets(), "fonts/SeoulNamsanCL.ttf");
         Typeface typeFace2 = Typeface.createFromAsset(getActivity().getAssets(), "fonts/YanoljaYacheRegular.ttf");
@@ -185,7 +186,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
      * @param id questionId
      */
     private void questionSelect(int id) {
-        SQLiteDatabase db = MainActivity.sqliteHelper.getReadableDatabase();
+        SQLiteDatabase db = SplashActivity.sqliteHelper.getReadableDatabase();
         Cursor cursor = null;
         try {
             cursor = db.rawQuery("select * from question where id=" + id + ";", null);

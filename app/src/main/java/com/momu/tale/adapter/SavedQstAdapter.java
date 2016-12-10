@@ -8,8 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.momu.tale.R;
+import com.momu.tale.activity.MainActivity;
 import com.momu.tale.item.SavedQstItem;
 
 import java.util.ArrayList;
@@ -35,7 +37,7 @@ public class SavedQstAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        SavedQstItem item = items.get(position);
+        final SavedQstItem item = items.get(position);
         Typeface typeFace1 = Typeface.createFromAsset(context.getAssets(), "fonts/SeoulNamsanCL.ttf");
         Typeface typeFace2 = Typeface.createFromAsset(context.getAssets(), "fonts/YanoljaYacheRegular.ttf");
 
@@ -51,7 +53,6 @@ public class SavedQstAdapter extends RecyclerView.Adapter {
         ((ViewHolder)holder).container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
             }
         });
     }

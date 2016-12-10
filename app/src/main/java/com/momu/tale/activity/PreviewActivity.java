@@ -23,7 +23,7 @@ public class PreviewActivity extends AppCompatActivity {
     RecyclerView.LayoutManager layoutManager;
     ArrayList<PreviewItem> items = new ArrayList<>();
 
-    SQLiteDatabase db = MainActivity.sqliteHelper.getReadableDatabase();
+    SQLiteDatabase db = SplashActivity.sqliteHelper.getReadableDatabase();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import com.momu.tale.R;
 import com.momu.tale.activity.MainActivity;
+import com.momu.tale.activity.SplashActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -63,7 +64,7 @@ public class WriteFragment extends Fragment {
         txtQuestion = (TextView) v.findViewById(R.id.txtQuestion);
         editAnswer = (EditText) v.findViewById(R.id.editAnswer);
 
-        db = MainActivity.sqliteHelper.getWritableDatabase();
+        db = SplashActivity.sqliteHelper.getWritableDatabase();
 
         Typeface typeFace1 = Typeface.createFromAsset(getActivity().getAssets(), "fonts/SeoulNamsanCL.ttf");
         Typeface typeFace2 = Typeface.createFromAsset(getActivity().getAssets(), "fonts/YanoljaYacheRegular.ttf");

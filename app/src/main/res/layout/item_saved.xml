@@ -3,7 +3,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/speech_bubble_img2"
+    android:background="@drawable/speech_bubble_edit"
     android:id='@+id/container'
     android:padding="16dp"
     android:layout_marginTop="11dp"

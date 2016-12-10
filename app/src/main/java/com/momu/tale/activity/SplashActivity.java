@@ -1,6 +1,8 @@
 package com.momu.tale.activity;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.momu.tale.R;
+import com.momu.tale.SqliteHelper;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -24,6 +27,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 
 import static android.webkit.ConsoleMessage.MessageLevel.LOG;
@@ -41,6 +46,15 @@ public class SplashActivity extends AppCompatActivity {
     static int CONNECTION_TIMEOUT = 3000;
     static int DATARETRIVAL_TIMEOUT = 3000;
 
+
+    public static SqliteHelper sqliteHelper;
+    private final String DBNAME = "wtfs.db";
+    private final int DBVERSION = 1;
+    public SQLiteDatabase db;
+
+    Date now = new Date();
+    SimpleDateFormat format = new SimpleDateFormat("yyyy.MM.dd");
+
     java.net.URL url;
 
     @Override
@@ -54,6 +68,7 @@ public class SplashActivity extends AppCompatActivity {
         txtSaying.setText("네가 오후 네 시에 온다면\n 난 세 시부터 행복해지기 시작할거야");
 
         getQuestionDB();
+        initDatabase(); //DB 초기화
 
 
         new Handler().postDelayed(new Runnable() {
@@ -63,6 +78,46 @@ public class SplashActivity extends AppCompatActivity {
                 finish();
             }
         },SPLASH_TIME);
+    }
+
+    /**
+     * DB 초기화하는 메소드
+     */
+    protected void initDatabase() {
+        sqliteHelper = new SqliteHelper(this, DBNAME, null, DBVERSION);
+        db = sqliteHelper.getWritableDatabase();
+
+        //임시로 질문 데이터 저장하는 코드 삽입함
+        boolean isExist = false;
+        Cursor cursor = null;
+        try {
+            cursor = db.rawQuery("select * from question;", null);
+            while (cursor.moveToNext())
+                if (cursor.getString(1) != null)
+                    isExist = true;
+
+            if (!isExist) {      //Question 데이터 생성(임의로)
+                String sql = "insert into question (id, q, created_at) " +
+                        "values (1,'당신에게 가장 기억에 남는 여행지는 어디인가요?','" + format.format(now) + "');";
+                db.execSQL(sql);
+                sql = "insert into question (id, q, created_at) " +
+                        "values (2,'당신에게 가장 기억에 남는 사람은 누구인가요?','" + format.format(now) + "');";
+                db.execSQL(sql);
+                sql = "insert into question (id, q, created_at) " +
+                        "values (3,'당신이 가장 좋아하는 동물은 무엇인가요?','" + format.format(now) + "');";
+                db.execSQL(sql);
+                sql = "insert into question (id, q, created_at) " +
+                        "values (4,'당신이 가장 좋아하는 음식은 무엇인가요?','" + format.format(now) + "');";
+                db.execSQL(sql);
+                sql = "insert into question (id, q, created_at) " +
+                        "values (5,'당신에게 가장 좋았던 기억은 무엇인가요?','" + format.format(now) + "');";
+                db.execSQL(sql);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) cursor.close();
+        }
     }
 
     /**

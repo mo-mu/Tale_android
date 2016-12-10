@@ -23,7 +23,7 @@ import java.util.ArrayList;
 public class SavedQstActivity extends AppCompatActivity {
     LinearLayoutManager layoutManager;
     ArrayList<SavedQstItem> items = new ArrayList<>();
-    SQLiteDatabase db = MainActivity.sqliteHelper.getReadableDatabase();
+    SQLiteDatabase db = SplashActivity.sqliteHelper.getReadableDatabase();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
