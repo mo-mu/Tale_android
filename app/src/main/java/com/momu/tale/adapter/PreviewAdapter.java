@@ -17,6 +17,9 @@ import com.momu.tale.item.PreviewItem;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * 지난 이야기에서 쓰는 recyclerView에 대한 adapter
  * Created by songmho on 2016-10-01.
@@ -79,8 +82,11 @@ public class PreviewAdapter extends RecyclerView.Adapter {
      * 멤버변수 : TextView(txtDate, txtQuestion)
      */
     public class ViewHolder extends RecyclerView.ViewHolder{
-        TextView txtDate, txtQuestion;
-        LinearLayout container;
+
+        @BindView(R.id.txtDate) TextView txtDate;
+        @BindView(R.id.txtQuestion) TextView txtQuestion;
+        @BindView(R.id.container) LinearLayout container;
+
         ImageView[] imgTail;
         /**
          * constructor<br>
@@ -89,12 +95,8 @@ public class PreviewAdapter extends RecyclerView.Adapter {
          */
         public ViewHolder(View itemView) {
             super(itemView);
-            txtDate = (TextView) itemView.findViewById(R.id.txtDate);
-            txtQuestion = (TextView) itemView.findViewById(R.id.txtQuestion);
-            container = (LinearLayout) itemView.findViewById(R.id.container);
-            txtDate = (TextView)itemView.findViewById(R.id.txtDate);
-            txtQuestion = (TextView)itemView.findViewById(R.id.txtQuestion);
-            container = (LinearLayout)itemView.findViewById(R.id.container);
+            ButterKnife.bind(this,itemView);
+
             imgTail = new ImageView[6];
             for(int i=0;i<5;i++)
                 imgTail[i] = (ImageView)itemView.findViewById(R.id.imgTail1+i);

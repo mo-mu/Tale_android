@@ -18,7 +18,11 @@ import com.momu.tale.item.SavedQstItem;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
+ * 각 질문마다 저장된 글 목록
  * Created by songmho on 2016-10-15.
  */
 public class SavedQstAdapter extends RecyclerView.Adapter {
@@ -73,15 +77,15 @@ public class SavedQstAdapter extends RecyclerView.Adapter {
         return items.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder{
-        LinearLayout container;
-        TextView txtQuestion, txtDate, txtAnswer;
+    class ViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.container) LinearLayout container;
+        @BindView(R.id.txtQuestion) TextView txtQuestion;
+        @BindView(R.id.txtDate) TextView txtDate;
+        @BindView(R.id.txtAnswer) TextView txtAnswer;
+        
         public ViewHolder(View itemView) {
             super(itemView);
-            container = (LinearLayout)itemView.findViewById(R.id.container);
-            txtQuestion = (TextView)itemView.findViewById(R.id.txtQuestion);
-            txtDate = (TextView)itemView.findViewById(R.id.txtDate);
-            txtAnswer = (TextView)itemView.findViewById(R.id.txtAnswer);
+            ButterKnife.bind(this,itemView);
         }
     }
 }
