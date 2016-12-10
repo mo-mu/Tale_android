@@ -55,7 +55,15 @@ public class MainActivity extends AppCompatActivity {
             currentFragmentName = "MainFragment";
         }
         else if(currentFragmentName.equals("savedQst")){
+            Fragment writeFragment = new WriteFragment();
+            Bundle bundle = new Bundle();
+            bundle.putInt("questionId", getIntent().getIntExtra("questionId",-1));
+            bundle.putInt("answerId", getIntent().getIntExtra("answerId",-1));
+            bundle.putString("question", getIntent().getStringExtra("question"));
+            bundle.putString("answer", getIntent().getStringExtra("answer"));
+            writeFragment.setArguments(bundle);
 
+            currentFragment = writeFragment;
         }
         else{
             currentFragment = fragment;

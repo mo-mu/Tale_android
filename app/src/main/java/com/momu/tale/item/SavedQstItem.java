@@ -6,7 +6,7 @@ package com.momu.tale.item;
 
 public class SavedQstItem {
     String question, date, answer;
-    int answerId;
+    int answerId, questionId;
 
     /**
      *
@@ -22,6 +22,10 @@ public class SavedQstItem {
      */
     public String getQuestion() {
         return question;
+    }
+
+    public int getQuestionId() {
+        return questionId;
     }
 
     /**
@@ -47,10 +51,11 @@ public class SavedQstItem {
      * @param answer
      * @param answerId
      */
-    public SavedQstItem(String question, String date, String answer, int answerId) {
+    public SavedQstItem(String question, String date, String answer, int answerId, int questionId) {
         this.question = question;
         this.date = date;
         this.answer = answer;
         this.answerId = answerId;
+        this.questionId = questionId;
     }
 }
