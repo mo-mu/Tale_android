@@ -54,8 +54,13 @@ public class MainActivity extends AppCompatActivity {
             currentFragment = new MainFragment();       //처음 나올 Fragment 설정(MainFragment로)
             currentFragmentName = "MainFragment";
         }
+        else if(currentFragmentName.equals("savedQst")){
+
+        }
+        else{
+            currentFragment = fragment;
+        }
         fragmentManager = getSupportFragmentManager();
-        currentFragment = fragment;
         transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.fragment, currentFragment);
         transaction.commit();
