@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
             bundle.putBoolean("isMain",false);
             writeFragment.setArguments(bundle);
 
+            currentFragmentName = "WriteFragment";
             currentFragment = writeFragment;
         }
         else{               //나머지 경우 (Fragment 간의 공유 등)
