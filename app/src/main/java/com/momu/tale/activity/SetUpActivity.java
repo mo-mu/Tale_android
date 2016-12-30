@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.momu.tale.R;
 import com.momu.tale.adapter.SetUpAdapter;
@@ -57,9 +59,10 @@ public class SetUpActivity extends AppCompatActivity {
         setSupportActionBar(toolBar);
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-     //   toolBar.setLogo(R.drawable.fox_small_profile);
         getSupportActionBar().setTitle("");
 
+        ImageView imgLogo = (ImageView)toolBar.findViewById(R.id.imgLogo);
+        imgLogo.setVisibility(View.GONE);
     }
 }
 
