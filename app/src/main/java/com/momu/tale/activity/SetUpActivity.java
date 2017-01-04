@@ -60,7 +60,12 @@ public class SetUpActivity extends AppCompatActivity {
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("");
-
+        toolBar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         ImageView imgLogo = (ImageView)toolBar.findViewById(R.id.imgLogo);
         imgLogo.setVisibility(View.GONE);
     }
