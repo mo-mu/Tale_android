@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "995377513212",
+    "firebase_url": "https://tale-97db4.firebaseio.com",
+    "project_id": "tale-97db4",
+    "storage_bucket": "tale-97db4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:995377513212:android:3f1cf7a90796558a",
+        "android_client_info": {
+          "package_name": "com.momu.tale"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "995377513212-h44fotj6f1cpf8u21iusj4uotubgd400.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCFLdfVtMePss1BiuyZFyjCFlwKx3WJng4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
