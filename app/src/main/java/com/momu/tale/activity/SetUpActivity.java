@@ -9,6 +9,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.momu.tale.R;
 import com.momu.tale.adapter.SetUpAdapter;
 import com.momu.tale.item.PreviewItem;

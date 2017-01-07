@@ -10,28 +10,22 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.momu.tale.R;
 import com.momu.tale.SqliteHelper;
+import com.momu.tale.database.Questions;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Map;
-
-import static android.webkit.ConsoleMessage.MessageLevel.LOG;
 
 /**
  * SplashActivity<br>
@@ -131,31 +125,42 @@ public class SplashActivity extends AppCompatActivity {
             public void run() {
                 super.run();
 
-                try {
-                    url = new URL(URL_STRING);
-                    HttpURLConnection conn = (HttpURLConnection)url.openConnection();
-                    conn.setConnectTimeout(CONNECTION_TIMEOUT);
-                    conn.setReadTimeout(DATARETRIVAL_TIMEOUT);
 
-                    InputStream in = new BufferedInputStream(conn.getInputStream());
-                    JSONObject object = new JSONObject(getStringFromInputStream(in));
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    DatabaseReference myRef = database.getReference();
+                    myRef.addChildEventListener(new ChildEventListener() {
+                        @Override
+                        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                           Questions question =  dataSnapshot.getValue(Questions.class);
+                            Log.e("q : ",question.getId()+"  q : "+ question.getQ() +" createdat : "+question.getCreated_at());
+                        }
 
-                    JSONArray questionArray  = (JSONArray) object.get("questions");   //Object형에서 Array형으로 변경
-                    for(int i=0; i<questionArray.length(); i++){
-                        //배열 안에 있는것도 JSON형식 이기 때문에 JSON Object 로 추출
-                        JSONObject obj = (JSONObject) questionArray.get(i);
+                        @Override
+                        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                            Questions question =  dataSnapshot.getValue(Questions.class);
+                            Log.e("2q : ",question.getId()+"  q : "+ question.getQ() +" createdat : "+question.getCreated_at());
 
-                        //JSON name으로 추출
-                        Log.e("id",""+obj.get("id"));
-                        Log.e("question",""+obj.get("q"));
-                    }
+                        }
+
+                        @Override
+                        public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                        }
+
+                        @Override
+                        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                            Questions question =  dataSnapshot.getValue(Questions.class);
+                            Log.e("3q : ",question.getId()+"  q : "+ question.getQ() +" createdat : "+question.getCreated_at());
+
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
 
 
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }catch (JSONException e) {
-                    e.printStackTrace();
-                }
 
             }
         }.start();

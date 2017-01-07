@@ -13,6 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+
         <activity android:name="com.momu.tale.activity.SplashActivity"
             android:screenOrientation="portrait">
             <intent-filter>
