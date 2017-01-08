@@ -83,7 +83,7 @@ public class SavedQstAdapter extends RecyclerView.Adapter {
         @BindView(R.id.txtDate) TextView txtDate;
         @BindView(R.id.txtAnswer) TextView txtAnswer;
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }

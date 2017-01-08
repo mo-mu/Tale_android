@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.momu.tale.R;
@@ -26,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
     Context mContext;
 
+    private static final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
      * @param fragment
      */
     public void changeToMainFragment(Fragment fragment, String fragmentName) {
+        Log.e(TAG, "changeToMainFragment 진입");
         currentFragmentName = fragmentName;
         if (currentFragmentName == null || currentFragmentName.equals("first")) {        //처음 프레그먼트 설정(splash에서 넘어올 경우)
             currentFragment = new MainFragment();
@@ -85,6 +88,8 @@ public class MainActivity extends AppCompatActivity {
         if(item.getItemId() == android.R.id.home) {
             if (getCurrentFragmentName().equals("WriteFragment")) {
                 ((WriteFragment) currentFragment).checkBeforeExist();
+            } else if(currentFragmentName == null || currentFragmentName.equals("MainFragment")){
+                super.onBackPressed();
             } else {
                 changeToMainFragment();
             }
@@ -99,6 +104,8 @@ public class MainActivity extends AppCompatActivity {
         //글 작성중이면 다이얼로그를 띄워서 한번 더 물어본다.
         if (getCurrentFragmentName().equals("WriteFragment")) {
             ((WriteFragment) currentFragment).checkBeforeExist();
+        } else if(currentFragmentName == null || currentFragmentName.equals("MainFragment")){
+            super.onBackPressed();
         } else {
             changeToMainFragment();
         }

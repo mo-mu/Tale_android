@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 
 import com.momu.tale.R;
 import com.momu.tale.adapter.SavedQstAdapter;
@@ -58,8 +59,9 @@ public class SavedQstActivity extends AppCompatActivity {
 
         Cursor cursor = null;
         try {
-            cursor = db.rawQuery("SELECT created_at, a, id  FROM answer WHERE question_id=" + getIntent.getIntExtra("questionId", -1) + ";", null);
-            while (cursor.moveToNext()) {
+            Log.e("SavedQstActivity", "question id : " + getIntent.getIntExtra("questionId", -1));
+            cursor = db.rawQuery("SELECT created_at, a, id FROM answer WHERE question_id = " + getIntent.getIntExtra("questionId", -1) + ";", null);
+            while (cursor != null && cursor.moveToNext()) {
                 SavedQstItem item = new SavedQstItem(getIntent.getStringExtra("question"), cursor.getString(0), cursor.getString(1), cursor.getInt(2),cursor.getInt(getIntent.getIntExtra("questionId", -1)));
                 items.add(item);
             }
