@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 
 import android.support.v4.app.Fragment;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -31,6 +32,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * 질문과 답글 볼 수 있는 페이지.
  * 글화면과 설정으로 이동 가능
@@ -38,34 +42,32 @@ import java.util.Random;
  */
 
 public class MainFragment extends Fragment implements View.OnClickListener {
-    TextView txtRefresh, txtQuestion, txtAnswer;
-    ImageView imgStar;
-    LinearLayout board;
-    Button btWrite;
     Date now = new Date();
     SimpleDateFormat format = new SimpleDateFormat("yyyy/ MM/ dd");
     int answerId, questionId = -1;
 
     SQLiteDatabase db;
 
+    private static final String TAG = "MainFragment";
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
+    @BindView(R.id.txtQuestion) TextView txtQuestion;
+    @BindView(R.id.txtRefresh) TextView txtRefresh;
+    @BindView(R.id.txtAnswer) TextView txtAnswer;
+    @BindView(R.id.board) LinearLayout board;
+    @BindView(R.id.imgStar) ImageView imgStar;
+    @BindView(R.id.btWrite) Button btWrite;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         FrameLayout v = (FrameLayout) inflater.inflate(R.layout.fragment_main, container, false);
-
+        ButterKnife.bind(this, v);
         initToolBar();
-
-        txtQuestion = (TextView) v.findViewById(R.id.txtQuestion);
-        txtRefresh = (TextView) v.findViewById(R.id.txtRefresh);
-        txtAnswer = (TextView) v.findViewById(R.id.txtAnswer);
-        board = (LinearLayout) v.findViewById(R.id.board);
-        imgStar = (ImageView) v.findViewById(R.id.imgStar);
-        btWrite = (Button)v.findViewById(R.id.btWrite);
 
         db = SplashActivity.sqliteHelper.getReadableDatabase();
 
@@ -80,15 +82,17 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         btWrite.setOnClickListener(this);
 
         if (searchTodayAsw(format.format(now))) {  //내용이 있을 경우 refresh 안보이고, answer보여야
+            Log.e(TAG, "오늘 작성한 답변이 있음");
             txtRefresh.setVisibility(View.GONE);
             txtAnswer.setVisibility(View.VISIBLE);
             imgStar.setVisibility(View.VISIBLE);
             questionSelect(questionId);
             answerSelect(questionId, format.format(now));
         } else {
+            txtRefresh.setVisibility(View.VISIBLE);
+            Log.e(TAG, "오늘 작성한 답변이 없음");
             questionSelect(getQstIdRand());
         }
-
 
         txtRefresh.setText(Html.fromHtml("<u>" + "다른 질문 보여줘!" + "</u>"));   //Underbar 넣기 위해 html 태그 사용
 
@@ -101,8 +105,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
      */
     private void initToolBar() {
         ((MainActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        ImageView imgLogo = (ImageView) getActivity().findViewById(R.id.imgLogo);
-        imgLogo.setVisibility(View.GONE);
+        getActivity().findViewById(R.id.imgLogo).setVisibility(View.GONE);
     }
 
 

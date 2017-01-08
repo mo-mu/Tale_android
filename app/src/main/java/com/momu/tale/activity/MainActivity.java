@@ -1,22 +1,16 @@
 package com.momu.tale.activity;
 
 import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
 import com.momu.tale.R;
-import com.momu.tale.SqliteHelper;
 import com.momu.tale.fragment.MainFragment;
 import com.momu.tale.fragment.WriteFragment;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * 메인 화면 페이지
@@ -39,8 +33,7 @@ public class MainActivity extends AppCompatActivity {
         mContext = this;
         setToolBar();
 
-        changeFragment(null,getIntent().getStringExtra("fragmentName"));
-
+        changeFragment(null, getIntent().getStringExtra("fragmentName"));
     }
 
     /**
@@ -50,24 +43,22 @@ public class MainActivity extends AppCompatActivity {
      */
     public void changeFragment(Fragment fragment, String fragmentName) {
         currentFragmentName = fragmentName;
-        if(currentFragmentName.equals("first")){        //처음 프레그먼트 설정(splash에서 넘어올 경우)
+        if (currentFragmentName.equals("first")) {        //처음 프레그먼트 설정(splash에서 넘어올 경우)
             currentFragment = new MainFragment();
             currentFragmentName = "MainFragment";
-        }
-        else if(currentFragmentName.equals("savedQst")){        //saveQst Activity에서 넘어올 경우
+        } else if (currentFragmentName.equals("savedQst")) {        //saveQst Activity에서 넘어올 경우
             Fragment writeFragment = new WriteFragment();
             Bundle bundle = new Bundle();
-            bundle.putInt("questionId", getIntent().getIntExtra("questionId",-1));
-            bundle.putInt("answerId", getIntent().getIntExtra("answerId",-1));
+            bundle.putInt("questionId", getIntent().getIntExtra("questionId", -1));
+            bundle.putInt("answerId", getIntent().getIntExtra("answerId", -1));
             bundle.putString("question", getIntent().getStringExtra("question"));
             bundle.putString("answer", getIntent().getStringExtra("answer"));
-            bundle.putBoolean("isMain",false);
+            bundle.putBoolean("isMain", false);
             writeFragment.setArguments(bundle);
 
             currentFragmentName = "WriteFragment";
             currentFragment = writeFragment;
-        }
-        else{               //나머지 경우 (Fragment 간의 공유 등)
+        } else {               //나머지 경우 (Fragment 간의 공유 등)
             currentFragment = fragment;
         }
 
@@ -90,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         //글 작성중이면 다이얼로그를 띄워서 한번 더 물어본다.
         if (getCurrentFragmentName().equals("WriteFragment")) {
-            ((WriteFragment)currentFragment).checkBeforeExist();
+            ((WriteFragment) currentFragment).checkBeforeExist();
         } else {
             super.onBackPressed();
         }

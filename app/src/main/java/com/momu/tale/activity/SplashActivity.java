@@ -5,7 +5,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -16,6 +15,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.momu.tale.R;
 import com.momu.tale.SqliteHelper;
 import com.momu.tale.database.Questions;
@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -40,6 +41,7 @@ public class SplashActivity extends AppCompatActivity {
     static int CONNECTION_TIMEOUT = 3000;
     static int DATARETRIVAL_TIMEOUT = 3000;
 
+    private ArrayList<Questions> questionList = new ArrayList<>();
 
     public static SqliteHelper sqliteHelper;
     private final String DBNAME = "wtfs.db";
@@ -50,6 +52,8 @@ public class SplashActivity extends AppCompatActivity {
     SimpleDateFormat format = new SimpleDateFormat("yyyy.MM.dd");
 
     java.net.URL url;
+
+    private static final String TAG = "SplashActivity";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,24 +66,24 @@ public class SplashActivity extends AppCompatActivity {
         txtSaying.setText("네가 오후 네 시에 온다면\n 난 세 시부터 행복해지기 시작할거야");
 
         getQuestionDB();
-        initDatabase(); //DB 초기화
 
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Intent intent = new Intent(SplashActivity.this,MainActivity.class);
-                intent.putExtra("fragmentName","first");
-                startActivity(intent);
-                finish();
-            }
-        },SPLASH_TIME);
+//  todo Firebase에서 불러온 다음에 메인페이지를 띄우게 변경하였다.
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                Intent intent = new Intent(SplashActivity.this,MainActivity.class);
+//                intent.putExtra("fragmentName","first");
+//                startActivity(intent);
+//                finish();
+//            }
+//        },SPLASH_TIME);
     }
 
     /**
      * DB 초기화하는 메소드
      */
     protected void initDatabase() {
+        Log.e(TAG, "initDatabase 시작");
         sqliteHelper = new SqliteHelper(this, DBNAME, null, DBVERSION);
         db = sqliteHelper.getWritableDatabase();
 
@@ -89,31 +93,30 @@ public class SplashActivity extends AppCompatActivity {
         try {
             cursor = db.rawQuery("select * from question;", null);
             while (cursor.moveToNext())
-                if (cursor.getString(1) != null)
+                if (cursor.getString(1) != null) {
                     isExist = true;
+                }
 
-            if (!isExist) {      //Question 데이터 생성(임의로)
-                String sql = "insert into question (id, q, created_at) " +
-                        "values (1,'당신에게 가장 기억에 남는 여행지는 어디인가요?','" + format.format(now) + "');";
-                db.execSQL(sql);
-                sql = "insert into question (id, q, created_at) " +
-                        "values (2,'당신에게 가장 기억에 남는 사람은 누구인가요?','" + format.format(now) + "');";
-                db.execSQL(sql);
-                sql = "insert into question (id, q, created_at) " +
-                        "values (3,'당신이 가장 좋아하는 동물은 무엇인가요?','" + format.format(now) + "');";
-                db.execSQL(sql);
-                sql = "insert into question (id, q, created_at) " +
-                        "values (4,'당신이 가장 좋아하는 음식은 무엇인가요?','" + format.format(now) + "');";
-                db.execSQL(sql);
-                sql = "insert into question (id, q, created_at) " +
-                        "values (5,'당신에게 가장 좋았던 기억은 무엇인가요?','" + format.format(now) + "');";
-                db.execSQL(sql);
+            Log.e(TAG, "questionList 사이즈 : " + questionList.size() + " , isExist : " + isExist);
+            if (!isExist) {      //Question 데이터 삽입
+                for(int i = 0; i < questionList.size(); i++) {
+                    Log.e(TAG, i+"번째 data 삽입");
+                    db.execSQL("insert into question (id, q, created_at) " +
+                            "values ("+ questionList.get(i).getId() +",'"+ questionList.get(i).getQ()+"','" + questionList.get(i).getCreated_at() + "');");
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
             if (cursor != null) cursor.close();
+            if(db != null) db.close();
         }
+
+        //메인 페이지 시작
+        Intent intent = new Intent(SplashActivity.this,MainActivity.class);
+        intent.putExtra("fragmentName","first");
+        startActivity(intent);
+        finish();
     }
 
     /**
@@ -124,44 +127,53 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void run() {
                 super.run();
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference myRef = database.getReference();
+                myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        Log.e(TAG, "We're done loading the initial "+dataSnapshot.getChildrenCount()+" items");
 
+                        initDatabase();
+                    }
 
-                    FirebaseDatabase database = FirebaseDatabase.getInstance();
-                    DatabaseReference myRef = database.getReference();
-                    myRef.addChildEventListener(new ChildEventListener() {
-                        @Override
-                        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                           Questions question =  dataSnapshot.getValue(Questions.class);
-                            Log.e("q : ",question.getId()+"  q : "+ question.getQ() +" createdat : "+question.getCreated_at());
-                        }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
 
-                        @Override
-                        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                            Questions question =  dataSnapshot.getValue(Questions.class);
-                            Log.e("2q : ",question.getId()+"  q : "+ question.getQ() +" createdat : "+question.getCreated_at());
+                    }
+                });
+                myRef.addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                        Questions question =  dataSnapshot.getValue(Questions.class);
+                        Log.e("q : ",question.getId()+"  q : "+ question.getQ() +" createdat : "+question.getCreated_at());
+                        questionList.add(question);
+                    }
 
-                        }
+                    @Override
+                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+//                        Questions question =  dataSnapshot.getValue(Questions.class);
+//                        Log.e("2q : ",question.getId()+"  q : "+ question.getQ() +" createdat : "+question.getCreated_at());
 
-                        @Override
-                        public void onChildRemoved(DataSnapshot dataSnapshot) {
+                    }
 
-                        }
+                    @Override
+                    public void onChildRemoved(DataSnapshot dataSnapshot) {
 
-                        @Override
-                        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-                            Questions question =  dataSnapshot.getValue(Questions.class);
-                            Log.e("3q : ",question.getId()+"  q : "+ question.getQ() +" createdat : "+question.getCreated_at());
+                    }
 
-                        }
+                    @Override
+                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                        Questions question =  dataSnapshot.getValue(Questions.class);
+                        Log.e("3q : ",question.getId()+"  q : "+ question.getQ() +" createdat : "+question.getCreated_at());
 
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
+                    }
 
-                        }
-                    });
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
 
+                    }
 
-
+                });
             }
         }.start();
     }

@@ -37,7 +37,7 @@ public class SavedQstAdapter extends RecyclerView.Adapter {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_saved,parent,false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_saved, parent, false);
         return new ViewHolder(v);
     }
 
@@ -47,16 +47,16 @@ public class SavedQstAdapter extends RecyclerView.Adapter {
         Typeface typeFace1 = Typeface.createFromAsset(context.getAssets(), "fonts/SeoulNamsanCL.ttf");
         Typeface typeFace2 = Typeface.createFromAsset(context.getAssets(), "fonts/YanoljaYacheRegular.ttf");
 
-        ((ViewHolder)holder).txtDate.setTypeface(typeFace1);
-        ((ViewHolder)holder).txtAnswer.setTypeface(typeFace1);
-        ((ViewHolder)holder).txtQuestion.setTypeface(typeFace2);
-        if(position==0) {
+        ((ViewHolder) holder).txtDate.setTypeface(typeFace1);
+        ((ViewHolder) holder).txtAnswer.setTypeface(typeFace1);
+        ((ViewHolder) holder).txtQuestion.setTypeface(typeFace2);
+        if (position == 0) {
             ((ViewHolder) holder).txtQuestion.setVisibility(View.VISIBLE);
-            ((ViewHolder)holder).txtQuestion.setText(item.getQuestion());
+            ((ViewHolder) holder).txtQuestion.setText(item.getQuestion());
         }
-        ((ViewHolder)holder).txtDate.setText(item.getDate());
-        ((ViewHolder)holder).txtAnswer.setText(item.getAnswer());
-        ((ViewHolder)holder).container.setOnClickListener(new View.OnClickListener() {
+        ((ViewHolder) holder).txtDate.setText(item.getDate());
+        ((ViewHolder) holder).txtAnswer.setText(item.getAnswer());
+        ((ViewHolder) holder).container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent gotoSaveQst = new Intent(context.getApplicationContext(), MainActivity.class);
@@ -64,7 +64,7 @@ public class SavedQstAdapter extends RecyclerView.Adapter {
                 gotoSaveQst.putExtra("questionId", item.getQuestionId());
                 gotoSaveQst.putExtra("answer", item.getAnswer());
                 gotoSaveQst.putExtra("answerId", item.getAnswerId());
-                gotoSaveQst.putExtra("fragmentName","savedQst");
+                gotoSaveQst.putExtra("fragmentName", "savedQst");
                 gotoSaveQst.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(gotoSaveQst);
 
@@ -82,10 +82,10 @@ public class SavedQstAdapter extends RecyclerView.Adapter {
         @BindView(R.id.txtQuestion) TextView txtQuestion;
         @BindView(R.id.txtDate) TextView txtDate;
         @BindView(R.id.txtAnswer) TextView txtAnswer;
-        
+
         public ViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this,itemView);
+            ButterKnife.bind(this, itemView);
         }
     }
 }
