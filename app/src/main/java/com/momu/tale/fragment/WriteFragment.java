@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -189,16 +188,6 @@ public class WriteFragment extends Fragment {
     }
 
     /**
-     * 현재 프레그먼트를 MainFragment로 변경하는 메소드
-     */
-    private void changeFragment() {
-        Fragment recvFragment = new MainFragment();     //공통적으로 MainFragment로 전환시킴
-        ((MainActivity) getActivity()).changeFragment(recvFragment, "MainFragment");
-        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(editAnswer.getWindowToken(), 0);
-    }
-
-    /**
      * 종료 전에 한번 더 확인한다.
      */
     public void checkBeforeExist() {
@@ -227,5 +216,11 @@ public class WriteFragment extends Fragment {
             changeFragment();
         else
             (getActivity()).finish();
+    }
+
+    void changeFragment() {
+        ((MainActivity)getActivity()).changeToMainFragment();
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(editAnswer.getWindowToken(), 0);
     }
 }

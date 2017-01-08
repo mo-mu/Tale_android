@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 
 import com.momu.tale.R;
 import com.momu.tale.fragment.MainFragment;
@@ -33,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         mContext = this;
         setToolBar();
 
-        changeFragment(null, getIntent().getStringExtra("fragmentName"));
+        changeToMainFragment(null, getIntent().getStringExtra("fragmentName"));
     }
 
     /**
@@ -41,9 +42,9 @@ public class MainActivity extends AppCompatActivity {
      *
      * @param fragment
      */
-    public void changeFragment(Fragment fragment, String fragmentName) {
+    public void changeToMainFragment(Fragment fragment, String fragmentName) {
         currentFragmentName = fragmentName;
-        if (currentFragmentName.equals("first")) {        //처음 프레그먼트 설정(splash에서 넘어올 경우)
+        if (currentFragmentName == null || currentFragmentName.equals("first")) {        //처음 프레그먼트 설정(splash에서 넘어올 경우)
             currentFragment = new MainFragment();
             currentFragmentName = "MainFragment";
         } else if (currentFragmentName.equals("savedQst")) {        //saveQst Activity에서 넘어올 경우
@@ -76,6 +77,22 @@ public class MainActivity extends AppCompatActivity {
         toolBar.setTitle("");     //title은 와이어프레임에 맞춰 없게 지정
         setSupportActionBar(toolBar);
     }
+    /**
+     * OptionMenu 아이템이 선택될 때 호출 된다.
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == android.R.id.home) {
+            if (getCurrentFragmentName().equals("WriteFragment")) {
+                ((WriteFragment) currentFragment).checkBeforeExist();
+            } else {
+                changeToMainFragment();
+            }
+        }
+        return false;
+    }
+
+
 
     @Override
     public void onBackPressed() {
@@ -83,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
         if (getCurrentFragmentName().equals("WriteFragment")) {
             ((WriteFragment) currentFragment).checkBeforeExist();
         } else {
-            super.onBackPressed();
+            changeToMainFragment();
         }
     }
 
@@ -94,5 +111,13 @@ public class MainActivity extends AppCompatActivity {
      */
     public String getCurrentFragmentName() {
         return currentFragmentName;
+    }
+
+    /**
+     * 현재 프레그먼트를 MainFragment로 변경하는 메소드
+     */
+    public void changeToMainFragment() {
+        Fragment recvFragment = new MainFragment();     //공통적으로 MainFragment로 전환시킴
+        changeToMainFragment(recvFragment, "MainFragment");
     }
 }
