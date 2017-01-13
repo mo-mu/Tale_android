@@ -16,7 +16,6 @@ public class SqliteHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String answer = "create table answer(id integer primary key autoincrement not null,question_id integer,user_id integer, a text, created_at text);";
-
         String question = "create table question(id integer primary key autoincrement not null, q text, created_at text);";
         db.execSQL(answer);
         db.execSQL(question);

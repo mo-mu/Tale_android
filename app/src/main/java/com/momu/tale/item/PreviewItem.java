@@ -6,8 +6,8 @@ package com.momu.tale.item;
  */
 
 public class PreviewItem {
-    String date, question;
-    int count, questionId;
+    private String date, question;
+    private int count, questionId;
 
     /**
      * getCount.<br>

@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.momu.tale.R;
 import com.momu.tale.activity.MainActivity;
+import com.momu.tale.config.CConfig;
 import com.momu.tale.item.SavedQstItem;
 
 import java.util.ArrayList;
@@ -24,9 +25,8 @@ import butterknife.ButterKnife;
  * Created by songmho on 2016-10-15.
  */
 public class SavedQstAdapter extends RecyclerView.Adapter {
-
-    Context context;
-    ArrayList<SavedQstItem> items;
+    private Context context;
+    private ArrayList<SavedQstItem> items;
 
     public SavedQstAdapter(Context context, ArrayList<SavedQstItem> items) {
         this.context = context;
@@ -42,8 +42,8 @@ public class SavedQstAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         final SavedQstItem item = items.get(position);
-        Typeface typeFace1 = Typeface.createFromAsset(context.getAssets(), "fonts/SeoulNamsanCL.ttf");
-        Typeface typeFace2 = Typeface.createFromAsset(context.getAssets(), "fonts/YanoljaYacheRegular.ttf");
+        Typeface typeFace1 = Typeface.createFromAsset(context.getAssets(), CConfig.FONT_SEOUL_NAMSAN_CL);
+        Typeface typeFace2 = Typeface.createFromAsset(context.getAssets(), CConfig.FONT_YANOLJA_YACHE_REGULAR);
 
         ((ViewHolder) holder).txtDate.setTypeface(typeFace1);
         ((ViewHolder) holder).txtAnswer.setTypeface(typeFace1);

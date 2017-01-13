@@ -22,9 +22,10 @@ import android.widget.TextView;
 
 import com.momu.tale.R;
 import com.momu.tale.activity.MainActivity;
-import com.momu.tale.activity.PreviewActivity;
+import com.momu.tale.activity.SavedQstListActivity;
 import com.momu.tale.activity.SetupActivity;
 import com.momu.tale.activity.SplashActivity;
+import com.momu.tale.config.CConfig;
 import com.momu.tale.utility.LogHelper;
 
 import java.text.SimpleDateFormat;
@@ -67,12 +68,11 @@ public class MainFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         FrameLayout v = (FrameLayout) inflater.inflate(R.layout.fragment_main, container, false);
         ButterKnife.bind(this, v);
-        initToolBar();
 
         db = SplashActivity.sqliteHelper.getReadableDatabase();
 
-        Typeface typeFace1 = Typeface.createFromAsset(getActivity().getAssets(), "fonts/SeoulNamsanCL.ttf");
-        Typeface typeFace2 = Typeface.createFromAsset(getActivity().getAssets(), "fonts/YanoljaYacheRegular.ttf");
+        Typeface typeFace1 = Typeface.createFromAsset(getActivity().getAssets(), CConfig.FONT_SEOUL_NAMSAN_CL);
+        Typeface typeFace2 = Typeface.createFromAsset(getActivity().getAssets(), CConfig.FONT_YANOLJA_YACHE_REGULAR);
         txtRefresh.setTypeface(typeFace1);
         txtAnswer.setTypeface(typeFace1);
         txtQuestion.setTypeface(typeFace2);
@@ -95,15 +95,6 @@ public class MainFragment extends Fragment {
         setHasOptionsMenu(true);
         return v;
     }
-
-    /**
-     * Toolbar 생성 메소드<br>
-     */
-    private void initToolBar() {
-        ((MainActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        getActivity().findViewById(R.id.imgLogo).setVisibility(View.GONE);
-    }
-
 
     /**
      * 랜덤으로 Question id를 생성해주는 메소드
@@ -235,7 +226,7 @@ public class MainFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_preview) {
-            startActivity(new Intent(getActivity(), PreviewActivity.class));
+            startActivity(new Intent(getActivity(), SavedQstListActivity.class));
         } else if (item.getItemId() == R.id.action_setup) {
             startActivity(new Intent(getActivity(), SetupActivity.class));
         }

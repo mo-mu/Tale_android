@@ -5,8 +5,8 @@ package com.momu.tale.item;
  */
 
 public class SavedQstItem {
-    String question, date, answer;
-    int answerId, questionId;
+    private String question, date, answer;
+    private int answerId, questionId;
 
     /**
      *

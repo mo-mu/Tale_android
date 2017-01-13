@@ -30,7 +30,7 @@
 
         </activity>
 
-        <activity android:name="com.momu.tale.activity.PreviewActivity"
+        <activity android:name="com.momu.tale.activity.SavedQstListActivity"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -44,11 +44,11 @@
                 android:value="com.momu.tale.activity.MainActivity"/>
         </activity>
 
-        <activity android:name="com.momu.tale.activity.SavedQstActivity"
+        <activity android:name="com.momu.tale.activity.SavedQstDetailActivity"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.momu.tale.activity.PreviewActivity"/>
+                android:value="com.momu.tale.activity.SavedQstListActivity"/>
         </activity>
     </application>
 

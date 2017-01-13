@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 
 import com.momu.tale.R;
 import com.momu.tale.adapter.PreviewAdapter;
@@ -20,10 +21,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * 지난이야기 보여주는 페이지.
+ * 지난이야기 리스트 보여주는 페이지.
  * Created by songmho on 2016-09-30.
  */
-public class PreviewActivity extends AppCompatActivity {
+public class SavedQstListActivity extends AppCompatActivity {
     RecyclerView.LayoutManager layoutManager;
     ArrayList<PreviewItem> items = new ArrayList<>();
 
@@ -31,11 +32,15 @@ public class PreviewActivity extends AppCompatActivity {
 
     @BindView(R.id.toolbar) Toolbar toolbar;
 
+    private static final String TAG = "SavedQstListActivity";
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        LogHelper.e(TAG, "onCreate 진입");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
         ButterKnife.bind(this);
+
         setToolbar();
         initList();
     }
@@ -73,5 +78,24 @@ public class PreviewActivity extends AppCompatActivity {
         }
 
         recyclerView.setAdapter(new PreviewAdapter(getApplicationContext(), items));
+    }
+
+    /**
+     * OptionMenu 아이템이 선택될 때 호출 된다.
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+        }
+        return true;
+    }
+
+    /**
+     * 백버튼 선택 이벤트
+     */
+    @Override
+    public void onBackPressed() {
+        finish();
     }
 }

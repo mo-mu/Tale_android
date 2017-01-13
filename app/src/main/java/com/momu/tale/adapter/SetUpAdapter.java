@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.momu.tale.R;
+import com.momu.tale.config.CConfig;
 import com.momu.tale.item.SetupItem;
 
 import java.util.ArrayList;
@@ -21,33 +22,36 @@ import butterknife.ButterKnife;
 /**
  * Created by songm on 2016-12-30.
  */
-public class SetUpAdapter extends RecyclerView.Adapter {
-    Context context;
-    ArrayList<SetupItem> items;
-    public SetUpAdapter(Context context, ArrayList<SetupItem> items) {
+public class SetupAdapter extends RecyclerView.Adapter {
+    private Context context;
+    private ArrayList<SetupItem> items;
+
+    public SetupAdapter(Context context, ArrayList<SetupItem> items) {
         this.context = context;
         this.items = items;
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_setup,parent,false));
+        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_setup, parent, false));
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         final SetupItem item = items.get(position);
 
-        Typeface typeFace1 = Typeface.createFromAsset(context.getAssets(), "fonts/SeoulNamsanCL.ttf");
+        Typeface typeFace1 = Typeface.createFromAsset(context.getAssets(), CConfig.FONT_SEOUL_NAMSAN_CL);
         ((ViewHolder) holder).txtTitle.setTypeface(typeFace1);
         ((ViewHolder) holder).txtSub.setTypeface(typeFace1);
 
         ((ViewHolder) holder).txtTitle.setText(item.getTitle());
         ((ViewHolder) holder).txtSub.setText(item.getSub());
-        ((ViewHolder)holder).container.setOnClickListener(new View.OnClickListener() {
+        ((ViewHolder) holder).container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, item.getTitle(), Toast.LENGTH_SHORT).show();
+                if(item.getTitle().equals("로그인") || item.getTitle().equals("백업하기")) {
+                    Toast.makeText(context, "준비중입니다.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -62,9 +66,9 @@ public class SetUpAdapter extends RecyclerView.Adapter {
         @BindView(R.id.txtTitle) TextView txtTitle;
         @BindView(R.id.txtSub) TextView txtSub;
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this,itemView);
+            ButterKnife.bind(this, itemView);
         }
     }
 }

@@ -12,7 +12,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.momu.tale.R;
-import com.momu.tale.activity.SavedQstActivity;
+import com.momu.tale.activity.SavedQstDetailActivity;
+import com.momu.tale.config.CConfig;
 import com.momu.tale.item.PreviewItem;
 
 import java.util.ArrayList;
@@ -25,8 +26,8 @@ import butterknife.ButterKnife;
  * Created by songmho on 2016-10-01.
  */
 public class PreviewAdapter extends RecyclerView.Adapter {
-    Context context;
-    ArrayList<PreviewItem> items;
+    private Context context;
+    private ArrayList<PreviewItem> items;
 
     /**
      * constructor<br>
@@ -48,8 +49,8 @@ public class PreviewAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         final PreviewItem item = items.get(position);
-        Typeface typeFace1 = Typeface.createFromAsset(context.getAssets(), "fonts/SeoulNamsanCL.ttf");
-        Typeface typeFace2 = Typeface.createFromAsset(context.getAssets(), "fonts/YanoljaYacheRegular.ttf");
+        Typeface typeFace1 = Typeface.createFromAsset(context.getAssets(), CConfig.FONT_SEOUL_NAMSAN_CL);
+        Typeface typeFace2 = Typeface.createFromAsset(context.getAssets(), CConfig.FONT_YANOLJA_YACHE_REGULAR);
 
         ((ViewHolder) holder).txtDate.setTypeface(typeFace1);
         ((ViewHolder) holder).txtQuestion.setTypeface(typeFace2);
@@ -58,7 +59,7 @@ public class PreviewAdapter extends RecyclerView.Adapter {
         ((ViewHolder) holder).container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent gotoSaveQst = new Intent(context.getApplicationContext(), SavedQstActivity.class);
+                Intent gotoSaveQst = new Intent(context.getApplicationContext(), SavedQstDetailActivity.class);
                 gotoSaveQst.putExtra("question", item.getQuestion());
                 gotoSaveQst.putExtra("questionId", item.getQuestionId());
                 gotoSaveQst.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -81,7 +82,7 @@ public class PreviewAdapter extends RecyclerView.Adapter {
      * item holder class
      * 멤버변수 : TextView(txtDate, txtQuestion)
      */
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.txtDate) TextView txtDate;
         @BindView(R.id.txtQuestion) TextView txtQuestion;
         @BindView(R.id.container) LinearLayout container;
@@ -93,7 +94,7 @@ public class PreviewAdapter extends RecyclerView.Adapter {
          *
          * @param itemView
          */
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
 

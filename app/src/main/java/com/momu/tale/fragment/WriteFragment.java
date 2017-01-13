@@ -26,6 +26,7 @@ import android.widget.Toast;
 import com.momu.tale.R;
 import com.momu.tale.activity.MainActivity;
 import com.momu.tale.activity.SplashActivity;
+import com.momu.tale.config.CConfig;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -61,12 +62,11 @@ public class WriteFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         LinearLayout view = (LinearLayout) inflater.inflate(R.layout.fragment_write, container, false);
         ButterKnife.bind(this, view);
-        initToolBar();
 
         db = SplashActivity.sqliteHelper.getWritableDatabase();
 
-        Typeface typeFace1 = Typeface.createFromAsset(getActivity().getAssets(), "fonts/SeoulNamsanCL.ttf");
-        Typeface typeFace2 = Typeface.createFromAsset(getActivity().getAssets(), "fonts/YanoljaYacheRegular.ttf");
+        Typeface typeFace1 = Typeface.createFromAsset(getActivity().getAssets(), CConfig.FONT_SEOUL_NAMSAN_CL);
+        Typeface typeFace2 = Typeface.createFromAsset(getActivity().getAssets(), CConfig.FONT_YANOLJA_YACHE_REGULAR);
 
         editAnswer.setTypeface(typeFace1);
         txtQuestion.setTypeface(typeFace2);
@@ -97,15 +97,6 @@ public class WriteFragment extends Fragment {
             }
         });
         return view;
-    }
-
-    /**
-     * 툴바 생성 메소드 <br>
-     */
-    private void initToolBar() {
-        ((MainActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        ImageView imgLogo = (ImageView) getActivity().findViewById(R.id.imgLogo);
-        imgLogo.setVisibility(View.VISIBLE);
     }
 
     /**

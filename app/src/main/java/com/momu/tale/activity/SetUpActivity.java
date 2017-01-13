@@ -6,14 +6,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.momu.tale.R;
-import com.momu.tale.adapter.SetUpAdapter;
+import com.momu.tale.adapter.SetupAdapter;
 import com.momu.tale.item.SetupItem;
 
 import java.util.ArrayList;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * 설정 페이지
@@ -24,12 +29,16 @@ public class SetupActivity extends AppCompatActivity {
     RecyclerView.LayoutManager layoutManager;
     ArrayList<SetupItem> items = new ArrayList<>();
 
+    @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.recyclerView) RecyclerView recyclerView;
+
     private static final String TAG = "SetupActivity";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setup);
+        ButterKnife.bind(this);
 
         setToolbar();
         makeList();
@@ -39,7 +48,6 @@ public class SetupActivity extends AppCompatActivity {
      * 리스트 생성 메소드.
      */
     private void makeList() {
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
@@ -47,27 +55,45 @@ public class SetupActivity extends AppCompatActivity {
         items.add(new SetupItem("로그인",""));
         items.add(new SetupItem("백업하기",""));
         items.add(new SetupItem("버전","Ver. 1.0.0"));
-        items.add(new SetupItem("만든이",""));
-        recyclerView.setAdapter(new SetUpAdapter(getApplicationContext(),items));
+        items.add(new SetupItem("만든이","MOMU"));
+        recyclerView.setAdapter(new SetupAdapter(getApplicationContext(),items));
     }
 
     /**
      * 툴바를 세팅하는 메소드.
      */
     private void setToolbar() {
-        Toolbar toolBar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolBar);
+        setSupportActionBar(toolbar);
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("");
-        toolBar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-        ImageView imgLogo = (ImageView)toolBar.findViewById(R.id.imgLogo);
+        ImageView imgLogo = (ImageView)toolbar.findViewById(R.id.imgLogo);
         imgLogo.setVisibility(View.GONE);
+    }
+
+    /**
+     * 툴바 클릭 이벤트
+     */
+    @OnClick(R.id.toolbar)
+    void toolbarClick() {
+        finish();
+    }
+
+    /**
+     * OptionMenu 아이템이 선택될 때 호출 된다.
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+           finish();
+        }
+        return true;
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        finish();
     }
 }
 

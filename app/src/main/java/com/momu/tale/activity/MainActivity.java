@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import com.momu.tale.R;
 import com.momu.tale.fragment.MainFragment;
 import com.momu.tale.fragment.WriteFragment;
+import com.momu.tale.utility.LogHelper;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -55,7 +56,9 @@ public class MainActivity extends AppCompatActivity {
      * @param bundle       번들 데이터
      */
     public void changeFragment(String fragmentName, Bundle bundle) {
+        LogHelper.e(TAG, fragmentName +"으로 changeFragment 시도");
         setToolBar(fragmentName);
+
         switch (fragmentName) {
             case WRITE_FRAGMENT:
                 currentFragment = new WriteFragment();
@@ -90,17 +93,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * 툴바를 세팅하는 메소드.
+     * 툴바를 설정하는 메소드.
      */
     private void setToolBar(String currentFragmentName) {
         switch (currentFragmentName) {
             case MAIN_FRAGMENT_MAIN:
+                getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+                imgLogo.setVisibility(View.GONE);
                 break;
+
             case MAIN_FRAGMENT_SAVE_QST:
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                 imgLogo.setVisibility(View.VISIBLE);
                 break;
+
             case WRITE_FRAGMENT:
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                imgLogo.setVisibility(View.VISIBLE);
                 break;
         }
         toolbar.setTitle("");     //title은 와이어프레임에 맞춰 없게 지정
@@ -115,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
         if (item.getItemId() == android.R.id.home) {
             if (getCurrentFragmentName().equals("WriteFragment")) {
                 ((WriteFragment) currentFragment).checkBeforeExist();
-            } else if (currentFragmentName == null || currentFragmentName.equals("MainFragment")) {
+            } else if (currentFragmentName.equals("MainFragment")) {
                 super.onBackPressed();
             } else {
                 changeFragment("MainFragment", null);
@@ -130,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
         //글 작성중이면 다이얼로그를 띄워서 한번 더 물어본다.
         if (getCurrentFragmentName().equals("WriteFragment")) {
             ((WriteFragment) currentFragment).checkBeforeExist();
-        } else if (currentFragmentName == null || currentFragmentName.equals("MainFragment")) {
+        } else if (currentFragmentName.equals("MainFragment")) {
             super.onBackPressed();
         } else {
             changeFragment("MainFragment", null);

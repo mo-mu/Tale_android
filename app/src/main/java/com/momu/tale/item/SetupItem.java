@@ -5,8 +5,8 @@ package com.momu.tale.item;
  */
 
 public class SetupItem {
-    String title;
-    String sub;
+    private String title;
+    private String sub;
 
     public String getTitle() {
         return title;
