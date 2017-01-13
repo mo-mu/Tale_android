@@ -51,7 +51,7 @@
                 android:lineSpacingExtra="7dp"
                 android:visibility="gone"/>
             <Button
-                android:id="@+id/btWrite"
+                android:id="@+id/btnWrite"
                 android:layout_width="42dp"
                 android:layout_height="42dp"
                 android:layout_marginTop="10dp"

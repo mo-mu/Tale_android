@@ -1,15 +1,14 @@
 package com.momu.tale.fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-
 import android.support.v4.app.Fragment;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,14 +18,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.momu.tale.R;
 import com.momu.tale.activity.MainActivity;
 import com.momu.tale.activity.PreviewActivity;
-import com.momu.tale.activity.SetUpActivity;
+import com.momu.tale.activity.SetupActivity;
 import com.momu.tale.activity.SplashActivity;
+import com.momu.tale.utility.LogHelper;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -34,6 +33,7 @@ import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * 질문과 답글 볼 수 있는 페이지.
@@ -41,26 +41,26 @@ import butterknife.ButterKnife;
  * Created by songmho on 2016-10-01.
  */
 
-public class MainFragment extends Fragment implements View.OnClickListener {
+public class MainFragment extends Fragment {
     Date now = new Date();
     SimpleDateFormat format = new SimpleDateFormat("yyyy/ MM/ dd");
     int answerId, questionId = -1;
 
     SQLiteDatabase db;
-
+    Context mContext;
     private static final String TAG = "MainFragment";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mContext = getActivity();
     }
 
     @BindView(R.id.txtQuestion) TextView txtQuestion;
     @BindView(R.id.txtRefresh) TextView txtRefresh;
     @BindView(R.id.txtAnswer) TextView txtAnswer;
-    @BindView(R.id.board) LinearLayout board;
     @BindView(R.id.imgStar) ImageView imgStar;
-    @BindView(R.id.btWrite) Button btWrite;
+    @BindView(R.id.btnWrite) Button btnWrite;
 
     @Nullable
     @Override
@@ -77,12 +77,8 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         txtAnswer.setTypeface(typeFace1);
         txtQuestion.setTypeface(typeFace2);
 
-        txtRefresh.setOnClickListener(this);
-        board.setOnClickListener(this);
-        btWrite.setOnClickListener(this);
-
         if (searchTodayAsw(format.format(now))) {  //내용이 있을 경우 refresh 안보이고, answer보여야
-            Log.e(TAG, "오늘 작성한 답변이 있음");
+            LogHelper.e(TAG, "오늘 작성한 답변이 있음");
             txtRefresh.setVisibility(View.GONE);
             txtAnswer.setVisibility(View.VISIBLE);
             imgStar.setVisibility(View.VISIBLE);
@@ -90,11 +86,11 @@ public class MainFragment extends Fragment implements View.OnClickListener {
             answerSelect(questionId, format.format(now));
         } else {
             txtRefresh.setVisibility(View.VISIBLE);
-            Log.e(TAG, "오늘 작성한 답변이 없음");
+            LogHelper.e(TAG, "오늘 작성한 답변이 없음");
             questionSelect(getQstIdRand());
         }
 
-        txtRefresh.setText(Html.fromHtml("<u>" + "다른 질문 보여줘!" + "</u>"));   //Underbar 넣기 위해 html 태그 사용
+        txtRefresh.setText(Html.fromHtml("<u>다른 질문 보여줘!</u>"));   //Underbar 넣기 위해 html 태그 사용
 
         setHasOptionsMenu(true);
         return v;
@@ -202,22 +198,26 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    @Override
-    public void onClick(View v) {
-        if (v.getId() == R.id.txtRefresh) {
-            questionSelect(getQstIdRand());
-        } else if (v.getId() == R.id.btWrite) {
-            Fragment writeFragment = new WriteFragment();
-            Bundle bundle = new Bundle();
-            bundle.putInt("questionId", questionId);
-            bundle.putInt("answerId", answerId);
-            bundle.putString("question", txtQuestion.getText().toString());
-            bundle.putString("answer", txtAnswer.getText().toString());
-            bundle.putBoolean("isMain",true);
-            writeFragment.setArguments(bundle);
+    /**
+     * 다른 질문 보여줘 버튼 클릭 이벤트
+     */
+    @OnClick(R.id.txtRefresh)
+    void btnRefreshClick() {
+        questionSelect(getQstIdRand());
+    }
 
-            ((MainActivity) getActivity()).changeToMainFragment(writeFragment, "WriteFragment");
-        }
+    /**
+     * 글쓰기 버튼 클릭 이벤트
+     */
+    @OnClick(R.id.btnWrite)
+    void btnWriteClick() {
+        Bundle bundle = new Bundle();
+        bundle.putInt("questionId", questionId);
+        bundle.putInt("answerId", answerId);
+        bundle.putString("question", txtQuestion.getText().toString());
+        bundle.putString("answer", txtAnswer.getText().toString());
+        bundle.putBoolean("isFromMain", true);
+        ((MainActivity) mContext).changeFragment(MainActivity.WRITE_FRAGMENT, bundle);
     }
 
     @Override
@@ -237,7 +237,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         if (item.getItemId() == R.id.action_preview) {
             startActivity(new Intent(getActivity(), PreviewActivity.class));
         } else if (item.getItemId() == R.id.action_setup) {
-            startActivity(new Intent(getActivity(), SetUpActivity.class));
+            startActivity(new Intent(getActivity(), SetupActivity.class));
         }
         return super.onOptionsItemSelected(item);
     }

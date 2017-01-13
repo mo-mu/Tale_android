@@ -13,7 +13,7 @@
         android:orientation="vertical">
         <include
             layout="@layout/main_toolbar"
-            android:id="@+id/toolBar"
+            android:id="@+id/toolbar"
             />
         <LinearLayout
             android:id="@+id/fragment"
@@ -21,7 +21,4 @@
             android:layout_height="match_parent"
             android:orientation="vertical"/>
     </LinearLayout>
-
-
-
 </RelativeLayout>

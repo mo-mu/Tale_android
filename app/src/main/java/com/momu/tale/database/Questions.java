@@ -27,6 +27,13 @@ public class Questions {
 
     public Questions(){}
 
+    /**
+     * 질문
+     * @param id    질문 id
+     * @param q     질문 내용
+     * @param created_at    생성시간
+     * @param updated_at
+     */
     public Questions(int id, String q, String created_at, String updated_at){
         this.id= id;
         this.q = q;

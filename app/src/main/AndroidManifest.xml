@@ -37,7 +37,7 @@
                 android:value="com.momu.tale.activity.MainActivity"/>
         </activity>
 
-        <activity android:name="com.momu.tale.activity.SetUpActivity"
+        <activity android:name=".activity.SetupActivity"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

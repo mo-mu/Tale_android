@@ -7,7 +7,6 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.widget.TextView;
 
 import com.google.firebase.database.ChildEventListener;
@@ -19,6 +18,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.momu.tale.R;
 import com.momu.tale.SqliteHelper;
 import com.momu.tale.database.Questions;
+import com.momu.tale.utility.LogHelper;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -83,7 +83,7 @@ public class SplashActivity extends AppCompatActivity {
      * DB 초기화하는 메소드
      */
     protected void initDatabase() {
-        Log.e(TAG, "initDatabase 시작");
+        LogHelper.e(TAG, "initDatabase 시작");
         sqliteHelper = new SqliteHelper(this, DBNAME, null, DBVERSION);
         db = sqliteHelper.getWritableDatabase();
 
@@ -97,10 +97,10 @@ public class SplashActivity extends AppCompatActivity {
                     isExist = true;
                 }
 
-            Log.e(TAG, "questionList 사이즈 : " + questionList.size() + " , isExist : " + isExist);
+            LogHelper.e(TAG, "questionList 사이즈 : " + questionList.size() + " , isExist : " + isExist);
             if (!isExist) {      //Question 데이터 삽입
                 for(int i = 0; i < questionList.size(); i++) {
-                    Log.e(TAG, i+"번째 data 삽입");
+                    LogHelper.e(TAG, i+"번째 data 삽입");
                     db.execSQL("insert into question (id, q, created_at) " +
                             "values ("+ questionList.get(i).getId() +",'"+ questionList.get(i).getQ()+"','" + questionList.get(i).getCreated_at() + "');");
                 }
@@ -114,7 +114,7 @@ public class SplashActivity extends AppCompatActivity {
 
         //메인 페이지 시작
         Intent intent = new Intent(SplashActivity.this,MainActivity.class);
-        intent.putExtra("fragmentName","first");
+        intent.putExtra("fragmentName",MainActivity.MAIN_FRAGMENT_MAIN);
         startActivity(intent);
         finish();
     }
@@ -131,7 +131,7 @@ public class SplashActivity extends AppCompatActivity {
                 DatabaseReference myRef = database.getReference();
                 myRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        Log.e(TAG, "We're done loading the initial "+dataSnapshot.getChildrenCount()+" items");
+                        LogHelper.e(TAG, "We're done loading the initial "+dataSnapshot.getChildrenCount()+" items");
 
                         initDatabase();
                     }
@@ -145,14 +145,14 @@ public class SplashActivity extends AppCompatActivity {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                         Questions question =  dataSnapshot.getValue(Questions.class);
-                        Log.e("q : ",question.getId()+"  q : "+ question.getQ() +" createdat : "+question.getCreated_at());
+                        LogHelper.e("q : ",question.getId()+"  q : "+ question.getQ() +" createdat : "+question.getCreated_at());
                         questionList.add(question);
                     }
 
                     @Override
                     public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 //                        Questions question =  dataSnapshot.getValue(Questions.class);
-//                        Log.e("2q : ",question.getId()+"  q : "+ question.getQ() +" createdat : "+question.getCreated_at());
+//                        LogHelper.e("2q : ",question.getId()+"  q : "+ question.getQ() +" createdat : "+question.getCreated_at());
 
                     }
 
@@ -164,7 +164,7 @@ public class SplashActivity extends AppCompatActivity {
                     @Override
                     public void onChildMoved(DataSnapshot dataSnapshot, String s) {
                         Questions question =  dataSnapshot.getValue(Questions.class);
-                        Log.e("3q : ",question.getId()+"  q : "+ question.getQ() +" createdat : "+question.getCreated_at());
+                        LogHelper.e("3q : ",question.getId()+"  q : "+ question.getQ() +" createdat : "+question.getCreated_at());
 
                     }
 

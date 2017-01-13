@@ -9,11 +9,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.momu.tale.R;
 import com.momu.tale.adapter.SetUpAdapter;
-import com.momu.tale.item.PreviewItem;
 import com.momu.tale.item.SetupItem;
 
 import java.util.ArrayList;
@@ -23,9 +20,11 @@ import java.util.ArrayList;
  * Created by songmho on 2016-09-30.
  */
 
-public class SetUpActivity extends AppCompatActivity {
+public class SetupActivity extends AppCompatActivity {
     RecyclerView.LayoutManager layoutManager;
     ArrayList<SetupItem> items = new ArrayList<>();
+
+    private static final String TAG = "SetupActivity";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -33,7 +32,6 @@ public class SetUpActivity extends AppCompatActivity {
         setContentView(R.layout.activity_setup);
 
         setToolbar();
-
         makeList();
     }
 
@@ -57,7 +55,7 @@ public class SetUpActivity extends AppCompatActivity {
      * 툴바를 세팅하는 메소드.
      */
     private void setToolbar() {
-        Toolbar toolBar = (Toolbar) findViewById(R.id.toolBar);
+        Toolbar toolBar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolBar);
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);

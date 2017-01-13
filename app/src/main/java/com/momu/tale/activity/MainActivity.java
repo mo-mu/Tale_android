@@ -7,25 +7,34 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.momu.tale.R;
 import com.momu.tale.fragment.MainFragment;
 import com.momu.tale.fragment.WriteFragment;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * 메인 화면 페이지
  */
 public class MainActivity extends AppCompatActivity {
-    public Toolbar toolBar;
     FragmentManager fragmentManager;
     FragmentTransaction transaction;
     String currentFragmentName;
     Fragment currentFragment;
 
-
     Context mContext;
+
+    public static final String WRITE_FRAGMENT = "WriteFragment";
+    public static final String MAIN_FRAGMENT_MAIN = "MainFragmentMain"; //처음 진입시 Splash에서 넘어온 경우
+    public static final String MAIN_FRAGMENT_SAVE_QST = "MainFragmentSaveQst";  //SaveQstActivity에서 넘어온 경우
+
+    @BindView(R.id.toolbar) public Toolbar toolbar;
+    @BindView(R.id.imgLogo) ImageView imgLogo;
 
     private static final String TAG = "MainActivity";
 
@@ -34,36 +43,44 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mContext = this;
-        setToolBar();
+        ButterKnife.bind(this);
 
-        changeToMainFragment(null, getIntent().getStringExtra("fragmentName"));
+        changeFragment(getIntent().getStringExtra("fragmentName"), null);
     }
 
     /**
-     * MainActivity내 Fragment들을 변경시켜주는 메소드(Fragment 내에서도 사용 됨)
+     * Fragment 변경 처리.
      *
-     * @param fragment
+     * @param fragmentName Fragment 이름
+     * @param bundle       번들 데이터
      */
-    public void changeToMainFragment(Fragment fragment, String fragmentName) {
-        Log.e(TAG, "changeToMainFragment 진입");
-        currentFragmentName = fragmentName;
-        if (currentFragmentName == null || currentFragmentName.equals("first")) {        //처음 프레그먼트 설정(splash에서 넘어올 경우)
-            currentFragment = new MainFragment();
-            currentFragmentName = "MainFragment";
-        } else if (currentFragmentName.equals("savedQst")) {        //saveQst Activity에서 넘어올 경우
-            Fragment writeFragment = new WriteFragment();
-            Bundle bundle = new Bundle();
-            bundle.putInt("questionId", getIntent().getIntExtra("questionId", -1));
-            bundle.putInt("answerId", getIntent().getIntExtra("answerId", -1));
-            bundle.putString("question", getIntent().getStringExtra("question"));
-            bundle.putString("answer", getIntent().getStringExtra("answer"));
-            bundle.putBoolean("isMain", false);
-            writeFragment.setArguments(bundle);
+    public void changeFragment(String fragmentName, Bundle bundle) {
+        setToolBar(fragmentName);
+        switch (fragmentName) {
+            case WRITE_FRAGMENT:
+                currentFragment = new WriteFragment();
+                break;
 
-            currentFragmentName = "WriteFragment";
-            currentFragment = writeFragment;
-        } else {               //나머지 경우 (Fragment 간의 공유 등)
-            currentFragment = fragment;
+            case MAIN_FRAGMENT_MAIN:
+                currentFragment = new MainFragment();
+                currentFragmentName = "MainFragment";
+                break;
+
+            case MAIN_FRAGMENT_SAVE_QST:
+                bundle = new Bundle();
+                bundle.putInt("questionId", getIntent().getIntExtra("questionId", -1));
+                bundle.putInt("answerId", getIntent().getIntExtra("answerId", -1));
+                bundle.putString("question", getIntent().getStringExtra("question"));
+                bundle.putString("answer", getIntent().getStringExtra("answer"));
+                bundle.putBoolean("isFromMain", false);
+                currentFragmentName = "WriteFragment";
+                currentFragment = new WriteFragment();
+                currentFragment.setArguments(bundle);
+                break;
+        }
+
+        if (bundle != null) {
+            currentFragment.setArguments(bundle);
         }
 
         fragmentManager = getSupportFragmentManager();
@@ -75,28 +92,37 @@ public class MainActivity extends AppCompatActivity {
     /**
      * 툴바를 세팅하는 메소드.
      */
-    private void setToolBar() {
-        toolBar = (Toolbar) findViewById(R.id.toolBar);
-        toolBar.setTitle("");     //title은 와이어프레임에 맞춰 없게 지정
-        setSupportActionBar(toolBar);
+    private void setToolBar(String currentFragmentName) {
+        switch (currentFragmentName) {
+            case MAIN_FRAGMENT_MAIN:
+                break;
+            case MAIN_FRAGMENT_SAVE_QST:
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                imgLogo.setVisibility(View.VISIBLE);
+                break;
+            case WRITE_FRAGMENT:
+                break;
+        }
+        toolbar.setTitle("");     //title은 와이어프레임에 맞춰 없게 지정
+        setSupportActionBar(toolbar);
     }
+
     /**
      * OptionMenu 아이템이 선택될 때 호출 된다.
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == android.R.id.home) {
+        if (item.getItemId() == android.R.id.home) {
             if (getCurrentFragmentName().equals("WriteFragment")) {
                 ((WriteFragment) currentFragment).checkBeforeExist();
-            } else if(currentFragmentName == null || currentFragmentName.equals("MainFragment")){
+            } else if (currentFragmentName == null || currentFragmentName.equals("MainFragment")) {
                 super.onBackPressed();
             } else {
-                changeToMainFragment();
+                changeFragment("MainFragment", null);
             }
         }
         return false;
     }
-
 
 
     @Override
@@ -104,10 +130,10 @@ public class MainActivity extends AppCompatActivity {
         //글 작성중이면 다이얼로그를 띄워서 한번 더 물어본다.
         if (getCurrentFragmentName().equals("WriteFragment")) {
             ((WriteFragment) currentFragment).checkBeforeExist();
-        } else if(currentFragmentName == null || currentFragmentName.equals("MainFragment")){
+        } else if (currentFragmentName == null || currentFragmentName.equals("MainFragment")) {
             super.onBackPressed();
         } else {
-            changeToMainFragment();
+            changeFragment("MainFragment", null);
         }
     }
 
@@ -118,13 +144,5 @@ public class MainActivity extends AppCompatActivity {
      */
     public String getCurrentFragmentName() {
         return currentFragmentName;
-    }
-
-    /**
-     * 현재 프레그먼트를 MainFragment로 변경하는 메소드
-     */
-    public void changeToMainFragment() {
-        Fragment recvFragment = new MainFragment();     //공통적으로 MainFragment로 전환시킴
-        changeToMainFragment(recvFragment, "MainFragment");
     }
 }

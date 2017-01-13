@@ -12,8 +12,12 @@ import android.support.v7.widget.Toolbar;
 import com.momu.tale.R;
 import com.momu.tale.adapter.PreviewAdapter;
 import com.momu.tale.item.PreviewItem;
+import com.momu.tale.utility.LogHelper;
 
 import java.util.ArrayList;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * 지난이야기 보여주는 페이지.
@@ -25,11 +29,13 @@ public class PreviewActivity extends AppCompatActivity {
 
     SQLiteDatabase db = SplashActivity.sqliteHelper.getReadableDatabase();
 
+    @BindView(R.id.toolbar) Toolbar toolbar;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
-
+        ButterKnife.bind(this);
         setToolbar();
         initList();
     }
@@ -38,11 +44,9 @@ public class PreviewActivity extends AppCompatActivity {
      * 툴바를 세팅하는 메소드.
      */
     private void setToolbar() {
-        Toolbar toolBar = (Toolbar) findViewById(R.id.toolBar);
-        setSupportActionBar(toolBar);
+        setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("");
-      //  getSupportActionBar().setLogo(R.drawable.fox_small_profile);
     }
 
     /**
@@ -61,7 +65,7 @@ public class PreviewActivity extends AppCompatActivity {
                 items.add(item);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LogHelper.errorStackTrace(e);
         } finally {
             if (cursor != null) {
                 cursor.close();

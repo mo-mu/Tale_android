@@ -9,11 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.momu.tale.R;
 import com.momu.tale.activity.MainActivity;
-import com.momu.tale.activity.SavedQstActivity;
 import com.momu.tale.item.SavedQstItem;
 
 import java.util.ArrayList;
@@ -59,15 +57,14 @@ public class SavedQstAdapter extends RecyclerView.Adapter {
         ((ViewHolder) holder).container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent gotoSaveQst = new Intent(context.getApplicationContext(), MainActivity.class);
+                Intent gotoSaveQst = new Intent(context, MainActivity.class);
                 gotoSaveQst.putExtra("question", item.getQuestion());
                 gotoSaveQst.putExtra("questionId", item.getQuestionId());
                 gotoSaveQst.putExtra("answer", item.getAnswer());
                 gotoSaveQst.putExtra("answerId", item.getAnswerId());
-                gotoSaveQst.putExtra("fragmentName", "savedQst");
+                gotoSaveQst.putExtra("fragmentName", MainActivity.MAIN_FRAGMENT_SAVE_QST);
                 gotoSaveQst.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(gotoSaveQst);
-
             }
         });
     }

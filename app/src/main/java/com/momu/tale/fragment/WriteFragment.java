@@ -30,6 +30,9 @@ import com.momu.tale.activity.SplashActivity;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * 질문에 답을 할 수 있는 페이지
  * 이미 답을 했다면 수정 또는 삭제 가능
@@ -37,15 +40,15 @@ import java.util.Date;
  */
 
 public class WriteFragment extends Fragment {
-    TextView txtQuestion;
-    EditText editAnswer;
-
     Date now = new Date();
     SimpleDateFormat format = new SimpleDateFormat("yyyy/ MM/ dd");
     String sql;
     SQLiteDatabase db;
 
     Context mContext;
+
+    @BindView(R.id.txtQuestion) TextView txtQuestion;
+    @BindView(R.id.editAnswer) EditText editAnswer;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,12 +59,9 @@ public class WriteFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        LinearLayout v = (LinearLayout) inflater.inflate(R.layout.fragment_write, container, false);
-
+        LinearLayout view = (LinearLayout) inflater.inflate(R.layout.fragment_write, container, false);
+        ButterKnife.bind(this, view);
         initToolBar();
-
-        txtQuestion = (TextView) v.findViewById(R.id.txtQuestion);
-        editAnswer = (EditText) v.findViewById(R.id.editAnswer);
 
         db = SplashActivity.sqliteHelper.getWritableDatabase();
 
@@ -72,7 +72,7 @@ public class WriteFragment extends Fragment {
         txtQuestion.setTypeface(typeFace2);
         txtQuestion.setText(getArguments().getString("question"));
 
-        ((MainActivity) getActivity()).toolBar.setNavigationOnClickListener(new View.OnClickListener() {
+        ((MainActivity) getActivity()).toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 checkBeforeExist();
@@ -84,9 +84,9 @@ public class WriteFragment extends Fragment {
 
         setHasOptionsMenu(true);
 
-        v.setFocusableInTouchMode(true);
-        v.requestFocus();
-        v.setOnKeyListener(new View.OnKeyListener() {
+        view.setFocusableInTouchMode(true);
+        view.requestFocus();
+        view.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -96,7 +96,7 @@ public class WriteFragment extends Fragment {
                 return false;
             }
         });
-        return v;
+        return view;
     }
 
     /**
@@ -148,13 +148,13 @@ public class WriteFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_check:     //추가
-        //        if (editAnswer.getText().toString().trim().equals("")) {
-                    sql = "insert into answer (question_id, user_id, a, created_at) " +
-                            "values (" + getArguments().getInt("questionId") + ", 0, '" + editAnswer.getText().toString() + "', '" + format.format(now).toString() + "');";
-                    db.execSQL(sql);
-                    finishFragment();
-                    Toast.makeText(mContext, "추가되었습니다.", Toast.LENGTH_SHORT).show();
-          //      }
+                //        if (editAnswer.getText().toString().trim().equals("")) {
+                sql = "insert into answer (question_id, user_id, a, created_at) " +
+                        "values (" + getArguments().getInt("questionId") + ", 0, '" + editAnswer.getText().toString() + "', '" + format.format(now).toString() + "');";
+                db.execSQL(sql);
+                finishFragment();
+                Toast.makeText(mContext, "추가되었습니다.", Toast.LENGTH_SHORT).show();
+                //      }
                 break;
 
             case R.id.action_edit:      //수정
@@ -204,23 +204,23 @@ public class WriteFragment extends Fragment {
                 public void onClick(DialogInterface dialogInterface, int i) {
                 }
             }).show();
-        } else
-            changeFragment();
+        } else { //키보드 내리고 MainFragment로 변경
+            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(editAnswer.getWindowToken(), 0);
+            ((MainActivity) getActivity()).changeFragment(MainActivity.MAIN_FRAGMENT_MAIN, null);
+        }
     }
 
     /**
      * 이전 페이지 상태에 따라 현재 프래그먼트 종료 시 취해줄 액션 정해줌.
      */
-    public void finishFragment(){
-        if(getArguments().getBoolean("isMain"))
-            changeFragment();
-        else
+    public void finishFragment() {
+        if (getArguments().getBoolean("isFromMain")) { //키보드 내리고 MainFragment로 변경
+            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(editAnswer.getWindowToken(), 0);
+            ((MainActivity) getActivity()).changeFragment(MainActivity.MAIN_FRAGMENT_MAIN, null);
+        } else {
             (getActivity()).finish();
-    }
-
-    void changeFragment() {
-        ((MainActivity)getActivity()).changeToMainFragment();
-        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(editAnswer.getWindowToken(), 0);
+        }
     }
 }

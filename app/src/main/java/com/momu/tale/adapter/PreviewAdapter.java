@@ -66,10 +66,10 @@ public class PreviewAdapter extends RecyclerView.Adapter {
             }
         });
 
-        for(int i=0;i<item.getCount();i++){
-            ((ViewHolder)holder).imgTail[i].setVisibility(View.VISIBLE);
+        for (int i = 0; i < item.getCount(); i++) {
+            ((ViewHolder) holder).imgTail[i].setVisibility(View.VISIBLE);
         }
-      }
+    }
 
     @Override
     public int getItemCount() {
@@ -81,13 +81,13 @@ public class PreviewAdapter extends RecyclerView.Adapter {
      * item holder class
      * 멤버변수 : TextView(txtDate, txtQuestion)
      */
-    public class ViewHolder extends RecyclerView.ViewHolder{
-
+    public class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.txtDate) TextView txtDate;
         @BindView(R.id.txtQuestion) TextView txtQuestion;
         @BindView(R.id.container) LinearLayout container;
 
         ImageView[] imgTail;
+
         /**
          * constructor<br>
          *
@@ -95,11 +95,11 @@ public class PreviewAdapter extends RecyclerView.Adapter {
          */
         public ViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this,itemView);
+            ButterKnife.bind(this, itemView);
 
             imgTail = new ImageView[6];
-            for(int i=0;i<5;i++)
-                imgTail[i] = (ImageView)itemView.findViewById(R.id.imgTail1+i);
+            for (int i = 0; i < 5; i++)
+                imgTail[i] = (ImageView) itemView.findViewById(R.id.imgTail1 + i);
         }
     }
 }
