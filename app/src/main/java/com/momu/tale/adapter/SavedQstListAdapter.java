@@ -25,7 +25,7 @@ import butterknife.ButterKnife;
  * 지난 이야기에서 쓰는 recyclerView에 대한 adapter
  * Created by songmho on 2016-10-01.
  */
-public class PreviewAdapter extends RecyclerView.Adapter {
+public class SavedQstListAdapter extends RecyclerView.Adapter {
     private Context context;
     private ArrayList<PreviewItem> items;
 
@@ -35,7 +35,7 @@ public class PreviewAdapter extends RecyclerView.Adapter {
      * @param context context
      * @param items   지난이야기 ArrayLIst
      */
-    public PreviewAdapter(Context context, ArrayList<PreviewItem> items) {
+    public SavedQstListAdapter(Context context, ArrayList<PreviewItem> items) {
         this.context = context;
         this.items = items;
     }
@@ -59,10 +59,9 @@ public class PreviewAdapter extends RecyclerView.Adapter {
         ((ViewHolder) holder).container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent gotoSaveQst = new Intent(context.getApplicationContext(), SavedQstDetailActivity.class);
+                Intent gotoSaveQst = new Intent(context, SavedQstDetailActivity.class);
                 gotoSaveQst.putExtra("question", item.getQuestion());
                 gotoSaveQst.putExtra("questionId", item.getQuestionId());
-                gotoSaveQst.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(gotoSaveQst);
             }
         });

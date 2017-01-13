@@ -1,5 +1,6 @@
 package com.momu.tale.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 
 import com.momu.tale.R;
 import com.momu.tale.activity.MainActivity;
+import com.momu.tale.activity.ModifyActivity;
 import com.momu.tale.config.CConfig;
 import com.momu.tale.item.SavedQstItem;
 
@@ -24,11 +26,11 @@ import butterknife.ButterKnife;
  * 각 질문마다 저장된 글 목록
  * Created by songmho on 2016-10-15.
  */
-public class SavedQstAdapter extends RecyclerView.Adapter {
+public class SavedQstDetailAdapter extends RecyclerView.Adapter {
     private Context context;
     private ArrayList<SavedQstItem> items;
 
-    public SavedQstAdapter(Context context, ArrayList<SavedQstItem> items) {
+    public SavedQstDetailAdapter(Context context, ArrayList<SavedQstItem> items) {
         this.context = context;
         this.items = items;
     }
@@ -57,14 +59,13 @@ public class SavedQstAdapter extends RecyclerView.Adapter {
         ((ViewHolder) holder).container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent gotoSaveQst = new Intent(context, MainActivity.class);
+                Intent gotoSaveQst = new Intent(context, ModifyActivity.class);
                 gotoSaveQst.putExtra("question", item.getQuestion());
                 gotoSaveQst.putExtra("questionId", item.getQuestionId());
                 gotoSaveQst.putExtra("answer", item.getAnswer());
                 gotoSaveQst.putExtra("answerId", item.getAnswerId());
                 gotoSaveQst.putExtra("fragmentName", MainActivity.MAIN_FRAGMENT_SAVE_QST);
-                gotoSaveQst.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(gotoSaveQst);
+                ((Activity)context).startActivityForResult(gotoSaveQst, CConfig.RESULT_MODIFY);
             }
         });
     }

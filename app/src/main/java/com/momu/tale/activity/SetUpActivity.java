@@ -1,5 +1,6 @@
 package com.momu.tale.activity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -29,6 +30,8 @@ public class SetupActivity extends AppCompatActivity {
     RecyclerView.LayoutManager layoutManager;
     ArrayList<SetupItem> items = new ArrayList<>();
 
+    Context mContext;
+
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
 
@@ -39,7 +42,7 @@ public class SetupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setup);
         ButterKnife.bind(this);
-
+        mContext = this;
         setToolbar();
         makeList();
     }
@@ -49,14 +52,14 @@ public class SetupActivity extends AppCompatActivity {
      */
     private void makeList() {
         recyclerView.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(getApplicationContext());
+        layoutManager = new LinearLayoutManager(mContext);
         recyclerView.setLayoutManager(layoutManager);
 
         items.add(new SetupItem("로그인",""));
         items.add(new SetupItem("백업하기",""));
         items.add(new SetupItem("버전","Ver. 1.0.0"));
         items.add(new SetupItem("만든이","MOMU"));
-        recyclerView.setAdapter(new SetupAdapter(getApplicationContext(),items));
+        recyclerView.setAdapter(new SetupAdapter(mContext,items));
     }
 
     /**
@@ -69,14 +72,6 @@ public class SetupActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("");
         ImageView imgLogo = (ImageView)toolbar.findViewById(R.id.imgLogo);
         imgLogo.setVisibility(View.GONE);
-    }
-
-    /**
-     * 툴바 클릭 이벤트
-     */
-    @OnClick(R.id.toolbar)
-    void toolbarClick() {
-        finish();
     }
 
     /**

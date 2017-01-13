@@ -6,13 +6,15 @@ package com.momu.tale.config;
  */
 
 public class CConfig {
-    //폰트
+    //폰트 모음
     public static final String FONT_SEOUL_NAMSAN_CL = "fonts/SeoulNamsanCL.ttf";
     public static final String FONT_YANOLJA_YACHE_REGULAR = "fonts/YanoljaYacheRegular.ttf";
 
-    //서버 통신 관련 상수
-    static String URL_STRING = "http://52.78.172.143/api/v1/questions";    //question있는 주소
+    //REQUEST CODE
+    public static final int RESULT_MODIFY = 11;
 
+    //서버 통신 관련 상수 (미사용)
+    public static final String URL_STRING = "http://52.78.172.143/api/v1/questions";    //question있는 주소
     static int CONNECTION_TIMEOUT = 3000;
     static int DATARETRIVAL_TIMEOUT = 3000;
 }

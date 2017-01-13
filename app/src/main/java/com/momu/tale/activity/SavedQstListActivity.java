@@ -1,5 +1,6 @@
 package com.momu.tale.activity;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -11,7 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.momu.tale.R;
-import com.momu.tale.adapter.PreviewAdapter;
+import com.momu.tale.adapter.SavedQstListAdapter;
 import com.momu.tale.item.PreviewItem;
 import com.momu.tale.utility.LogHelper;
 
@@ -27,7 +28,7 @@ import butterknife.ButterKnife;
 public class SavedQstListActivity extends AppCompatActivity {
     RecyclerView.LayoutManager layoutManager;
     ArrayList<PreviewItem> items = new ArrayList<>();
-
+    Context mContext;
     SQLiteDatabase db = SplashActivity.sqliteHelper.getReadableDatabase();
 
     @BindView(R.id.toolbar) Toolbar toolbar;
@@ -40,7 +41,7 @@ public class SavedQstListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
         ButterKnife.bind(this);
-
+        mContext = this;
         setToolbar();
         initList();
     }
@@ -60,7 +61,7 @@ public class SavedQstListActivity extends AppCompatActivity {
     private void initList() {
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(getApplicationContext());
+        layoutManager = new LinearLayoutManager(mContext);
         recyclerView.setLayoutManager(layoutManager);
         Cursor cursor = null;
         try {
@@ -77,7 +78,7 @@ public class SavedQstListActivity extends AppCompatActivity {
             }
         }
 
-        recyclerView.setAdapter(new PreviewAdapter(getApplicationContext(), items));
+        recyclerView.setAdapter(new SavedQstListAdapter(mContext, items));
     }
 
     /**

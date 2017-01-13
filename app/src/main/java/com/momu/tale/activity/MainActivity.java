@@ -57,28 +57,27 @@ public class MainActivity extends AppCompatActivity {
      */
     public void changeFragment(String fragmentName, Bundle bundle) {
         LogHelper.e(TAG, fragmentName +"으로 changeFragment 시도");
-        setToolBar(fragmentName);
-
         switch (fragmentName) {
-            case WRITE_FRAGMENT:
-                currentFragment = new WriteFragment();
-                break;
-
             case MAIN_FRAGMENT_MAIN:
                 currentFragment = new MainFragment();
-                currentFragmentName = "MainFragment";
+                setCurrentFragmentName("MainFragment");
                 break;
 
             case MAIN_FRAGMENT_SAVE_QST:
+                currentFragment = new WriteFragment();
+                setCurrentFragmentName("WriteFragment");
+
                 bundle = new Bundle();
                 bundle.putInt("questionId", getIntent().getIntExtra("questionId", -1));
                 bundle.putInt("answerId", getIntent().getIntExtra("answerId", -1));
                 bundle.putString("question", getIntent().getStringExtra("question"));
                 bundle.putString("answer", getIntent().getStringExtra("answer"));
                 bundle.putBoolean("isFromMain", false);
-                currentFragmentName = "WriteFragment";
-                currentFragment = new WriteFragment();
                 currentFragment.setArguments(bundle);
+                break;
+
+            case WRITE_FRAGMENT:
+                currentFragment = new WriteFragment();
                 break;
         }
 
@@ -90,6 +89,8 @@ public class MainActivity extends AppCompatActivity {
         transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.fragment, currentFragment);
         transaction.commit();
+
+        setToolBar(fragmentName);
     }
 
     /**
@@ -98,17 +99,17 @@ public class MainActivity extends AppCompatActivity {
     private void setToolBar(String currentFragmentName) {
         switch (currentFragmentName) {
             case MAIN_FRAGMENT_MAIN:
-                getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+                if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(false);
                 imgLogo.setVisibility(View.GONE);
                 break;
 
             case MAIN_FRAGMENT_SAVE_QST:
-                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                 imgLogo.setVisibility(View.VISIBLE);
                 break;
 
             case WRITE_FRAGMENT:
-                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                 imgLogo.setVisibility(View.VISIBLE);
                 break;
         }
@@ -122,27 +123,41 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            if (getCurrentFragmentName().equals("WriteFragment")) {
-                ((WriteFragment) currentFragment).checkBeforeExist();
-            } else if (currentFragmentName.equals("MainFragment")) {
-                super.onBackPressed();
-            } else {
-                changeFragment("MainFragment", null);
+            switch (getCurrentFragmentName()) {
+                case "WriteFragment":
+                    ((WriteFragment) currentFragment).checkBeforeExist();
+                    break;
+
+                case "MainFragment":
+                    super.onBackPressed();
+                    break;
+
+                default:
+                    changeFragment("MainFragment", null);
+                    break;
             }
         }
         return false;
     }
 
 
+    /**
+     * 백버튼 클릭 이벤트
+     */
     @Override
     public void onBackPressed() {
-        //글 작성중이면 다이얼로그를 띄워서 한번 더 물어본다.
-        if (getCurrentFragmentName().equals("WriteFragment")) {
-            ((WriteFragment) currentFragment).checkBeforeExist();
-        } else if (currentFragmentName.equals("MainFragment")) {
-            super.onBackPressed();
-        } else {
-            changeFragment("MainFragment", null);
+        switch (getCurrentFragmentName()) {
+            case "WriteFragment":
+                ((WriteFragment) currentFragment).checkBeforeExist();   //글 작성중이면 다이얼로그를 띄워서 한번 더 물어본다.
+                break;
+
+            case "MainFragment":
+                super.onBackPressed();
+                break;
+
+            default:
+                changeFragment("MainFragment", null);
+                break;
         }
     }
 
@@ -153,5 +168,13 @@ public class MainActivity extends AppCompatActivity {
      */
     public String getCurrentFragmentName() {
         return currentFragmentName;
+    }
+
+    /**
+     * 현재 MainActivity에 붙어있는 Fragment 이름을 설정한다.
+     * @param fragmentName 이름
+     */
+    public void setCurrentFragmentName(String fragmentName) {
+        this.currentFragmentName = fragmentName;
     }
 }

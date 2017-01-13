@@ -50,6 +50,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.momu.tale.activity.SavedQstListActivity"/>
         </activity>
+
+        <activity android:name=".activity.ModifyActivity"
+                  android:screenOrientation="portrait"/>
+
     </application>
 
 </manifest>

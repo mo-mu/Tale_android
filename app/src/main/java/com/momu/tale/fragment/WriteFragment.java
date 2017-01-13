@@ -1,5 +1,6 @@
 package com.momu.tale.fragment;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.database.Cursor;
@@ -18,7 +19,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -151,8 +151,9 @@ public class WriteFragment extends Fragment {
             case R.id.action_edit:      //수정
                 sql = "update answer set a = '" + editAnswer.getText().toString() + "' where id=" + getArguments().getInt("answerId") + ";";
                 db.execSQL(sql);
-                finishFragment();
                 Toast.makeText(mContext, "수정되었습니다.", Toast.LENGTH_SHORT).show();
+                getActivity().setResult(Activity.RESULT_OK);
+                finishFragment();
                 break;
 
             case R.id.action_remove:    //삭제
@@ -165,6 +166,7 @@ public class WriteFragment extends Fragment {
                         sql = "delete from answer where id=" + getArguments().getInt("answerId") + ";";
                         db.execSQL(sql);
                         Toast.makeText(mContext, "삭제되었습니다.", Toast.LENGTH_SHORT).show();
+                        getActivity().setResult(Activity.RESULT_OK);
                         finishFragment();
                     }
                 }).setNegativeButton("아니오", new DialogInterface.OnClickListener() {
