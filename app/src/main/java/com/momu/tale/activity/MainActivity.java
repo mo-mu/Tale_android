@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.momu.tale.R;
 import com.momu.tale.fragment.MainFragment;
 import com.momu.tale.fragment.WriteFragment;
@@ -33,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        FirebaseMessaging.getInstance().subscribeToTopic("all");
+        FirebaseMessaging.getInstance().subscribeToTopic("android");
         mContext = this;
         setToolBar();
 
