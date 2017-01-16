@@ -66,6 +66,9 @@ public class SavedQstDetailActivity extends AppCompatActivity {
      */
     private void initList() {
         recyclerView.setVisibility(View.GONE);
+        if (items != null)
+            items.clear();
+
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(mContext);
         recyclerView.setLayoutManager(layoutManager);
@@ -111,7 +114,7 @@ public class SavedQstDetailActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         LogHelper.e(TAG, "onactivityresult진입" + requestCode + " , " + resultCode);
-        if(requestCode == CConfig.RESULT_MODIFY && resultCode == RESULT_OK) {
+        if (requestCode == CConfig.RESULT_MODIFY && resultCode == RESULT_OK) {
             initList();
         }
     }

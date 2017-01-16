@@ -16,6 +16,7 @@ import com.momu.tale.activity.MainActivity;
 import com.momu.tale.activity.ModifyActivity;
 import com.momu.tale.config.CConfig;
 import com.momu.tale.item.SavedQstItem;
+import com.momu.tale.utility.LogHelper;
 
 import java.util.ArrayList;
 
@@ -29,6 +30,8 @@ import butterknife.ButterKnife;
 public class SavedQstDetailAdapter extends RecyclerView.Adapter {
     private Context context;
     private ArrayList<SavedQstItem> items;
+
+    private static final String TAG = "SavedQstDetailAdapter";
 
     public SavedQstDetailAdapter(Context context, ArrayList<SavedQstItem> items) {
         this.context = context;
@@ -59,6 +62,7 @@ public class SavedQstDetailAdapter extends RecyclerView.Adapter {
         ((ViewHolder) holder).container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                LogHelper.e(TAG, "AnswerId : " + item.getAnswerId());
                 Intent gotoSaveQst = new Intent(context, ModifyActivity.class);
                 gotoSaveQst.putExtra("question", item.getQuestion());
                 gotoSaveQst.putExtra("questionId", item.getQuestionId());
