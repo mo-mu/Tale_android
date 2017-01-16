@@ -5,7 +5,7 @@ package com.momu.tale.item;
  * Created by songmho on 2016-10-01.
  */
 
-public class PreviewItem {
+public class SavedQstListItem {
     private String date, question;
     private int count, questionId;
 
@@ -52,7 +52,7 @@ public class PreviewItem {
      * @param question   현재 Question
      * @param questionId 현재 question Id
      */
-    public PreviewItem(int count, String date, String question, int questionId) {
+    public SavedQstListItem(int count, String date, String question, int questionId) {
         this.count = count;
         this.date = date;
         this.question = question;

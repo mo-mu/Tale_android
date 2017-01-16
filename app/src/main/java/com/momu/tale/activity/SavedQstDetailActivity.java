@@ -16,7 +16,7 @@ import android.view.View;
 import com.momu.tale.R;
 import com.momu.tale.adapter.SavedQstDetailAdapter;
 import com.momu.tale.config.CConfig;
-import com.momu.tale.item.SavedQstItem;
+import com.momu.tale.item.SavedQstDetailItem;
 import com.momu.tale.utility.LogHelper;
 
 import java.util.ArrayList;
@@ -31,7 +31,7 @@ import butterknife.ButterKnife;
 
 public class SavedQstDetailActivity extends AppCompatActivity {
     LinearLayoutManager layoutManager;
-    ArrayList<SavedQstItem> items = new ArrayList<>();
+    ArrayList<SavedQstDetailItem> items = new ArrayList<>();
     SQLiteDatabase db = SplashActivity.sqliteHelper.getReadableDatabase();
     Context mContext;
 
@@ -79,7 +79,7 @@ public class SavedQstDetailActivity extends AppCompatActivity {
             LogHelper.e("SavedQstDetailActivity", "question id : " + getIntent.getIntExtra("questionId", -1));
             cursor = db.rawQuery("SELECT created_at, a, id FROM answer WHERE question_id = " + getIntent.getIntExtra("questionId", -1) + ";", null);
             while (cursor != null && cursor.moveToNext()) {
-                SavedQstItem item = new SavedQstItem(getIntent.getStringExtra("question"), cursor.getString(0), cursor.getString(1), cursor.getInt(2), getIntent.getIntExtra("questionId", -1));
+                SavedQstDetailItem item = new SavedQstDetailItem(getIntent.getStringExtra("question"), cursor.getString(0), cursor.getString(1), cursor.getInt(2), getIntent.getIntExtra("questionId", -1));
                 items.add(item);
             }
         } catch (Exception e) {
@@ -121,6 +121,7 @@ public class SavedQstDetailActivity extends AppCompatActivity {
         LogHelper.e(TAG, "onactivityresult진입" + requestCode + " , " + resultCode);
         if (requestCode == CConfig.RESULT_MODIFY && resultCode == RESULT_OK) {
             initList();
+            setResult(RESULT_OK);
         }
     }
 }

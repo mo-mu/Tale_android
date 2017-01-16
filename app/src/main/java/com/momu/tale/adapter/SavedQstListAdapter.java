@@ -15,7 +15,7 @@ import android.widget.TextView;
 import com.momu.tale.R;
 import com.momu.tale.activity.SavedQstDetailActivity;
 import com.momu.tale.config.CConfig;
-import com.momu.tale.item.PreviewItem;
+import com.momu.tale.item.SavedQstListItem;
 
 import java.util.ArrayList;
 
@@ -28,7 +28,7 @@ import butterknife.ButterKnife;
  */
 public class SavedQstListAdapter extends RecyclerView.Adapter {
     private Context context;
-    private ArrayList<PreviewItem> items;
+    private ArrayList<SavedQstListItem> items;
 
     /**
      * constructor<br>
@@ -36,7 +36,7 @@ public class SavedQstListAdapter extends RecyclerView.Adapter {
      * @param context context
      * @param items   지난이야기 ArrayLIst
      */
-    public SavedQstListAdapter(Context context, ArrayList<PreviewItem> items) {
+    public SavedQstListAdapter(Context context, ArrayList<SavedQstListItem> items) {
         this.context = context;
         this.items = items;
     }
@@ -49,7 +49,7 @@ public class SavedQstListAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        final PreviewItem item = items.get(position);
+        final SavedQstListItem item = items.get(position);
         Typeface typeFace1 = Typeface.createFromAsset(context.getAssets(), CConfig.FONT_SEOUL_NAMSAN_CL);
         Typeface typeFace2 = Typeface.createFromAsset(context.getAssets(), CConfig.FONT_YANOLJA_YACHE_REGULAR);
 

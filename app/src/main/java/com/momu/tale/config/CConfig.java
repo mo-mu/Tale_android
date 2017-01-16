@@ -11,8 +11,9 @@ public class CConfig {
     public static final String FONT_YANOLJA_YACHE_REGULAR = "fonts/YanoljaYacheRegular.ttf";
 
     //REQUEST CODE
-    public static final int RESULT_MODIFY = 11;
+    public static final int RESULT_QST_LIST = 11;
     public static final int RESULT_DETAIL = 12;
+    public static final int RESULT_MODIFY = 13;
 
     //서버 통신 관련 상수 (미사용)
     public static final String URL_STRING = "http://52.78.172.143/api/v1/questions";    //question있는 주소
