@@ -12,7 +12,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.momu.tale.R;
-import com.momu.tale.adapter.SetupAdapter;
+import com.momu.tale.adapter.SetUpAdapter;
 import com.momu.tale.item.SetupItem;
 
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ import butterknife.OnClick;
  * Created by songmho on 2016-09-30.
  */
 
-public class SetupActivity extends AppCompatActivity {
+public class SetUpActivity extends AppCompatActivity {
     RecyclerView.LayoutManager layoutManager;
     ArrayList<SetupItem> items = new ArrayList<>();
 
@@ -59,7 +59,7 @@ public class SetupActivity extends AppCompatActivity {
         items.add(new SetupItem("백업하기",""));
         items.add(new SetupItem("버전","Ver. 1.0.0"));
         items.add(new SetupItem("만든이","MOMU"));
-        recyclerView.setAdapter(new SetupAdapter(mContext,items));
+        recyclerView.setAdapter(new SetUpAdapter(mContext,items));
     }
 
     /**

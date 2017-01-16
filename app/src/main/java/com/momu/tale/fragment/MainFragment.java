@@ -23,7 +23,7 @@ import android.widget.TextView;
 import com.momu.tale.R;
 import com.momu.tale.activity.MainActivity;
 import com.momu.tale.activity.SavedQstListActivity;
-import com.momu.tale.activity.SetupActivity;
+import com.momu.tale.activity.SetUpActivity;
 import com.momu.tale.activity.SplashActivity;
 import com.momu.tale.config.CConfig;
 import com.momu.tale.utility.LogHelper;
@@ -228,7 +228,7 @@ public class MainFragment extends Fragment {
         if (item.getItemId() == R.id.action_preview) {
             startActivity(new Intent(getActivity(), SavedQstListActivity.class));
         } else if (item.getItemId() == R.id.action_setup) {
-            startActivity(new Intent(getActivity(), SetupActivity.class));
+            startActivity(new Intent(getActivity(), SetUpActivity.class));
         }
         return super.onOptionsItemSelected(item);
     }

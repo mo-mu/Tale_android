@@ -22,11 +22,11 @@ import butterknife.ButterKnife;
 /**
  * Created by songm on 2016-12-30.
  */
-public class SetupAdapter extends RecyclerView.Adapter {
+public class SetUpAdapter extends RecyclerView.Adapter {
     private Context context;
     private ArrayList<SetupItem> items;
 
-    public SetupAdapter(Context context, ArrayList<SetupItem> items) {
+    public SetUpAdapter(Context context, ArrayList<SetupItem> items) {
         this.context = context;
         this.items = items;
     }
