@@ -1,6 +1,7 @@
 package com.momu.tale.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.view.MenuItem;
 
 import com.momu.tale.R;
 import com.momu.tale.adapter.SavedQstListAdapter;
+import com.momu.tale.config.CConfig;
 import com.momu.tale.item.PreviewItem;
 import com.momu.tale.utility.LogHelper;
 
@@ -32,6 +34,7 @@ public class SavedQstListActivity extends AppCompatActivity {
     SQLiteDatabase db = SplashActivity.sqliteHelper.getReadableDatabase();
 
     @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.recyclerView) RecyclerView recyclerView;
 
     private static final String TAG = "SavedQstListActivity";
 
@@ -42,6 +45,7 @@ public class SavedQstListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_list);
         ButterKnife.bind(this);
         mContext = this;
+
         setToolbar();
         initList();
     }
@@ -59,7 +63,9 @@ public class SavedQstListActivity extends AppCompatActivity {
      * 리스트를 초기화하는 메소드
      */
     private void initList() {
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        if(items != null) {
+            items.clear();
+        }
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(mContext);
         recyclerView.setLayoutManager(layoutManager);
@@ -98,5 +104,14 @@ public class SavedQstListActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         finish();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        LogHelper.e(TAG, "onactivityresult진입" + requestCode + " , " + resultCode);
+        if (requestCode == CConfig.RESULT_DETAIL && resultCode == RESULT_OK) {
+            initList();
+        }
     }
 }

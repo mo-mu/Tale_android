@@ -87,6 +87,11 @@ public class SavedQstDetailActivity extends AppCompatActivity {
         } finally {
             if (cursor != null) cursor.close();
         }
+        if (items.size() == 0) {
+            setResult(RESULT_OK); //삭제될 경우 SavedQstListActivity에서 리스트 삭제를 갱신하기 위해
+            finish();
+            return;
+        }
         recyclerView.setAdapter(new SavedQstDetailAdapter(mContext, items));
         recyclerView.setVisibility(View.VISIBLE);
     }

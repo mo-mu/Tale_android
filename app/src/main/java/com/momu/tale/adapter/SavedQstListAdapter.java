@@ -1,5 +1,6 @@
 package com.momu.tale.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -62,7 +63,7 @@ public class SavedQstListAdapter extends RecyclerView.Adapter {
                 Intent gotoSaveQst = new Intent(context, SavedQstDetailActivity.class);
                 gotoSaveQst.putExtra("question", item.getQuestion());
                 gotoSaveQst.putExtra("questionId", item.getQuestionId());
-                context.startActivity(gotoSaveQst);
+                ((Activity)context).startActivityForResult(gotoSaveQst, CConfig.RESULT_DETAIL);
             }
         });
 
