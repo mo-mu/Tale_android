@@ -88,14 +88,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         PowerManager pm = (PowerManager) this.getSystemService(Context.POWER_SERVICE);
-        PowerManager.WakeLock wakelock = pm.newWakeLock( PowerManager.SCREEN_BRIGHT_WAKE_LOCK |
-                        PowerManager.ACQUIRE_CAUSES_WAKEUP |
-                        PowerManager.ON_AFTER_RELEASE, "TAG");
-        wakelock.acquire();
+        PowerManager.WakeLock wakeLock = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP |
+                PowerManager.ON_AFTER_RELEASE, "TAG");
+        wakeLock.acquire(5000);
 
-        if(wakelock !=null){
-            wakelock.release();
-            wakelock = null;
+        if(wakeLock !=null){
+            wakeLock.release();
+            wakeLock = null;
         }
 
         notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
