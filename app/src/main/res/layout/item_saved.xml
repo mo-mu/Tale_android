@@ -42,7 +42,6 @@
         android:id="@+id/txtAnswer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:maxLength="5"
         android:textSize="16dp"
         android:lineSpacingExtra="7dp"
         android:textColor="@color/answer"/>

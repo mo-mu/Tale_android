@@ -15,7 +15,8 @@ import com.momu.tale.R;
 import com.momu.tale.activity.MainActivity;
 import com.momu.tale.activity.ModifyActivity;
 import com.momu.tale.config.CConfig;
-import com.momu.tale.item.SavedQstItem;
+import com.momu.tale.item.SavedQstDetailItem;
+import com.momu.tale.utility.LogHelper;
 
 import java.util.ArrayList;
 
@@ -28,9 +29,11 @@ import butterknife.ButterKnife;
  */
 public class SavedQstDetailAdapter extends RecyclerView.Adapter {
     private Context context;
-    private ArrayList<SavedQstItem> items;
+    private ArrayList<SavedQstDetailItem> items;
 
-    public SavedQstDetailAdapter(Context context, ArrayList<SavedQstItem> items) {
+    private static final String TAG = "SavedQstDetailAdapter";
+
+    public SavedQstDetailAdapter(Context context, ArrayList<SavedQstDetailItem> items) {
         this.context = context;
         this.items = items;
     }
@@ -43,7 +46,7 @@ public class SavedQstDetailAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        final SavedQstItem item = items.get(position);
+        final SavedQstDetailItem item = items.get(position);
         Typeface typeFace1 = Typeface.createFromAsset(context.getAssets(), CConfig.FONT_SEOUL_NAMSAN_CL);
         Typeface typeFace2 = Typeface.createFromAsset(context.getAssets(), CConfig.FONT_YANOLJA_YACHE_REGULAR);
 
@@ -59,6 +62,7 @@ public class SavedQstDetailAdapter extends RecyclerView.Adapter {
         ((ViewHolder) holder).container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                LogHelper.e(TAG, "AnswerId : " + item.getAnswerId());
                 Intent gotoSaveQst = new Intent(context, ModifyActivity.class);
                 gotoSaveQst.putExtra("question", item.getQuestion());
                 gotoSaveQst.putExtra("questionId", item.getQuestionId());

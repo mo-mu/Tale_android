@@ -1,5 +1,6 @@
 package com.momu.tale.fragment;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -45,7 +46,7 @@ import butterknife.OnClick;
 public class MainFragment extends Fragment {
     Date now = new Date();
     SimpleDateFormat format = new SimpleDateFormat("yyyy/ MM/ dd");
-    int answerId, questionId = -1;
+    int answerId = -1, questionId = -1;
 
     SQLiteDatabase db;
     Context mContext;
@@ -77,6 +78,16 @@ public class MainFragment extends Fragment {
         txtAnswer.setTypeface(typeFace1);
         txtQuestion.setTypeface(typeFace2);
 
+
+        initView();
+
+        txtRefresh.setText(Html.fromHtml("<u>다른 질문 보여줘!</u>"));   //Underbar 넣기 위해 html 태그 사용
+
+        setHasOptionsMenu(true);
+        return v;
+    }
+
+    void initView() {
         if (searchTodayAsw(format.format(now))) {  //내용이 있을 경우 refresh 안보이고, answer보여야
             LogHelper.e(TAG, "오늘 작성한 답변이 있음");
             txtRefresh.setVisibility(View.GONE);
@@ -89,11 +100,6 @@ public class MainFragment extends Fragment {
             LogHelper.e(TAG, "오늘 작성한 답변이 없음");
             questionSelect(getQstIdRand());
         }
-
-        txtRefresh.setText(Html.fromHtml("<u>다른 질문 보여줘!</u>"));   //Underbar 넣기 위해 html 태그 사용
-
-        setHasOptionsMenu(true);
-        return v;
     }
 
     /**
@@ -145,6 +151,8 @@ public class MainFragment extends Fragment {
         } finally {
             if (cursor != null) cursor.close();
         }
+        answerId = -1;
+        if (isAdded()) txtAnswer.setText("");
         return false;
     }
 
@@ -161,7 +169,7 @@ public class MainFragment extends Fragment {
             while (cursor.moveToNext())
                 if (cursor.getString(1) != null) {          //답글이 있을 때
                     answerId = cursor.getInt(0);
-                    txtAnswer.setText("" + cursor.getString(1));
+                    txtAnswer.setText(cursor.getString(1));
                 }
         } catch (Exception e) {
             e.printStackTrace();
@@ -226,10 +234,19 @@ public class MainFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_preview) {
-            startActivity(new Intent(getActivity(), SavedQstListActivity.class));
+            startActivityForResult(new Intent(getActivity(), SavedQstListActivity.class), CConfig.RESULT_QST_LIST);
         } else if (item.getItemId() == R.id.action_setup) {
             startActivity(new Intent(getActivity(), SetUpActivity.class));
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        LogHelper.e(TAG, "onactivityresult진입" + requestCode + " , " + resultCode);
+        if (requestCode == CConfig.RESULT_QST_LIST && resultCode == Activity.RESULT_OK) {
+            initView();
+        }
     }
 }

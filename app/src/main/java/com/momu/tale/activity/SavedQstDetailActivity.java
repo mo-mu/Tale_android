@@ -16,7 +16,7 @@ import android.view.View;
 import com.momu.tale.R;
 import com.momu.tale.adapter.SavedQstDetailAdapter;
 import com.momu.tale.config.CConfig;
-import com.momu.tale.item.SavedQstItem;
+import com.momu.tale.item.SavedQstDetailItem;
 import com.momu.tale.utility.LogHelper;
 
 import java.util.ArrayList;
@@ -31,7 +31,7 @@ import butterknife.ButterKnife;
 
 public class SavedQstDetailActivity extends AppCompatActivity {
     LinearLayoutManager layoutManager;
-    ArrayList<SavedQstItem> items = new ArrayList<>();
+    ArrayList<SavedQstDetailItem> items = new ArrayList<>();
     SQLiteDatabase db = SplashActivity.sqliteHelper.getReadableDatabase();
     Context mContext;
 
@@ -66,6 +66,9 @@ public class SavedQstDetailActivity extends AppCompatActivity {
      */
     private void initList() {
         recyclerView.setVisibility(View.GONE);
+        if (items != null)
+            items.clear();
+
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(mContext);
         recyclerView.setLayoutManager(layoutManager);
@@ -76,13 +79,18 @@ public class SavedQstDetailActivity extends AppCompatActivity {
             LogHelper.e("SavedQstDetailActivity", "question id : " + getIntent.getIntExtra("questionId", -1));
             cursor = db.rawQuery("SELECT created_at, a, id FROM answer WHERE question_id = " + getIntent.getIntExtra("questionId", -1) + ";", null);
             while (cursor != null && cursor.moveToNext()) {
-                SavedQstItem item = new SavedQstItem(getIntent.getStringExtra("question"), cursor.getString(0), cursor.getString(1), cursor.getInt(2), getIntent.getIntExtra("questionId", -1));
+                SavedQstDetailItem item = new SavedQstDetailItem(getIntent.getStringExtra("question"), cursor.getString(0), cursor.getString(1), cursor.getInt(2), getIntent.getIntExtra("questionId", -1));
                 items.add(item);
             }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
             if (cursor != null) cursor.close();
+        }
+        if (items.size() == 0) {
+            setResult(RESULT_OK); //삭제될 경우 SavedQstListActivity에서 리스트 삭제를 갱신하기 위해
+            finish();
+            return;
         }
         recyclerView.setAdapter(new SavedQstDetailAdapter(mContext, items));
         recyclerView.setVisibility(View.VISIBLE);
@@ -111,8 +119,9 @@ public class SavedQstDetailActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         LogHelper.e(TAG, "onactivityresult진입" + requestCode + " , " + resultCode);
-        if(requestCode == CConfig.RESULT_MODIFY && resultCode == RESULT_OK) {
+        if (requestCode == CConfig.RESULT_MODIFY && resultCode == RESULT_OK) {
             initList();
+            setResult(RESULT_OK);
         }
     }
 }

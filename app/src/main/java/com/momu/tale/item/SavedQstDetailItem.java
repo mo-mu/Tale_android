@@ -6,7 +6,7 @@ import com.momu.tale.utility.LogHelper;
  * Created by songmho on 2016-10-15.
  */
 
-public class SavedQstItem {
+public class SavedQstDetailItem {
     private String question, date, answer;
     private int answerId, questionId;
 
@@ -53,7 +53,7 @@ public class SavedQstItem {
      * @param answer
      * @param answerId
      */
-    public SavedQstItem(String question, String date, String answer, int answerId, int questionId) {
+    public SavedQstDetailItem(String question, String date, String answer, int answerId, int questionId) {
         LogHelper.e("SAVEDQSTITEM", "question : " + question + " , date : " + date + " , answer : " + answer + " , answerId : " + answerId + " , questionId : " + questionId);
         this.question = question;
         this.date = date;

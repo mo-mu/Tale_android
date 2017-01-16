@@ -1,6 +1,5 @@
 package com.momu.tale.activity;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.database.sqlite.SQLiteDatabase;
@@ -10,24 +9,21 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.momu.tale.R;
 import com.momu.tale.config.CConfig;
+import com.momu.tale.utility.LogHelper;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * Created by knulps on 2017. 1. 14..
@@ -43,6 +39,8 @@ public class ModifyActivity extends AppCompatActivity {
     @BindView(R.id.editAnswer) EditText editAnswer;
     @BindView(R.id.txtQuestion) TextView txtQuestion;
     @BindView(R.id.toolbar) Toolbar toolbar;
+
+    private static final String TAG = "ModifyActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,6 +111,7 @@ public class ModifyActivity extends AppCompatActivity {
                 return false;
 
             case R.id.action_edit:      //수정
+                LogHelper.e(TAG, "수정 id  " + getIntent().getIntExtra("answerId", -1));
                 sql = "update answer set a = '" + editAnswer.getText().toString() + "' where id=" + getIntent().getIntExtra("answerId", -1) + ";";
                 db.execSQL(sql);
                 Toast.makeText(mContext, "수정되었습니다.", Toast.LENGTH_SHORT).show();
