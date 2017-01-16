@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.momu.tale.R;
 import com.momu.tale.fragment.MainFragment;
 import com.momu.tale.fragment.WriteFragment;
@@ -43,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        FirebaseMessaging.getInstance().subscribeToTopic("all");
+        FirebaseMessaging.getInstance().subscribeToTopic("android");
         mContext = this;
         ButterKnife.bind(this);
 
