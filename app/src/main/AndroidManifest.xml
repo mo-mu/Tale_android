@@ -2,7 +2,7 @@
 <manifest package="com.momu.tale"
           xmlns:android="http://schemas.android.com/apk/res/android">
 
-
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
@@ -54,7 +54,7 @@
                 android:value="com.momu.tale.activity.MainActivity"/>
         </activity>
 
-        <activity android:name=".activity.SetupActivity"
+        <activity android:name=".activity.SetUpActivity"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
