@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,10 +20,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.momu.tale.R;
 import com.momu.tale.activity.MainActivity;
+import com.momu.tale.activity.ModifyActivity;
 import com.momu.tale.activity.SavedQstListActivity;
 import com.momu.tale.activity.SetUpActivity;
 import com.momu.tale.activity.SplashActivity;
@@ -57,7 +60,7 @@ public class MainFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mContext = getActivity();
     }
-
+    @BindView(R.id.board) LinearLayout board;
     @BindView(R.id.txtQuestion) TextView txtQuestion;
     @BindView(R.id.txtRefresh) TextView txtRefresh;
     @BindView(R.id.txtAnswer) TextView txtAnswer;
@@ -170,6 +173,22 @@ public class MainFragment extends Fragment {
                 if (cursor.getString(1) != null) {          //답글이 있을 때
                     answerId = cursor.getInt(0);
                     txtAnswer.setText(cursor.getString(1));
+
+                if(txtAnswer.getLineCount()>=8) {
+                    txtAnswer.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (txtAnswer.getLineCount() >= 8) {
+                                board.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        //상세 보기 코드가 들어가야 하는 곳.
+                                    }
+                                });
+                            }
+                        }
+                    });
+                }
                 }
         } catch (Exception e) {
             e.printStackTrace();
