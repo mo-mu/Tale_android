@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="@drawable/main_bg_img"
-              android:fitsSystemWindows="true"
-              android:orientation="vertical">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/main_bg_img"
+                android:fitsSystemWindows="true"
+                android:orientation="vertical">
 
     <include
         android:id="@+id/toolbar"
@@ -12,6 +12,39 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
+        android:layout_below="@id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-</LinearLayout>
+        android:layout_height="match_parent"
+        android:visibility="gone"/>
+
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/layout_empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="153dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="14dp"
+            android:adjustViewBounds="true"
+            android:src="@drawable/cryingfox_img"
+            android:id="@+id/imageView"/>
+
+        <TextView
+            android:textSize="22sp"
+            android:id="@+id/txt_empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="지난 이야기가 없어요..ㅜㅜ"
+            android:textColor="#eeeeee"/>
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="100dp"
+            android:id="@+id/view"/>
+    </LinearLayout>
+</RelativeLayout>

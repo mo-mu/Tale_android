@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +12,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.momu.tale.R;
 import com.momu.tale.adapter.SavedQstListAdapter;
@@ -35,6 +40,8 @@ public class SavedQstListActivity extends AppCompatActivity {
 
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
+    @BindView(R.id.layout_empty) LinearLayout layoutEmpty;
+    @BindView(R.id.txt_empty) TextView txtEmpty;
 
     private static final String TAG = "SavedQstListActivity";
 
@@ -45,6 +52,9 @@ public class SavedQstListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_list);
         ButterKnife.bind(this);
         mContext = this;
+
+        Typeface typeFace = Typeface.createFromAsset(getAssets(), CConfig.FONT_YANOLJA_YACHE_REGULAR);
+        txtEmpty.setTypeface(typeFace);
 
         setToolbar();
         initList();
@@ -63,9 +73,7 @@ public class SavedQstListActivity extends AppCompatActivity {
      * 리스트를 초기화하는 메소드
      */
     private void initList() {
-        if (items != null) {
-            items.clear();
-        }
+        items.clear();
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(mContext);
         recyclerView.setLayoutManager(layoutManager);
@@ -85,6 +93,15 @@ public class SavedQstListActivity extends AppCompatActivity {
         }
 
         recyclerView.setAdapter(new SavedQstListAdapter(mContext, items));
+
+        //리스트가 없을 경우 우는 여우 보여줌
+        if(items.size() == 0) {
+            recyclerView.setVisibility(View.GONE);
+            layoutEmpty.setVisibility(View.VISIBLE);
+        } else {
+            recyclerView.setVisibility(View.VISIBLE);
+            layoutEmpty.setVisibility(View.GONE);
+        }
     }
 
     /**
