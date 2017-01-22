@@ -1,5 +1,6 @@
 package com.momu.tale.activity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -89,7 +90,7 @@ public class SavedQstDetailActivity extends AppCompatActivity {
         }
         if (items.size() == 0) {
             setResult(RESULT_OK); //삭제될 경우 SavedQstListActivity에서 리스트 삭제를 갱신하기 위해
-            finish();
+            ;
             return;
         }
         recyclerView.setAdapter(new SavedQstDetailAdapter(mContext, items));
@@ -123,5 +124,11 @@ public class SavedQstDetailActivity extends AppCompatActivity {
             initList();
             setResult(RESULT_OK);
         }
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        ((Activity) mContext).overridePendingTransition(0, 0);
     }
 }

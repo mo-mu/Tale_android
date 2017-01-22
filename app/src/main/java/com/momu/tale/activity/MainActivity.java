@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.momu.tale.R;
@@ -59,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
      * @param bundle       번들 데이터
      */
     public void changeFragment(String fragmentName, Bundle bundle) {
-        LogHelper.e(TAG, fragmentName +"으로 changeFragment 시도");
+        LogHelper.e(TAG, fragmentName + "으로 changeFragment 시도");
         switch (fragmentName) {
             case MAIN_FRAGMENT_MAIN:
                 currentFragment = new MainFragment();
@@ -102,17 +103,20 @@ public class MainActivity extends AppCompatActivity {
     private void setToolBar(String currentFragmentName) {
         switch (currentFragmentName) {
             case MAIN_FRAGMENT_MAIN:
-                if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+                if (getSupportActionBar() != null)
+                    getSupportActionBar().setDisplayHomeAsUpEnabled(false);
                 imgLogo.setVisibility(View.GONE);
                 break;
 
             case MAIN_FRAGMENT_SAVE_QST:
-                if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                if (getSupportActionBar() != null)
+                    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                 imgLogo.setVisibility(View.VISIBLE);
                 break;
 
             case WRITE_FRAGMENT:
-                if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                if (getSupportActionBar() != null)
+                    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                 imgLogo.setVisibility(View.VISIBLE);
                 break;
         }
@@ -143,6 +147,8 @@ public class MainActivity extends AppCompatActivity {
         return false;
     }
 
+    private static final int TIME_INTERVAL = 2000; // # milliseconds, desired time passed between two back presses.
+    private long mBackPressed;
 
     /**
      * 백버튼 클릭 이벤트
@@ -150,12 +156,21 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         switch (getCurrentFragmentName()) {
+            //글쓰기,수정 화면
             case "WriteFragment":
                 ((WriteFragment) currentFragment).checkBeforeExist();   //글 작성중이면 다이얼로그를 띄워서 한번 더 물어본다.
                 break;
 
+            //메인 화면
             case "MainFragment":
-                super.onBackPressed();
+                if (mBackPressed + TIME_INTERVAL > System.currentTimeMillis()) {
+                    super.onBackPressed();
+                    return;
+                } else {
+                    Toast.makeText(getBaseContext(), "뒤로 가기 버튼을 한번 더 누르시면 앱이 종료됩니다.", Toast.LENGTH_SHORT).show();
+                }
+
+                mBackPressed = System.currentTimeMillis();
                 break;
 
             default:
@@ -175,6 +190,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * 현재 MainActivity에 붙어있는 Fragment 이름을 설정한다.
+     *
      * @param fragmentName 이름
      */
     public void setCurrentFragmentName(String fragmentName) {

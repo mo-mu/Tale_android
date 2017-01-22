@@ -26,6 +26,7 @@ import android.widget.TextView;
 import com.momu.tale.R;
 import com.momu.tale.activity.MainActivity;
 import com.momu.tale.activity.ModifyActivity;
+import com.momu.tale.activity.SavedQstDetailActivity;
 import com.momu.tale.activity.SavedQstListActivity;
 import com.momu.tale.activity.SetUpActivity;
 import com.momu.tale.activity.SplashActivity;
@@ -60,6 +61,7 @@ public class MainFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mContext = getActivity();
     }
+
     @BindView(R.id.board) LinearLayout board;
     @BindView(R.id.txtQuestion) TextView txtQuestion;
     @BindView(R.id.txtRefresh) TextView txtRefresh;
@@ -174,21 +176,21 @@ public class MainFragment extends Fragment {
                     answerId = cursor.getInt(0);
                     txtAnswer.setText(cursor.getString(1));
 
-                if(txtAnswer.getLineCount()>=8) {
-                    txtAnswer.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (txtAnswer.getLineCount() >= 8) {
-                                board.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        //상세 보기 코드가 들어가야 하는 곳.
-                                    }
-                                });
+                    if (txtAnswer.getLineCount() >= 8) {
+                        txtAnswer.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (txtAnswer.getLineCount() >= 8) {
+                                    board.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            //상세 보기 코드가 들어가야 하는 곳.
+                                        }
+                                    });
+                                }
                             }
-                        }
-                    });
-                }
+                        });
+                    }
                 }
         } catch (Exception e) {
             e.printStackTrace();
@@ -238,6 +240,22 @@ public class MainFragment extends Fragment {
         ((MainActivity) mContext).changeFragment(MainActivity.WRITE_FRAGMENT, bundle);
     }
 
+    /**
+     * 질문, 답변 보드(큰 레이아웃) 클릭 이벤트
+     */
+    @OnClick(R.id.board)
+    void boardClick() {
+        if (txtAnswer.getText().toString().equals("")) { //작성된 질문이 없다면 작성 페이지로 이동
+            btnWriteClick();
+        } else {    //작성된 질문이 있다면 질문 상세 페이지로 이동
+            Intent gotoSaveQst = new Intent(mContext, SavedQstDetailActivity.class);
+            gotoSaveQst.putExtra("question", txtQuestion.getText().toString());
+            gotoSaveQst.putExtra("questionId", questionId);
+            startActivityForResult(gotoSaveQst, CConfig.RESULT_DETAIL);
+            ((Activity) mContext).overridePendingTransition(0, 0);
+        }
+    }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -265,6 +283,8 @@ public class MainFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         LogHelper.e(TAG, "onactivityresult진입" + requestCode + " , " + resultCode);
         if (requestCode == CConfig.RESULT_QST_LIST && resultCode == Activity.RESULT_OK) {
+            initView();
+        } else if (requestCode == CConfig.RESULT_DETAIL && resultCode == Activity.RESULT_OK) { //상세 보기 화면
             initView();
         }
     }
