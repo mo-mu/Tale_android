@@ -132,7 +132,8 @@ public class SplashActivity extends AppCompatActivity {
             public void run() {
                 super.run();
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
-                DatabaseReference myRef = database.getReference();
+                DatabaseReference myRef = database.getReference().child("question");
+
                 myRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         LogHelper.e(TAG, "We're done loading the initial " + dataSnapshot.getChildrenCount() + " items");
