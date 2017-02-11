@@ -34,6 +34,6 @@ public class LogHelper {
      * @param e 예외
      */
     public static void errorStackTrace(Exception e) {
-        e.printStackTrace();
+//        e.printStackTrace();
     }
 }
