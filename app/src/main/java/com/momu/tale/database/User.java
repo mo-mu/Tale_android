@@ -9,15 +9,20 @@ import com.google.firebase.database.IgnoreExtraProperties;
 @IgnoreExtraProperties
 public class User {
 
-    public String username;
+    public String nickname;
     public String email;
 
-    public User() {
-        // Default constructor required for calls to DataSnapshot.getValue(User.class)
+
+    public String getNickname() {
+        return nickname;
     }
 
-    public User(String username, String email) {
-        this.username = username;
+    public String getEmail() {
+        return email;
+    }
+
+    public User( String email, String nickname) {
+        this.nickname = nickname;
         this.email = email;
     }
 }

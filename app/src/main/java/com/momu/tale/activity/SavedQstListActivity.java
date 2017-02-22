@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -39,6 +40,7 @@ public class SavedQstListActivity extends AppCompatActivity {
     SQLiteDatabase db = SplashActivity.sqliteHelper.getReadableDatabase();
 
     @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.imgLogo) ImageView imgLogo;
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
     @BindView(R.id.layout_empty) LinearLayout layoutEmpty;
     @BindView(R.id.txt_empty) TextView txtEmpty;
@@ -96,9 +98,11 @@ public class SavedQstListActivity extends AppCompatActivity {
 
         //리스트가 없을 경우 우는 여우 보여줌
         if(items.size() == 0) {
+            imgLogo.setVisibility(View.GONE);
             recyclerView.setVisibility(View.GONE);
             layoutEmpty.setVisibility(View.VISIBLE);
         } else {
+            imgLogo.setVisibility(View.VISIBLE);
             recyclerView.setVisibility(View.VISIBLE);
             layoutEmpty.setVisibility(View.GONE);
         }

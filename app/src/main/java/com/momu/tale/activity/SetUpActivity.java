@@ -11,6 +11,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.momu.tale.R;
 import com.momu.tale.adapter.SetUpAdapter;
 import com.momu.tale.item.SetupItem;
@@ -55,8 +57,18 @@ public class SetUpActivity extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(mContext);
         recyclerView.setLayoutManager(layoutManager);
 
-        items.add(new SetupItem("로그인",""));
-        items.add(new SetupItem("백업하기",""));
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            // User is signed in
+            items.add(new SetupItem("로그아웃",FirebaseAuth.getInstance().getCurrentUser().getEmail()));
+        } else {
+            // No user is signed in
+            items.add(new SetupItem("로그인",""));
+        }
+
+
+        items.add(new SetupItem("동기화",false));
         items.add(new SetupItem("버전","Ver. 1.0.0"));
         items.add(new SetupItem("만든이","MOMU"));
         recyclerView.setAdapter(new SetUpAdapter(mContext,items));

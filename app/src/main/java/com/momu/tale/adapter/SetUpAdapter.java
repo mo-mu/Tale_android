@@ -1,16 +1,23 @@
 package com.momu.tale.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.momu.tale.R;
+import com.momu.tale.activity.SignInActivity;
+import com.momu.tale.activity.SignUpActivity;
 import com.momu.tale.config.CConfig;
 import com.momu.tale.item.SetupItem;
 
@@ -45,15 +52,36 @@ public class SetUpAdapter extends RecyclerView.Adapter {
         ((ViewHolder) holder).txtSub.setTypeface(typeFace1);
 
         ((ViewHolder) holder).txtTitle.setText(item.getTitle());
-        ((ViewHolder) holder).txtSub.setText(item.getSub());
-        ((ViewHolder) holder).container.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(item.getTitle().equals("로그인") || item.getTitle().equals("백업하기")) {
-                    Toast.makeText(context, "준비중입니다.", Toast.LENGTH_SHORT).show();
+
+        if(position!=1) {
+            ((ViewHolder) holder).txtSub.setText(item.getSub());
+            ((ViewHolder) holder).container.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (item.getTitle().equals("로그인")) {
+                        context.startActivity(new Intent(context, SignInActivity.class));
+                    }
+                    else if(item.getTitle().equals("로그아웃")){
+                        FirebaseAuth.getInstance().signOut();
+                        Toast.makeText(context,"로그아웃 되었습니다.",Toast.LENGTH_SHORT).show();
+                    }
                 }
-            }
-        });
+            });
+        }
+        else{
+            ((ViewHolder)holder).schSync.setVisibility(View.VISIBLE);
+            ((ViewHolder)holder).schSync.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if(isChecked){
+                        context.startActivity(new Intent(context, SignUpActivity.class));
+                        Toast.makeText(context, "동기화 준비중입니다.", Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(context, "동기화 취소 준비중입니다.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        }
     }
 
     @Override
@@ -65,6 +93,7 @@ public class SetUpAdapter extends RecyclerView.Adapter {
         @BindView(R.id.container) LinearLayout container;
         @BindView(R.id.txtTitle) TextView txtTitle;
         @BindView(R.id.txtSub) TextView txtSub;
+        @BindView(R.id.schSync) Switch schSync;
 
         ViewHolder(View itemView) {
             super(itemView);
