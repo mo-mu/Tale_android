@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringDef;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.view.KeyEvent;
@@ -23,13 +24,25 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.momu.tale.R;
 import com.momu.tale.activity.MainActivity;
 import com.momu.tale.activity.SplashActivity;
 import com.momu.tale.config.CConfig;
+import com.momu.tale.database.Answer;
+import com.momu.tale.item.SetupItem;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -48,6 +61,11 @@ public class WriteFragment extends Fragment {
 
     Context mContext;
 
+    boolean isLogined;
+
+    FirebaseDatabase database;
+    DatabaseReference myRef;
+
     @BindView(R.id.txtQuestion) TextView txtQuestion;
     @BindView(R.id.editAnswer) EditText editAnswer;
 
@@ -55,6 +73,18 @@ public class WriteFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = getActivity();
+
+
+        database = FirebaseDatabase.getInstance();
+        myRef = database.getReference().child("Answer");
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            // User is signed in
+            isLogined=true;
+        } else {
+            // No user is signed in
+            isLogined=false;
+        }
     }
 
     @Nullable
@@ -137,12 +167,44 @@ public class WriteFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        int id=-1;
+        Cursor cursor = null;
+
         switch (item.getItemId()) {
             case R.id.action_check:     //추가
                 //        if (editAnswer.getText().toString().trim().equals("")) {
+
+                //local db에 추가하는 코드
                 sql = "insert into answer (question_id, user_id, a, created_at) " +
                         "values (" + getArguments().getInt("questionId") + ", 0, '" + editAnswer.getText().toString() + "', '" + format.format(now).toString() + "');";
                 db.execSQL(sql);
+
+
+                //현재 입력된db 가져오는 코드
+
+                try {
+                    cursor = db.rawQuery("select id from answer where question_id=" + getArguments().getInt("questionId") + " and created_at='" + format.format(now).toString() + "';", null);
+                    while (cursor.moveToNext())
+                        id = cursor.getInt(0);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    if (cursor != null) cursor.close();
+                }
+
+                //로그인 돼있을 경우 바로 firebase db에 저장하게 코드 짜둠
+                if(isLogined) {
+                    Answer answer = new Answer(id,getArguments().getInt("questionId"), editAnswer.getText().toString(),format.format(now).toString() );
+
+                    String key = myRef.push().getKey();
+                    Map<String, Object> postValues = answer.toMap();
+
+                    Map<String, Object> childUpdates = new HashMap<>();
+                    childUpdates.put("Answer/"+FirebaseAuth.getInstance().getCurrentUser().getUid() + "/" + id, postValues);
+
+                    database.getReference().updateChildren(childUpdates);
+                }
+
                 finishFragment();
                 Toast.makeText(mContext, "추가되었습니다.", Toast.LENGTH_SHORT).show();
                 //      }
@@ -151,6 +213,19 @@ public class WriteFragment extends Fragment {
             case R.id.action_edit:      //수정
                 sql = "update answer set a = '" + editAnswer.getText().toString() + "' where id=" + getArguments().getInt("answerId") + ";";
                 db.execSQL(sql);
+
+                if(isLogined) {
+                    Answer answer = new Answer(getArguments().getInt("answerId"),getArguments().getInt("questionId"), editAnswer.getText().toString(),format.format(now).toString() );
+
+                    String key = myRef.push().getKey();
+                    Map<String, Object> postValues = answer.toMap();
+
+                    Map<String, Object> childUpdates = new HashMap<>();
+                    childUpdates.put("Answer/"+FirebaseAuth.getInstance().getCurrentUser().getUid() + "/" + getArguments().getInt("answerId"), postValues);
+
+                    database.getReference().updateChildren(childUpdates);
+                }
+
                 Toast.makeText(mContext, "수정되었습니다.", Toast.LENGTH_SHORT).show();
                 getActivity().setResult(Activity.RESULT_OK);
                 finishFragment();
@@ -165,6 +240,18 @@ public class WriteFragment extends Fragment {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         sql = "delete from answer where id=" + getArguments().getInt("answerId") + ";";
                         db.execSQL(sql);
+
+                        if(isLogined){
+                            myRef=myRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(String.valueOf(getArguments().getInt("answerId")));
+                            myRef.removeValue(new DatabaseReference.CompletionListener() {
+                                @Override
+                                public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+
+                                }
+                            });
+                        }
+
+
                         Toast.makeText(mContext, "삭제되었습니다.", Toast.LENGTH_SHORT).show();
                         getActivity().setResult(Activity.RESULT_OK);
                         finishFragment();
