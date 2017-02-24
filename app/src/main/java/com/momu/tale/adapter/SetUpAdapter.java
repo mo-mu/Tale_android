@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.momu.tale.MySharedPreference;
 import com.momu.tale.R;
 import com.momu.tale.activity.SignInActivity;
 import com.momu.tale.activity.SignUpActivity;
@@ -32,10 +33,15 @@ import butterknife.ButterKnife;
 public class SetUpAdapter extends RecyclerView.Adapter {
     private Context context;
     private ArrayList<SetupItem> items;
+    private boolean isLogined;
+    MySharedPreference myShpr;
 
-    public SetUpAdapter(Context context, ArrayList<SetupItem> items) {
+    public SetUpAdapter(Context context, ArrayList<SetupItem> items,boolean isLogined) {
         this.context = context;
         this.items = items;
+        this.isLogined = isLogined;
+
+        myShpr = new MySharedPreference(context);
     }
 
     @Override
@@ -44,8 +50,9 @@ public class SetUpAdapter extends RecyclerView.Adapter {
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
         final SetupItem item = items.get(position);
+
 
         Typeface typeFace1 = Typeface.createFromAsset(context.getAssets(), CConfig.FONT_SEOUL_NAMSAN_CL);
         ((ViewHolder) holder).txtTitle.setTypeface(typeFace1);
@@ -63,6 +70,7 @@ public class SetUpAdapter extends RecyclerView.Adapter {
                     }
                     else if(item.getTitle().equals("로그아웃")){
                         FirebaseAuth.getInstance().signOut();
+                        myShpr.changeSync(false);
                         Toast.makeText(context,"로그아웃 되었습니다.",Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -70,14 +78,23 @@ public class SetUpAdapter extends RecyclerView.Adapter {
         }
         else{
             ((ViewHolder)holder).schSync.setVisibility(View.VISIBLE);
+            ((ViewHolder)holder).schSync.setChecked(item.getIsSync());
             ((ViewHolder)holder).schSync.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if(isChecked){
-                        context.startActivity(new Intent(context, SignUpActivity.class));
-                        Toast.makeText(context, "동기화 준비중입니다.", Toast.LENGTH_SHORT).show();
+                        if(!isLogined) {
+                            context.startActivity(new Intent(context, SignUpActivity.class));
+                        }
+                        else{
+                            myShpr.changeSync(true);
+                            ((ViewHolder)holder).schSync.setChecked(true);
+                            Toast.makeText(context,"current statue : "+myShpr.getIsSync(),Toast.LENGTH_SHORT).show();
+                        }
                     }else{
-                        Toast.makeText(context, "동기화 취소 준비중입니다.", Toast.LENGTH_SHORT).show();
+                        myShpr.changeSync(false);
+                        ((ViewHolder)holder).schSync.setChecked(false);
+                        Toast.makeText(context,"current statue : "+myShpr.getIsSync(),Toast.LENGTH_SHORT).show();
                     }
                 }
             });

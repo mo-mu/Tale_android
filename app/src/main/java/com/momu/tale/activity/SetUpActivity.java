@@ -1,6 +1,7 @@
 package com.momu.tale.activity;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +14,7 @@ import android.widget.ImageView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.momu.tale.MySharedPreference;
 import com.momu.tale.R;
 import com.momu.tale.adapter.SetUpAdapter;
 import com.momu.tale.item.SetupItem;
@@ -59,19 +61,23 @@ public class SetUpActivity extends AppCompatActivity {
 
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        boolean isLogined = false;
         if (user != null) {
             // User is signed in
             items.add(new SetupItem("로그아웃",FirebaseAuth.getInstance().getCurrentUser().getEmail()));
+            isLogined = true;
         } else {
             // No user is signed in
             items.add(new SetupItem("로그인",""));
+            isLogined = false;
         }
 
 
-        items.add(new SetupItem("동기화",false));
+        MySharedPreference shpr = new MySharedPreference(getApplicationContext());
+        items.add(new SetupItem("동기화",shpr.getIsSync()));
         items.add(new SetupItem("버전","Ver. 1.0.0"));
         items.add(new SetupItem("만든이","MOMU"));
-        recyclerView.setAdapter(new SetUpAdapter(mContext,items));
+        recyclerView.setAdapter(new SetUpAdapter(mContext,items,isLogined));
     }
 
     /**

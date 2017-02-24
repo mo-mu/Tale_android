@@ -32,6 +32,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.momu.tale.MySharedPreference;
 import com.momu.tale.R;
 import com.momu.tale.activity.MainActivity;
 import com.momu.tale.activity.SplashActivity;
@@ -61,7 +62,7 @@ public class WriteFragment extends Fragment {
 
     Context mContext;
 
-    boolean isLogined;
+    boolean isLogined, isSync;
 
     FirebaseDatabase database;
     DatabaseReference myRef;
@@ -74,7 +75,8 @@ public class WriteFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mContext = getActivity();
 
-
+        MySharedPreference myShpr = new MySharedPreference(mContext);
+        isSync = myShpr.getIsSync();
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference().child("Answer");
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -193,7 +195,7 @@ public class WriteFragment extends Fragment {
                 }
 
                 //로그인 돼있을 경우 바로 firebase db에 저장하게 코드 짜둠
-                if(isLogined) {
+                if(isLogined && isSync) {
                     Answer answer = new Answer(id,getArguments().getInt("questionId"), editAnswer.getText().toString(),format.format(now).toString() );
 
                     String key = myRef.push().getKey();
@@ -214,10 +216,9 @@ public class WriteFragment extends Fragment {
                 sql = "update answer set a = '" + editAnswer.getText().toString() + "' where id=" + getArguments().getInt("answerId") + ";";
                 db.execSQL(sql);
 
-                if(isLogined) {
+                if(isLogined && isSync) {
                     Answer answer = new Answer(getArguments().getInt("answerId"),getArguments().getInt("questionId"), editAnswer.getText().toString(),format.format(now).toString() );
 
-                    String key = myRef.push().getKey();
                     Map<String, Object> postValues = answer.toMap();
 
                     Map<String, Object> childUpdates = new HashMap<>();
@@ -241,7 +242,7 @@ public class WriteFragment extends Fragment {
                         sql = "delete from answer where id=" + getArguments().getInt("answerId") + ";";
                         db.execSQL(sql);
 
-                        if(isLogined){
+                        if(isLogined && isSync){
                             myRef=myRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(String.valueOf(getArguments().getInt("answerId")));
                             myRef.removeValue(new DatabaseReference.CompletionListener() {
                                 @Override
