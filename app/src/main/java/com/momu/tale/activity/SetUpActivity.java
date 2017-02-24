@@ -2,6 +2,8 @@ package com.momu.tale.activity;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -73,9 +75,17 @@ public class SetUpActivity extends AppCompatActivity {
         }
 
 
+        String version = "0.0.0";
+        try {
+            PackageInfo i = this.getPackageManager().getPackageInfo(this.getPackageName(),0);
+            version = i.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
         MySharedPreference shpr = new MySharedPreference(getApplicationContext());
         items.add(new SetupItem("동기화",shpr.getIsSync()));
-        items.add(new SetupItem("버전","Ver. 1.0.0"));
+        items.add(new SetupItem("버전","Ver. "+version));
         items.add(new SetupItem("만든이","MOMU"));
         recyclerView.setAdapter(new SetUpAdapter(mContext,items,isLogined));
     }
