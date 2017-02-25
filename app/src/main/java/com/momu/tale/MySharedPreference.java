@@ -9,40 +9,41 @@ import android.preference.PreferenceManager;
  */
 
 public class MySharedPreference {
-    SharedPreferences pref;
+    private SharedPreferences pref;
 
     /**
      * 동기화 상태 변경하는 메소드
+     *
      * @param isSync
      */
-    public void changeSync(boolean isSync){
+    public void changeSync(boolean isSync) {
         SharedPreferences.Editor editor = pref.edit();
-        editor.putBoolean("isSync",isSync);
-        editor.commit();
+        editor.putBoolean("isSync", isSync).apply();
     }
 
     /**
      * 저장한 값 가져오는 메소드
+     *
      * @return saved value
      */
-    public boolean getIsSync(){
-        return pref.getBoolean("isSync",false);
+    public boolean getIsSync() {
+        return pref.getBoolean("isSync", true);
     }
 
     /**
      * 값 제거하는 메소드
      */
-    public void removeSync(){
+    public void removeSync() {
         SharedPreferences.Editor editor = pref.edit();
-        editor.remove("isSync");
-        editor.commit();
+        editor.remove("isSync").apply();
     }
 
     /**
      * Constructor
+     *
      * @param context
      */
-    public MySharedPreference(Context context){
+    public MySharedPreference(Context context) {
         pref = PreferenceManager.getDefaultSharedPreferences(context);
     }
 }

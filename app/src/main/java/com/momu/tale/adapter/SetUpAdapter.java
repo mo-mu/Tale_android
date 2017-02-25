@@ -28,13 +28,14 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
+ * 설정 화면
  * Created by songm on 2016-12-30.
  */
 public class SetUpAdapter extends RecyclerView.Adapter {
     private Context context;
     private ArrayList<SetupItem> items;
     private boolean isLogined;
-    MySharedPreference myShpr;
+    private MySharedPreference myShpr;
 
     public SetUpAdapter(Context context, ArrayList<SetupItem> items,boolean isLogined) {
         this.context = context;

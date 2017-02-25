@@ -86,7 +86,7 @@ public class SavedQstDetailActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (cursor != null) cursor.close();
+            if (cursor != null && !cursor.isClosed()) cursor.close();
         }
 
         LogHelper.e(TAG, "item size : " + items.size());

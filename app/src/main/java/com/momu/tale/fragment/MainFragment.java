@@ -83,7 +83,6 @@ public class MainFragment extends Fragment {
         txtAnswer.setTypeface(typeFace1);
         txtQuestion.setTypeface(typeFace2);
 
-
         initView();
 
         txtRefresh.setText(Html.fromHtml("<u>다른 질문 보여줘!</u>"));   //Underbar 넣기 위해 html 태그 사용
@@ -124,7 +123,7 @@ public class MainFragment extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (cursor != null) cursor.close();
+            if (cursor != null && !cursor.isClosed()) cursor.close();
         }
         Random random = new Random();
         do returnQstId = random.nextInt(totalQst);
@@ -154,7 +153,7 @@ public class MainFragment extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (cursor != null) cursor.close();
+            if (cursor != null && !cursor.isClosed()) cursor.close();
         }
         answerId = -1;
         if (isAdded()) txtAnswer.setText("");
@@ -195,7 +194,7 @@ public class MainFragment extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (cursor != null) cursor.close();
+            if (cursor != null && !cursor.isClosed()) cursor.close();
         }
     }
 
@@ -214,7 +213,7 @@ public class MainFragment extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (cursor != null) cursor.close();
+            if (cursor != null && !cursor.isClosed()) cursor.close();
         }
     }
 

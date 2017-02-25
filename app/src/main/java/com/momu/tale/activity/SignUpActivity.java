@@ -32,7 +32,6 @@ import butterknife.ButterKnife;
  */
 
 public class SignUpActivity extends AppCompatActivity implements View.OnClickListener {
-
     @BindView(R.id.editId) EditText editId;
     @BindView(R.id.editNick) EditText editNick;
     @BindView(R.id.editPwd) EditText editPwd;
@@ -42,7 +41,8 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
 
-    String TAG = "Firebase";
+    String TAG = "SignUpActivity";
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,11 +71,11 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
     @Override
     public void onClick(View v) {
-        if(v.getId()==R.id.btSignUp){
+        if (v.getId() == R.id.btSignUp) {
             final String email = editId.getText().toString();
-            String pwd =  editPwd.getText().toString();
-            final String nick =  editNick.getText().toString();
-            Log.e("email : ",email+" , pwd : "+ pwd);
+            String pwd = editPwd.getText().toString();
+            final String nick = editNick.getText().toString();
+            Log.e("email : ", email + " , pwd : " + pwd);
             mAuth.createUserWithEmailAndPassword(email, pwd)
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                         @Override
@@ -88,12 +88,12 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                             if (!task.isSuccessful()) {
                                 Toast.makeText(SignUpActivity.this, "실패!",
                                         Toast.LENGTH_SHORT).show();
-                            }else{
+                            } else {
 
                                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                                 DatabaseReference myRef = database.getReference().child("user");
 
-                                User user = new User(email,nick);
+                                User user = new User(email, nick);
                                 myRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(user);
 
 
@@ -105,8 +105,8 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                             // ...
                         }
                     });
-        }else if(v.getId()==R.id.btSignIn){
-            startActivity(new Intent(SignUpActivity.this,SignInActivity.class));
+        } else if (v.getId() == R.id.btSignIn) {
+            startActivity(new Intent(SignUpActivity.this, SignInActivity.class));
             finish();
         }
     }

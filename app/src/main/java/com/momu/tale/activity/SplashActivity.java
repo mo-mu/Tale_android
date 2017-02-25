@@ -112,7 +112,7 @@ public class SplashActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (cursor != null) cursor.close();
+            if (cursor != null && !cursor.isClosed()) cursor.close();
             if (db != null) db.close();
         }
 

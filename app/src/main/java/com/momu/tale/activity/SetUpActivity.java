@@ -1,7 +1,6 @@
 package com.momu.tale.activity;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -25,7 +24,6 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * 설정 페이지
@@ -35,11 +33,14 @@ import butterknife.OnClick;
 public class SetUpActivity extends AppCompatActivity {
     RecyclerView.LayoutManager layoutManager;
     ArrayList<SetupItem> items = new ArrayList<>();
-
+    SetUpAdapter setupAdapter;
     Context mContext;
+    FirebaseUser user;
+    boolean isLogined = false;
 
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
+    @BindView(R.id.imgLogo) ImageView imgLogo;
 
     private static final String TAG = "SetupActivity";
 
@@ -50,44 +51,52 @@ public class SetUpActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         mContext = this;
         setToolbar();
-        makeList();
+        recyclerView.setHasFixedSize(true);
+        layoutManager = new LinearLayoutManager(mContext);
+        recyclerView.setLayoutManager(layoutManager);
     }
 
     /**
      * 리스트 생성 메소드.
      */
     private void makeList() {
-        recyclerView.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(mContext);
-        recyclerView.setLayoutManager(layoutManager);
+        if (items != null) items.clear();
+        user = FirebaseAuth.getInstance().getCurrentUser();
 
-
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        boolean isLogined = false;
         if (user != null) {
             // User is signed in
-            items.add(new SetupItem("로그아웃",FirebaseAuth.getInstance().getCurrentUser().getEmail()));
+            try {
+                items.add(new SetupItem("로그아웃", user.getEmail()));
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+                items.add(new SetupItem("로그아웃", ""));
+            }
             isLogined = true;
         } else {
             // No user is signed in
-            items.add(new SetupItem("로그인",""));
+            items.add(new SetupItem("로그인", ""));
             isLogined = false;
         }
 
-
         String version = "0.0.0";
         try {
-            PackageInfo i = this.getPackageManager().getPackageInfo(this.getPackageName(),0);
+            PackageInfo i = getPackageManager().getPackageInfo(getPackageName(), 0);
             version = i.versionName;
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
 
-        MySharedPreference shpr = new MySharedPreference(getApplicationContext());
-        items.add(new SetupItem("동기화",shpr.getIsSync()));
-        items.add(new SetupItem("버전","Ver. "+version));
-        items.add(new SetupItem("만든이","MOMU"));
-        recyclerView.setAdapter(new SetUpAdapter(mContext,items,isLogined));
+        MySharedPreference shpr = new MySharedPreference(mContext);
+        items.add(new SetupItem("동기화", shpr.getIsSync()));
+        items.add(new SetupItem("버전", "Ver. " + version));
+        items.add(new SetupItem("만든이", "MOMU"));
+
+        if (setupAdapter == null) {
+            setupAdapter = new SetUpAdapter(mContext, items, isLogined);
+            recyclerView.setAdapter(setupAdapter);
+        } else {
+            setupAdapter.notifyDataSetChanged();
+        }
     }
 
     /**
@@ -95,10 +104,8 @@ public class SetUpActivity extends AppCompatActivity {
      */
     private void setToolbar() {
         setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null)
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("");
-        ImageView imgLogo = (ImageView)toolbar.findViewById(R.id.imgLogo);
         imgLogo.setVisibility(View.GONE);
     }
 
@@ -108,7 +115,7 @@ public class SetUpActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-           finish();
+            finish();
         }
         return true;
     }
@@ -117,6 +124,12 @@ public class SetUpActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         finish();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        makeList();
     }
 }
 
