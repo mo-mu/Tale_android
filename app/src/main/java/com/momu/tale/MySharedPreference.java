@@ -22,7 +22,7 @@ public class MySharedPreference {
     }
 
     /**
-     * 저장한 값 가져오는 메소드
+     * 동기화 여부 가져오는 메소드
      *
      * @return saved value
      */
@@ -31,7 +31,7 @@ public class MySharedPreference {
     }
 
     /**
-     * 값 제거하는 메소드
+     * 동기화 설정값 제거하는 메소드
      */
     public void removeSync() {
         SharedPreferences.Editor editor = pref.edit();

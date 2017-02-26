@@ -67,7 +67,7 @@ public class SavedQstListActivity extends AppCompatActivity {
      */
     private void setToolbar() {
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("");
     }
 
@@ -97,7 +97,7 @@ public class SavedQstListActivity extends AppCompatActivity {
         recyclerView.setAdapter(new SavedQstListAdapter(mContext, items));
 
         //리스트가 없을 경우 우는 여우 보여줌
-        if(items.size() == 0) {
+        if (items.size() == 0) {
             imgLogo.setVisibility(View.GONE);
             recyclerView.setVisibility(View.GONE);
             layoutEmpty.setVisibility(View.VISIBLE);
