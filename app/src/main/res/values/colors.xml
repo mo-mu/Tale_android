@@ -2,10 +2,16 @@
 <resources>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <!--<color name="colorAccent">#FF4081</color>-->
+    <color name="colorAccent">#ffffff</color>
     <color name="white">#ffffff</color>
     <color name="question">#464646</color>
     <color name="hintColor">#b1b1b1</color>
     <color name="answer">#464646</color>
     <color name="line">#464646</color>
+
+    <color name="green">#2BDAAF</color>
+
+    <color name="gray">#eeeeee</color>
+    <color name="gray2">#b2b2b2</color>
 </resources>

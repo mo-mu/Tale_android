@@ -95,13 +95,15 @@ public class SetUpActivity extends AppCompatActivity {
             txtLoginTitle.setText("로그아웃");
             txtLoginSub.setText(user.getEmail());
             isLogined = true;
+            switchSync.setChecked(sharedPreference.getIsSync());
         } else {
             // No user is signed in
             txtLoginTitle.setText("로그인");
             txtLoginSub.setText("");
             isLogined = false;
+            switchSync.setChecked(false);
         }
-        switchSync.setChecked(sharedPreference.getIsSync());
+
     }
 
     /**

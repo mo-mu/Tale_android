@@ -81,10 +81,10 @@ public class ModifyActivity extends AppCompatActivity {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             // User is signed in
-            isLogined=true;
+            isLogined = true;
         } else {
             // No user is signed in
-            isLogined=false;
+            isLogined = false;
         }
     }
 
@@ -140,13 +140,13 @@ public class ModifyActivity extends AppCompatActivity {
                 sql = "update answer set a = '" + editAnswer.getText().toString() + "' where id=" + getIntent().getIntExtra("answerId", -1) + ";";
                 db.execSQL(sql);
 
-                if(isLogined && isSync) {
-                    Answer answer = new Answer(getIntent().getIntExtra("answerId", -1) ,getIntent().getIntExtra("questionId",-1), editAnswer.getText().toString(),format.format(now).toString() );
+                if (isLogined && isSync) {
+                    Answer answer = new Answer(getIntent().getIntExtra("answerId", -1), getIntent().getIntExtra("questionId", -1), editAnswer.getText().toString(), format.format(now).toString());
 
                     Map<String, Object> postValues = answer.toMap();
 
                     Map<String, Object> childUpdates = new HashMap<>();
-                    childUpdates.put("Answer/"+ FirebaseAuth.getInstance().getCurrentUser().getUid() + "/" + getIntent().getIntExtra("answerId", -1) , postValues);
+                    childUpdates.put("Answer/" + FirebaseAuth.getInstance().getCurrentUser().getUid() + "/" + getIntent().getIntExtra("answerId", -1), postValues);
 
                     database.getReference().updateChildren(childUpdates);
                 }
@@ -166,8 +166,8 @@ public class ModifyActivity extends AppCompatActivity {
                         sql = "delete from answer where id=" + getIntent().getIntExtra("answerId", -1) + ";";
                         db.execSQL(sql);
 
-                        if(isLogined && isSync){
-                            myRef=myRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(String.valueOf(getIntent().getIntExtra("answerId", -1)));
+                        if (isLogined && isSync) {
+                            myRef = myRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(String.valueOf(getIntent().getIntExtra("answerId", -1)));
                             myRef.removeValue(new DatabaseReference.CompletionListener() {
                                 @Override
                                 public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
