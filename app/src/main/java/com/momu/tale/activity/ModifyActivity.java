@@ -15,21 +15,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.momu.tale.MySharedPreference;
 import com.momu.tale.R;
 import com.momu.tale.config.CConfig;
-import com.momu.tale.database.Answer;
 import com.momu.tale.utility.LogHelper;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -45,8 +37,8 @@ public class ModifyActivity extends AppCompatActivity {
     String sql;
     SQLiteDatabase db;
     boolean isLogined, isSync;
-    FirebaseDatabase database;
-    DatabaseReference myRef;
+//    FirebaseDatabase database;
+//    DatabaseReference myRef;
 
     @BindView(R.id.editAnswer) EditText editAnswer;
     @BindView(R.id.txtQuestion) TextView txtQuestion;
@@ -76,16 +68,16 @@ public class ModifyActivity extends AppCompatActivity {
 
         MySharedPreference myShpr = new MySharedPreference(mContext);
         isSync = myShpr.getIsSync();
-        database = FirebaseDatabase.getInstance();
-        myRef = database.getReference().child("Answer");
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            // User is signed in
-            isLogined = true;
-        } else {
-            // No user is signed in
-            isLogined = false;
-        }
+//        database = FirebaseDatabase.getInstance();
+//        myRef = database.getReference().child("Answer");
+//        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+//        if (user != null) {
+//            // User is signed in
+//            isLogined = true;
+//        } else {
+//            // No user is signed in
+//            isLogined = false;
+//        }
     }
 
     /**
@@ -115,9 +107,7 @@ public class ModifyActivity extends AppCompatActivity {
                 public void onClick(DialogInterface dialogInterface, int i) {
                 }
             }).show();
-        } else { //키보드 내리고 MainFragment로 변경
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(editAnswer.getWindowToken(), 0);
+        } else { // MainFragment로 바로 변경
             finish();
         }
     }
@@ -141,14 +131,17 @@ public class ModifyActivity extends AppCompatActivity {
                 db.execSQL(sql);
 
                 if (isLogined && isSync) {
-                    Answer answer = new Answer(getIntent().getIntExtra("answerId", -1), getIntent().getIntExtra("questionId", -1), editAnswer.getText().toString(), format.format(now).toString());
-
-                    Map<String, Object> postValues = answer.toMap();
-
-                    Map<String, Object> childUpdates = new HashMap<>();
-                    childUpdates.put("Answer/" + FirebaseAuth.getInstance().getCurrentUser().getUid() + "/" + getIntent().getIntExtra("answerId", -1), postValues);
-
-                    database.getReference().updateChildren(childUpdates);
+                    LogHelper.e("WriteFragment", "firebase에 저장");
+//                    Answer answer = new Answer(getIntent().getIntExtra("answerId", -1), getIntent().getIntExtra("questionId", -1), editAnswer.getText().toString(), format.format(now).toString());
+//
+//                    Map<String, Object> postValues = answer.toMap();
+//
+//                    Map<String, Object> childUpdates = new HashMap<>();
+//                    childUpdates.put("Answer/" + FirebaseAuth.getInstance().getCurrentUser().getUid() + "/" + getIntent().getIntExtra("answerId", -1), postValues);
+//
+//                    database.getReference().updateChildren(childUpdates);
+                } else {
+                    LogHelper.e("WriteFragment", "firebase에 저장안함");
                 }
 
                 Toast.makeText(mContext, "수정되었습니다.", Toast.LENGTH_SHORT).show();
@@ -167,13 +160,13 @@ public class ModifyActivity extends AppCompatActivity {
                         db.execSQL(sql);
 
                         if (isLogined && isSync) {
-                            myRef = myRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(String.valueOf(getIntent().getIntExtra("answerId", -1)));
-                            myRef.removeValue(new DatabaseReference.CompletionListener() {
-                                @Override
-                                public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-
-                                }
-                            });
+//                            myRef = myRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(String.valueOf(getIntent().getIntExtra("answerId", -1)));
+//                            myRef.removeValue(new DatabaseReference.CompletionListener() {
+//                                @Override
+//                                public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+//
+//                                }
+//                            });
                         }
 
                         Toast.makeText(mContext, "삭제되었습니다.", Toast.LENGTH_SHORT).show();

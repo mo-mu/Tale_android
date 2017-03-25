@@ -1,15 +1,20 @@
 package com.momu.tale.activity;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -19,16 +24,16 @@ import com.google.firebase.database.ValueEventListener;
 import com.momu.tale.R;
 import com.momu.tale.SqliteHelper;
 import com.momu.tale.config.CConfig;
+import com.momu.tale.database.Answer;
 import com.momu.tale.database.Questions;
 import com.momu.tale.utility.LogHelper;
+import com.momu.tale.utility.Utility;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -44,16 +49,16 @@ public class SplashActivity extends AppCompatActivity {
     static int SPLASH_TIME = 1500;
 
     private ArrayList<Questions> questionList = new ArrayList<>();
+    private ArrayList<Answer> answerList = new ArrayList<>();
 
     public static SqliteHelper sqliteHelper;
     private final String DBNAME = "wtfs.db";
     private final int DBVERSION = 1;
     public SQLiteDatabase db;
 
-    Date now = new Date();
-    SimpleDateFormat format = new SimpleDateFormat("yyyy.MM.dd");
+    FirebaseUser user = null;
 
-    java.net.URL url;
+    Context mContext;
 
     @BindView(R.id.txtSaying) TextView txtSaying;
 
@@ -62,25 +67,32 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_splash);
         ButterKnife.bind(this);
+        mContext = this;
+
+        Fabric.with(this, new Crashlytics());
+
         Typeface typeFace = Typeface.createFromAsset(getAssets(), CConfig.FONT_SEOUL_NAMSAN_CL);
         txtSaying.setTypeface(typeFace);
         txtSaying.setText("네가 오후 네 시에 온다면\n 난 세 시부터 행복해지기 시작할거야");
 
-        getQuestionDB();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                getQuestionDB();
+            }
+        }, 500);
 
-//  todo Firebase에서 불러온 다음에 메인페이지를 띄우게 변경하였다.
-//        new Handler().postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                Intent intent = new Intent(SplashActivity.this,MainActivity.class);
-//                intent.putExtra("fragmentName","first");
-//                startActivity(intent);
-//                finish();
-//            }
-//        },SPLASH_TIME);
+        //user = FirebaseAuth.getInstance().getCurrentUser(); // TODO: 2017. 3. 25.
+
+//        MySharedPreference sharedPreference = new MySharedPreference(mContext);
+//        if (user != null && sharedPreference.getIsSync()) {
+//            LogHelper.e(TAG, "로그인 & 동기화 상태, 답변 db 불러옴");
+//            getAnswerDB();
+//        } else {
+//            LogHelper.e(TAG, "로그인 안됨 혹은 동기화 안됨");
+//        }
     }
 
     /**
@@ -88,8 +100,6 @@ public class SplashActivity extends AppCompatActivity {
      */
     protected void initDatabase() {
         LogHelper.e(TAG, "initDatabase 시작");
-        sqliteHelper = new SqliteHelper(this, DBNAME, null, DBVERSION);
-        db = sqliteHelper.getWritableDatabase();
 
         //임시로 질문 데이터 저장하는 코드 삽입함
         boolean isExist = false;
@@ -111,6 +121,7 @@ public class SplashActivity extends AppCompatActivity {
             }
         } catch (Exception e) {
             e.printStackTrace();
+
         } finally {
             if (cursor != null && !cursor.isClosed()) cursor.close();
             if (db != null) db.close();
@@ -127,6 +138,50 @@ public class SplashActivity extends AppCompatActivity {
      * 서버에서 Question 받아오는 메소드
      */
     private void getQuestionDB() {
+        sqliteHelper = new SqliteHelper(this, DBNAME, null, DBVERSION);
+        db = sqliteHelper.getWritableDatabase();
+        if (!Utility.isNetworkConnected(mContext)) {
+            int totalQst = 0;
+            Cursor cursor = null;
+
+            try {
+                cursor = db.rawQuery("select count(id) from question;", null);    //총 Question 수 가져오기
+                while (cursor.moveToNext()) totalQst = cursor.getInt(0);
+            } catch (Exception e) {
+                LogHelper.errorStackTrace(e);
+            } finally {
+                if (cursor != null && !cursor.isClosed()) cursor.close();
+            }
+
+            LogHelper.e(TAG, "total question : " + totalQst);
+            if(totalQst == 0) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                builder.setTitle("앗!");
+                builder.setCancelable(false);
+                builder.setMessage("네트워크 연결이 필요해요.").setPositiveButton("종료", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        finish();
+                        android.os.Process.killProcess(android.os.Process.myPid());
+                    }
+                }).show();
+            } else {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        //메인 페이지 시작
+                        Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+                        intent.putExtra("fragmentName", MainActivity.MAIN_FRAGMENT_MAIN);
+                        startActivity(intent);
+                        finish();
+                    }
+                }, 1500);
+
+            }
+            return;
+        }
+
+        LogHelper.e(TAG, "네트워크 연결됨");
         new Thread() {      //Thread안에 넣어 돌려야 받아올 수 있음.
             @Override
             public void run() {
@@ -146,11 +201,12 @@ public class SplashActivity extends AppCompatActivity {
 
                     }
                 });
+
                 myRef.addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                         Questions question = dataSnapshot.getValue(Questions.class);
-                        LogHelper.e("q : ", question.getId() + "  q : " + question.getQ() + " createdat : " + question.getCreated_at());
+//                        LogHelper.e("q : ", question.getId() + "  q : " + question.getQ() + " createdat : " + question.getCreated_at());
                         questionList.add(question);
                     }
 
@@ -182,6 +238,75 @@ public class SplashActivity extends AppCompatActivity {
             }
         }.start();
     }
+
+//    /**
+//     * 서버에서 Answer 받아오는 메소드
+//     */
+//    private void getAnswerDB() {
+//        new Thread() {      //Thread안에 넣어 돌려야 받아올 수 있음.
+//            @Override
+//            public void run() {
+//                super.run();
+//                LogHelper.e(TAG, "getAnswerDB 시작");
+//                final FirebaseDatabase database = FirebaseDatabase.getInstance();
+//                DatabaseReference myRef = database.getReference().child("Answer").child(user.getUid());
+//
+////                myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+////                    public void onDataChange(DataSnapshot dataSnapshot) {
+////                        LogHelper.e(TAG, "Answer We're done loading the initial " + dataSnapshot.getChildrenCount() + " items");
+////
+//////                        initDatabase();
+////                    }
+////
+////                    @Override
+////                    public void onCancelled(DatabaseError databaseError) {
+////
+////                    }
+////                });
+//                myRef.addChildEventListener(new ChildEventListener() {
+//                    @Override
+//                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+//                        LogHelper.e(TAG, "user.getUid() : " + user.getUid());
+//                        LogHelper.e(TAG, "MY answer key : " + dataSnapshot.getKey());
+//                        Map<String, Answer> answerMap = (HashMap<String, Answer>) dataSnapshot.getValue();
+//
+//                        if(answerMap == null || answerMap.size() == 0) {
+//                            LogHelper.e(TAG, "ANSWER IS NULL");
+//                            return;
+//                        }
+//
+//                        LogHelper.e(TAG, "aId : " + answerMap.get("aId") + " ,answer : " + answerMap.get("answer") +", created_at : " + answerMap.get("created_at") + ", qId : " + answerMap.get("qId"));
+//
+//                    }
+//
+//                    @Override
+//                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+////                        Questions question =  dataSnapshot.getValue(Questions.class);
+////                        LogHelper.e("2q : ",question.getId()+"  q : "+ question.getQ() +" createdat : "+question.getCreated_at());
+//
+//                    }
+//
+//                    @Override
+//                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+//                        Answer answer = dataSnapshot.child(user.getUid()).getValue(Answer.class);
+//                        LogHelper.e("qid : ", answer.getqId() + "  aid : " + answer.getaId() + ", answer : " + answer.getAnswer() + " createdat : " + answer.getCreated_at());
+//
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(DatabaseError databaseError) {
+//
+//                    }
+//
+//                });
+//            }
+//        }.start();
+//    }
 
     /**
      * InputStream받아서 String으로 바꿔주는 메소드

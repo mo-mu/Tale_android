@@ -4,15 +4,6 @@
              android:layout_height="match_parent"
              android:orientation="vertical">
 
-    <ProgressBar
-        android:id="@+id/loadingProgress"
-        style="@style/Base.Widget.AppCompat.ProgressBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:indeterminate="true"
-        android:visibility="gone"/>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -157,6 +148,8 @@
                         <EditText
                             android:id="@+id/editPwd"
                             android:layout_width="match_parent"
+                            android:textColor="@color/white"
+                            android:imeOptions="actionNext"
                             android:layout_height="wrap_content"
                             android:background="@android:color/transparent"
                             android:inputType="textPassword"
@@ -202,6 +195,8 @@
                             android:layout_height="wrap_content"
                             android:background="@android:color/transparent"
                             android:inputType="textPassword"
+                            android:textColor="@color/white"
+                            android:imeOptions="actionDone"
                             android:textColorHint="@color/gray2"/>
                     </LinearLayout>
 
@@ -235,38 +230,13 @@
             </LinearLayout>
         </ScrollView>
     </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/loadingProgress"
+        style="@style/Base.Widget.AppCompat.ProgressBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:indeterminate="true"
+        android:visibility="gone"/>
 </FrameLayout>
-
-
-    <!--<EditText-->
-    <!--android:id="@+id/editNick"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:hint="NickName"-->
-    <!--android:imeOptions="actionNext"-->
-    <!--android:maxLines="1"/>-->
-
-    <!--<EditText-->
-    <!--android:id="@+id/editPwd"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:hint="password"-->
-    <!--android:imeOptions="actionDone"-->
-    <!--android:inputType="textPassword"-->
-    <!--android:maxLines="1"/>-->
-
-    <!--<Button-->
-    <!--android:id="@+id/btSignUp"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_gravity="center_horizontal"-->
-    <!--android:layout_marginTop="20dp"-->
-    <!--android:text="회원가입"/>-->
-
-    <!--<Button-->
-    <!--android:id="@+id/btSignIn"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_gravity="center_horizontal"-->
-    <!--android:layout_marginTop="10dp"-->
-    <!--android:text="로그인하러가기"/>-->

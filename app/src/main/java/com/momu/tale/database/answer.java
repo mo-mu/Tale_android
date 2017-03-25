@@ -1,10 +1,5 @@
 package com.momu.tale.database;
 
-import com.google.firebase.database.Exclude;
-
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * Created by songm on 2017-02-23.
  */
@@ -29,6 +24,9 @@ public class Answer {
         return created_at;
     }
 
+    public Answer() {
+
+    }
 
     public Answer(int aId, int qId, String answer, String created_at) {
         this.aId = aId;
@@ -37,15 +35,14 @@ public class Answer {
         this.created_at = created_at;
     }
 
-    @Exclude
-    public Map<String, Object> toMap() {
-        HashMap<String, Object> result = new HashMap<>();
-        result.put("aId", aId);
-        result.put("qId", qId);
-        result.put("answer", answer);
-        result.put("created_at", created_at);
-
-        return result;
-    }
-
+//    @Exclude
+//    public Map<String, Object> toMap() {
+//        HashMap<String, Object> result = new HashMap<>();
+//        result.put("aId", aId);
+//        result.put("qId", qId);
+//        result.put("answer", answer);
+//        result.put("created_at", created_at);
+//
+//        return result;
+//    }
 }

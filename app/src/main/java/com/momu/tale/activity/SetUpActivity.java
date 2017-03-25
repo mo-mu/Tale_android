@@ -17,12 +17,10 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.momu.tale.MySharedPreference;
 import com.momu.tale.R;
 import com.momu.tale.config.CConfig;
-import com.momu.tale.utility.LogHelper;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -54,6 +52,7 @@ public class SetUpActivity extends AppCompatActivity {
 
     @BindView(R.id.schSync) Switch switchSync;
 
+    private static final int RESULT_SIGN_IN = 11;
     private static final String TAG = "SetupActivity";
 
     @Override
@@ -88,7 +87,7 @@ public class SetUpActivity extends AppCompatActivity {
      * 동기화 및 로그인 여부 확인, 표시.
      */
     private void initSync() {
-        user = FirebaseAuth.getInstance().getCurrentUser();
+//        user = FirebaseAuth.getInstance().getCurrentUser();
 
         if (user != null) {
             // User is signed in
@@ -103,7 +102,6 @@ public class SetUpActivity extends AppCompatActivity {
             isLogined = false;
             switchSync.setChecked(false);
         }
-
     }
 
     /**
@@ -155,28 +153,110 @@ public class SetUpActivity extends AppCompatActivity {
     void syncSwitchClick() {
         if (user == null) {
             Toast.makeText(mContext, "로그인 후 동기화가 가능합니다.", Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(mContext, SignUpActivity.class));
+//            startActivity(new Intent(mContext, SignUpActivity.class));
         } else {
             MySharedPreference sharedPreference = new MySharedPreference(mContext);
             sharedPreference.changeSync(!sharedPreference.getIsSync());
+
+            if (sharedPreference.getIsSync()) {
+                //동기화 시작
+                startSyncProcess();
+            }
         }
     }
 
     @OnClick(R.id.layout_login)
     void layoutLoginClick() {
         if (isLogined && user != null) {
-            FirebaseAuth.getInstance().signOut();
-            user = FirebaseAuth.getInstance().getCurrentUser();
-            isLogined = false;
-            Toast.makeText(mContext, "로그아웃 되었습니다.", Toast.LENGTH_SHORT).show();
-
-            sharedPreference.changeSync(false); //동기화 값 저장.
-
-            initSync();
-
-            LogHelper.e(TAG, "로그아웃 함, user : " + user);
+//            FirebaseAuth.getInstance().signOut();
+//            user = FirebaseAuth.getInstance().getCurrentUser();
+//            isLogined = false;
+//            Toast.makeText(mContext, "로그아웃 되었습니다.", Toast.LENGTH_SHORT).show();
+//
+//            sharedPreference.changeSync(false); //동기화 값 저장.
+//
+//            initSync();
+//
+//            LogHelper.e(TAG, "로그아웃 함, user : " + user);
         } else {
-            startActivity(new Intent(mContext, SignInActivity.class));
+//            startActivityForResult(new Intent(mContext, SignInActivity.class), RESULT_SIGN_IN);
+        }
+    }
+
+    /**
+     * 서버로 Answer 업로드
+     */
+    void startSyncProcess() {
+        //업로드 끝난 후 다운로드 받기
+        getAnswerDB();
+    }
+
+    /**
+     * 서버에서 Answer 받아오는 메소드
+     */
+    private void getAnswerDB() {
+//        LogHelper.e(TAG, "start get answer db from server");
+//        final ArrayList<Answer> answerList = new ArrayList<>();
+//
+//        new Thread() {      //Thread안에 넣어 돌려야 받아올 수 있음.
+//            @Override
+//            public void run() {
+//                super.run();
+//                LogHelper.e(TAG, "getAnswerDB 시작");
+//                final FirebaseDatabase database = FirebaseDatabase.getInstance();
+//                DatabaseReference myRef = database.getReference().child("Answer").child(user.getUid());
+//
+//                myRef.addChildEventListener(new ChildEventListener() {
+//                    @Override
+//                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+//                        LogHelper.e(TAG, "user.getUid() : " + user.getUid());
+//                        LogHelper.e(TAG, "MY answer key : " + dataSnapshot.getKey());
+//                        Map<String, Answer> answerMap = (Map<String, Answer>) dataSnapshot.getValue();
+//
+//                        if (answerMap == null || answerMap.size() == 0) {
+//                            LogHelper.e(TAG, "ANSWER IS NULL");
+//                            return;
+//                        } else {
+//                            LogHelper.e(TAG, "ANSWERMAP SIZE : " + answerMap.size());
+//                        }
+//
+//                        LogHelper.e(TAG, "aId : " + answerMap.get("aId") + " ,answer : " + answerMap.get("answer") + ", created_at : " + answerMap.get("created_at") + ", qId : " + answerMap.get("qId"));
+//
+//                    }
+//
+//                    @Override
+//                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+//                        Answer answer = dataSnapshot.child(user.getUid()).getValue(Answer.class);
+//                        LogHelper.e("qid : ", answer.getqId() + "  aid : " + answer.getaId() + ", answer : " + answer.getAnswer() + " createdat : " + answer.getCreated_at());
+//
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(DatabaseError databaseError) {
+//
+//                    }
+//
+//                });
+//            }
+//        }.start();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == RESULT_SIGN_IN && resultCode == RESULT_OK) {
+            getAnswerDB();
         }
     }
 }

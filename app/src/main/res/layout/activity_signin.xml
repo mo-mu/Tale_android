@@ -4,15 +4,6 @@
              android:layout_height="match_parent"
              android:orientation="vertical">
 
-    <ProgressBar
-        android:id="@+id/loadingProgress"
-        style="@style/Base.Widget.AppCompat.ProgressBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:indeterminate="true"
-        android:visibility="gone"/>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -52,6 +43,7 @@
                 <EditText
                     android:id="@+id/editId"
                     android:layout_width="match_parent"
+                    android:imeOptions="actionNext"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
                     android:textColor="@color/white"
@@ -97,6 +89,8 @@
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
                     android:inputType="textPassword"
+                    android:textColor="@color/white"
+                    android:imeOptions="actionDone"
                     android:textColorHint="@color/gray2"/>
             </LinearLayout>
 
@@ -129,4 +123,13 @@
             android:textColor="@color/white"
             android:visibility="gone"/>
     </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/loadingProgress"
+        style="@style/Base.Widget.AppCompat.ProgressBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:indeterminate="true"
+        android:visibility="gone"/>
 </FrameLayout>
