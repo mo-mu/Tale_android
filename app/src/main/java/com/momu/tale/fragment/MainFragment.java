@@ -244,9 +244,7 @@ public class MainFragment extends Fragment {
      */
     @OnClick(R.id.board)
     void boardClick() {
-        if (txtAnswer.getText().toString().equals("")) { //작성된 질문이 없다면 작성 페이지로 이동
-            btnWriteClick();
-        } else {    //작성된 질문이 있다면 질문 상세 페이지로 이동
+        if (!txtAnswer.getText().toString().equals("")) { //작성된 질문이 있다면 질문 상세 페이지로 이동
             Intent gotoSaveQst = new Intent(mContext, SavedQstDetailActivity.class);
             gotoSaveQst.putExtra("question", txtQuestion.getText().toString());
             gotoSaveQst.putExtra("questionId", questionId);
