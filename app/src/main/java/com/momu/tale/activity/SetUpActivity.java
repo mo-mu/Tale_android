@@ -56,6 +56,8 @@ public class SetUpActivity extends AppCompatActivity {
     @BindView(R.id.switch_lock) SwitchCompat switchLock;
     @BindView(R.id.btn_lock_change) LinearLayout btnLockChange;
     @BindView(R.id.txt_change_lock_password) TextView txtLockChange;
+    @BindView(R.id.txt_lock_head) TextView txtLockHead;
+    @BindView(R.id.txt_warning) TextView txtWarning;
 
     private static final int RESULT_SIGN_IN = 11;
 
@@ -87,6 +89,9 @@ public class SetUpActivity extends AppCompatActivity {
         txtVersionSub.setTypeface(typeFace1);
         txtAboutTitle.setTypeface(typeFace1);
         txtAboutSub.setTypeface(typeFace1);
+        txtLockChange.setTypeface(typeFace1);
+        txtLockHead.setTypeface(typeFace1);
+        txtWarning.setTypeface(typeFace1);
     }
 
     /**
