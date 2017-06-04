@@ -47,16 +47,16 @@ public class PinLockActivity extends AppCompatActivity {
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
         if (getIntent().getBooleanExtra("isLockMode", false)) {  //잠금 모드인 경우
-            txtHeader.setText("잠금 비밀번호를 입력해 주세요.");
+            txtHeader.setText(R.string.lock_pw_insert);
             isLockMode = true;
 
         } else if (getIntent().getBooleanExtra("checkAgain", false)) {  //비밀번호 재확인인 경우
-            txtHeader.setText("확인을 위해 한번 더 입력해 주세요.");
+            txtHeader.setText(R.string.lock_recheck);
             isCheckAgain = true;
             pinNumber = getIntent().getStringExtra("pinNumber");
 
         } else {    //잠금 비밀번호 첫설정 혹은 변경인 경우
-            txtHeader.setText("잠금 비밀번호를 입력해 주세요.");
+            txtHeader.setText(R.string.lock_pw_insert);
         }
 
         indicatorDots.setPinLength(4);
@@ -72,37 +72,41 @@ public class PinLockActivity extends AppCompatActivity {
 
             if (isLockMode) {    //비밀번호 잠금 해제모드인 경우
                 if (pin.equals(AppPreference.loadScreenPinNumber(mContext))) {  //비밀번호 일치
-                    if(getIntent().getBooleanExtra("isStartApplication", false)) {  //앱 처음 시작인 경우
+                    if (getIntent().getBooleanExtra("isStartApplication", false)) {  //앱 처음 시작인 경우
                         //메인 페이지 시작
                         Intent intent = new Intent(mContext, MainActivity.class);
                         intent.putExtra("fragmentName", MainActivity.MAIN_FRAGMENT_MAIN);
                         startActivity(intent);
                     }
-                    finish();
+
                 } else {
-                    Toast.makeText(mContext, "비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext,R.string.toast_lock_pw_incorrect, Toast.LENGTH_SHORT).show();
 
                     vibrator.vibrate(500);
                     Intent lockIntent = new Intent(getApplicationContext(), PinLockActivity.class);
                     lockIntent.putExtra("isLockMode", true);
-                    lockIntent.putExtra("isStartApplication", true);
+
+                    if (getIntent().getBooleanExtra("isStartApplication", false)) {  //앱 처음 시작인 경우
+                        lockIntent.putExtra("isStartApplication", true);
+                    }
+
                     startActivity(lockIntent);
-                    finish();
                 }
+
             } else if (isCheckAgain) {  //비밀번호 재확인인 경우
                 if (pinNumber != null && pinNumber.equals(pin)) {
 
-                    Toast.makeText(mContext, "잠금화면이 설정되었습니다.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, R.string.toast_lock_setting_done, Toast.LENGTH_SHORT).show();
                     AppPreference.saveScreenPinNumber(mContext, pin);
+
                 } else {
 
-                    Toast.makeText(mContext, "비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, R.string.toast_lock_pw_incorrect, Toast.LENGTH_SHORT).show();
                     vibrator.vibrate(500);
 
                     Intent lockIntent = new Intent(mContext, PinLockActivity.class);
                     startActivity(lockIntent);
                 }
-
 
             } else {    //비밀번호 처음 입력인 경우 재확인을 해 주어야 한다.
                 Intent checkAgainIntent = new Intent(mContext, PinLockActivity.class);

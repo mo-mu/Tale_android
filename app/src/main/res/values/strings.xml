@@ -5,4 +5,10 @@
     <string name="momu">MOMU</string>
     <string name="lock_setting">잠금 설정</string>
     <string name="lock_setting_change">암호 변경</string>
+
+    <!--잠금 화면 -->
+    <string name="lock_pw_insert">잠금 비밀번호를 입력해 주세요.</string>
+    <string name="lock_recheck">확인을 위해 한번 더 입력해 주세요.</string>
+    <string name="toast_lock_pw_incorrect">비밀번호가 일치하지 않습니다.</string>
+    <string name="toast_lock_setting_done">잠금화면이 설정되었습니다.</string>
 </resources>
