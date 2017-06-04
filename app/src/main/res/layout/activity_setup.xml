@@ -222,6 +222,7 @@
                 android:textSize="16dp"/>
 
             <TextView
+                android:id="@+id/txt_warning"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
