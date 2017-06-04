@@ -2,6 +2,7 @@ package com.momu.tale.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.annotation.Nullable;
@@ -13,6 +14,7 @@ import com.andrognito.pinlockview.IndicatorDots;
 import com.andrognito.pinlockview.PinLockListener;
 import com.andrognito.pinlockview.PinLockView;
 import com.momu.tale.R;
+import com.momu.tale.config.CConfig;
 import com.momu.tale.preference.AppPreference;
 import com.momu.tale.utility.LogHelper;
 
@@ -29,6 +31,7 @@ public class PinLockActivity extends AppCompatActivity {
     @BindView(R.id.pin_lock_view) PinLockView mPinLockView;
     @BindView(R.id.indicator_dots) IndicatorDots indicatorDots;
     @BindView(R.id.txt_header) TextView txtHeader;
+    @BindView(R.id.txt_Title) TextView txtTitle;
 
     Context mContext = this;
     boolean isLockMode = false; //잠금 확인모드인지 여부
@@ -45,6 +48,7 @@ public class PinLockActivity extends AppCompatActivity {
         setContentView(R.layout.activity_pinlock);
         ButterKnife.bind(this);
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        setTypeFace();
 
         if (getIntent().getBooleanExtra("isLockMode", false)) {  //잠금 모드인 경우
             txtHeader.setText(R.string.lock_pw_insert);
@@ -62,6 +66,15 @@ public class PinLockActivity extends AppCompatActivity {
         indicatorDots.setPinLength(4);
         mPinLockView.attachIndicatorDots(indicatorDots);
         mPinLockView.setPinLockListener(mPinLockListener);
+    }
+
+    /**
+     * 폰트 설정
+     */
+    void setTypeFace() {
+        Typeface typeFace1 = Typeface.createFromAsset(mContext.getAssets(), CConfig.FONT_SEOUL_NAMSAN_CL);
+        txtHeader.setTypeface(typeFace1);
+        txtTitle.setTypeface(typeFace1);
     }
 
     private PinLockListener mPinLockListener = new PinLockListener() {
