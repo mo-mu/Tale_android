@@ -30,7 +30,7 @@ public class PinLockActivity extends AppCompatActivity {
     @BindView(R.id.pin_lock_view) PinLockView mPinLockView;
     @BindView(R.id.indicator_dots) IndicatorDots indicatorDots;
     @BindView(R.id.txt_header) TextView txtHeader;
-    @BindView(R.id.txt_Title) TextView txtTitle;
+    @BindView(R.id.txt_title) TextView txtTitle;
 
     Context mContext = this;
     Vibrator vibrator;
