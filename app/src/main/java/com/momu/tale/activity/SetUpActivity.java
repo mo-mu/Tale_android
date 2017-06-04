@@ -8,6 +8,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,6 +22,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.momu.tale.MySharedPreference;
 import com.momu.tale.R;
 import com.momu.tale.config.CConfig;
+import com.momu.tale.preference.AppPreference;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -51,8 +53,12 @@ public class SetUpActivity extends AppCompatActivity {
     @BindView(R.id.txtAboutSub) TextView txtAboutSub;
 
     @BindView(R.id.schSync) Switch switchSync;
+    @BindView(R.id.switch_lock) SwitchCompat switchLock;
+    @BindView(R.id.btn_lock_change) LinearLayout btnLockChange;
+    @BindView(R.id.txt_change_lock_password) TextView txtLockChange;
 
     private static final int RESULT_SIGN_IN = 11;
+
     private static final String TAG = "SetupActivity";
 
     @Override
@@ -110,7 +116,7 @@ public class SetUpActivity extends AppCompatActivity {
     private void setToolbar() {
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("");
+        getSupportActionBar().setTitle("설정");
         imgLogo.setVisibility(View.GONE);
     }
 
@@ -147,6 +153,20 @@ public class SetUpActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         initSync();
+        initPinLayout();
+    }
+
+    /**
+     * 화면 잠금 레이아웃 초기화
+     */
+    void initPinLayout() {
+        if (AppPreference.loadScreenPinNumber(mContext).equals("")) {   //비밀번호가 설정되어 있지 않은 경우
+            switchLock.setChecked(false);
+            btnLockChange.setVisibility(View.GONE);
+        } else {    //비밀번호가 설정된 경우
+            switchLock.setChecked(true);
+            btnLockChange.setVisibility(View.VISIBLE);
+        }
     }
 
     @OnClick(R.id.schSync)
@@ -164,6 +184,32 @@ public class SetUpActivity extends AppCompatActivity {
             }
         }
     }
+
+    /**
+     * 잠금 설정 버튼 클릭 이벤트
+     */
+    @OnClick({R.id.btn_lock_setting, R.id.switch_lock})
+    void btnLockSettingClick() {
+        if (AppPreference.loadScreenPinNumber(mContext).equals("")) {   //암호 설정
+            Intent lockIntent = new Intent(mContext, PinLockActivity.class);
+            startActivity(lockIntent);
+
+        } else {    //암호 해제
+            Toast.makeText(mContext, "화면 잠금이 해제되었습니다.", Toast.LENGTH_SHORT).show();
+            AppPreference.saveScreenPinNumber(mContext, "");
+            initPinLayout();
+        }
+    }
+
+    /**
+     * 암호 변경
+     */
+    @OnClick(R.id.btn_lock_change)
+    void btnLockChangeClick() {
+        Intent lockIntent = new Intent(mContext, PinLockActivity.class);
+        startActivity(lockIntent);
+    }
+
 
     @OnClick(R.id.layout_login)
     void layoutLoginClick() {
@@ -255,8 +301,11 @@ public class SetUpActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == RESULT_SIGN_IN && resultCode == RESULT_OK) {
-            getAnswerDB();
+        switch (requestCode) {
+            case RESULT_SIGN_IN:
+                if (resultCode == RESULT_OK)
+                    getAnswerDB();
+                break;
         }
     }
 }

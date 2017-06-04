@@ -3,4 +3,6 @@
 
     <string name="about">만든이</string>
     <string name="momu">MOMU</string>
+    <string name="lock_setting">잠금 설정</string>
+    <string name="lock_setting_change">암호 변경</string>
 </resources>

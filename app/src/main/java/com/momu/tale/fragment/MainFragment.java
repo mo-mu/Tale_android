@@ -24,6 +24,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.momu.tale.R;
+import com.momu.tale.SqliteHelper;
 import com.momu.tale.activity.MainActivity;
 import com.momu.tale.activity.ModifyActivity;
 import com.momu.tale.activity.SavedQstDetailActivity;
@@ -53,7 +54,12 @@ public class MainFragment extends Fragment {
     int answerId = -1, questionId = -1;
 
     SQLiteDatabase db;
+    SqliteHelper sqliteHelper;
     Context mContext;
+
+    private final String DBNAME = "wtfs.db";
+    private final int DBVERSION = 1;
+
     private static final String TAG = "MainFragment";
 
     @Override
@@ -75,7 +81,8 @@ public class MainFragment extends Fragment {
         FrameLayout v = (FrameLayout) inflater.inflate(R.layout.fragment_main, container, false);
         ButterKnife.bind(this, v);
 
-        db = SplashActivity.sqliteHelper.getReadableDatabase();
+        sqliteHelper = new SqliteHelper(mContext, DBNAME, null, DBVERSION);
+        db = sqliteHelper.getReadableDatabase();
 
         Typeface typeFace1 = Typeface.createFromAsset(getActivity().getAssets(), CConfig.FONT_SEOUL_NAMSAN_CL);
         Typeface typeFace2 = Typeface.createFromAsset(getActivity().getAssets(), CConfig.FONT_YANOLJA_YACHE_REGULAR);
@@ -204,7 +211,7 @@ public class MainFragment extends Fragment {
      * @param id questionId
      */
     private void questionSelect(int id) {
-        SQLiteDatabase db = SplashActivity.sqliteHelper.getReadableDatabase();
+        SQLiteDatabase db = sqliteHelper.getReadableDatabase();
         Cursor cursor = null;
         try {
             cursor = db.rawQuery("select * from question where id=" + id + ";", null);

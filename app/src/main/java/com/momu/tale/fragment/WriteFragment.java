@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import com.momu.tale.MySharedPreference;
 import com.momu.tale.R;
+import com.momu.tale.SqliteHelper;
 import com.momu.tale.activity.MainActivity;
 import com.momu.tale.activity.SplashActivity;
 import com.momu.tale.config.CConfig;
@@ -47,7 +48,7 @@ public class WriteFragment extends Fragment {
     SimpleDateFormat format = new SimpleDateFormat("yyyy/ MM/ dd");
     String sql;
     SQLiteDatabase db;
-
+    SqliteHelper sqliteHelper = null;
     Context mContext;
 
     boolean isLogined, isSync;
@@ -64,7 +65,7 @@ public class WriteFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = getActivity();
-
+        sqliteHelper = new SqliteHelper(mContext, CConfig.DBNAME, null, CConfig.DBVERSION);
         MySharedPreference myShpr = new MySharedPreference(mContext);
         isSync = myShpr.getIsSync();
 //        database = FirebaseDatabase.getInstance();
@@ -85,7 +86,7 @@ public class WriteFragment extends Fragment {
         LinearLayout view = (LinearLayout) inflater.inflate(R.layout.fragment_write, container, false);
         ButterKnife.bind(this, view);
 
-        db = SplashActivity.sqliteHelper.getWritableDatabase();
+        db = sqliteHelper.getWritableDatabase();
 
         Typeface typeFace1 = Typeface.createFromAsset(getActivity().getAssets(), CConfig.FONT_SEOUL_NAMSAN_CL);
         Typeface typeFace2 = Typeface.createFromAsset(getActivity().getAssets(), CConfig.FONT_YANOLJA_YACHE_REGULAR);

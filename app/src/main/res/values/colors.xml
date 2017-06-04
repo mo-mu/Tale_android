@@ -14,4 +14,6 @@
 
     <color name="gray">#eeeeee</color>
     <color name="gray2">#b2b2b2</color>
+
+    <color name="black">#000000</color>
 </resources>

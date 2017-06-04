@@ -48,4 +48,23 @@ public class AppPreference {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
         return sharedPreferences.getBoolean("isToggleOn", false);
     }
+
+    /**
+     * 스크린 핀넘버 저장
+     * @param pinNumber 스크린 핀넘버
+     */
+    public static void saveScreenPinNumber(Context mContext, String pinNumber) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("screenPinNum", pinNumber).apply();
+    }
+
+    /**
+     * 스크린 핀넘버 불러오기
+     * @return 스크린 핀넘버
+     */
+    public static String loadScreenPinNumber(Context mContext) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
+        return sharedPreferences.getString("screenPinNum", "");
+    }
 }

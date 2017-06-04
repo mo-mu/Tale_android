@@ -11,11 +11,11 @@
         layout="@layout/main_toolbar"/>
 
     <LinearLayout
-        android:visibility="gone"
         android:id="@+id/layout_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone">
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -58,10 +58,10 @@
     </LinearLayout>
 
     <LinearLayout
-        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone">
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -180,12 +180,99 @@
 
                 <TextView
                     android:id="@+id/txtAboutSub"
-                    android:text="@string/momu"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="@string/momu"
                     android:textColor="@color/white"
                     android:textSize="16dp"/>
             </FrameLayout>
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@color/line"/>
+    </LinearLayout>
+
+    <LinearLayout android:id="@+id/btn_lock_setting"
+                  xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:paddingBottom="32dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="32dp">
+
+            <TextView
+                android:id="@+id/txt_lock_head"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:text="@string/lock_setting"
+                android:textColor="@color/white"
+                android:textSize="16dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/txt_lock_head"
+                android:layout_marginRight="50dp"
+                android:layout_marginTop="5dp"
+                android:text="암호를 분실했을 경우 앱을 삭제하고 재설치 해야 하며, 재설치 시 기존 다이어리 내용은 삭제됩니다."
+                android:textColor="@color/gray2"
+                android:textSize="12sp"/>
+
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/switch_lock"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"/>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@color/line"/>
+    </LinearLayout>
+
+    <LinearLayout android:id="@+id/btn_lock_change"
+                  xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:paddingBottom="32dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="32dp">
+
+            <TextView
+                android:id="@+id/txt_change_lock_password"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left|center_vertical"
+                android:text="@string/lock_setting_change"
+                android:textColor="@color/white"
+                android:textSize="16dp"/>
         </FrameLayout>
 
         <LinearLayout

@@ -26,6 +26,7 @@ import com.momu.tale.SqliteHelper;
 import com.momu.tale.config.CConfig;
 import com.momu.tale.database.Answer;
 import com.momu.tale.database.Questions;
+import com.momu.tale.preference.AppPreference;
 import com.momu.tale.utility.LogHelper;
 import com.momu.tale.utility.Utility;
 
@@ -51,9 +52,7 @@ public class SplashActivity extends AppCompatActivity {
     private ArrayList<Questions> questionList = new ArrayList<>();
     private ArrayList<Answer> answerList = new ArrayList<>();
 
-    public static SqliteHelper sqliteHelper;
-    private final String DBNAME = "wtfs.db";
-    private final int DBVERSION = 1;
+    SqliteHelper sqliteHelper = new SqliteHelper(this, CConfig.DBNAME, null, CConfig.DBVERSION);
     public SQLiteDatabase db;
 
     FirebaseUser user = null;
@@ -127,10 +126,19 @@ public class SplashActivity extends AppCompatActivity {
             if (db != null) db.close();
         }
 
-        //메인 페이지 시작
-        Intent intent = new Intent(SplashActivity.this, MainActivity.class);
-        intent.putExtra("fragmentName", MainActivity.MAIN_FRAGMENT_MAIN);
-        startActivity(intent);
+
+        if (AppPreference.loadScreenPinNumber(mContext).equals("")) {
+            //메인 페이지 시작
+            Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+            intent.putExtra("fragmentName", MainActivity.MAIN_FRAGMENT_MAIN);
+            startActivity(intent);
+        } else {
+            LogHelper.e(TAG, "잠금화면 시작!");
+            Intent lockIntent = new Intent(getApplicationContext(), PinLockActivity.class);
+            lockIntent.putExtra("isLockMode", true);
+            lockIntent.putExtra("isStartApplication", true);
+            startActivity(lockIntent);
+        }
         finish();
     }
 
@@ -138,7 +146,7 @@ public class SplashActivity extends AppCompatActivity {
      * 서버에서 Question 받아오는 메소드
      */
     private void getQuestionDB() {
-        sqliteHelper = new SqliteHelper(this, DBNAME, null, DBVERSION);
+        sqliteHelper = new SqliteHelper(this, CConfig.DBNAME, null, CConfig.DBVERSION);
         db = sqliteHelper.getWritableDatabase();
         if (!Utility.isNetworkConnected(mContext)) {
             int totalQst = 0;
@@ -169,13 +177,21 @@ public class SplashActivity extends AppCompatActivity {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        //메인 페이지 시작
-                        Intent intent = new Intent(SplashActivity.this, MainActivity.class);
-                        intent.putExtra("fragmentName", MainActivity.MAIN_FRAGMENT_MAIN);
-                        startActivity(intent);
+                        if (AppPreference.loadScreenPinNumber(mContext).equals("")) {
+                            //메인 페이지 시작
+                            Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+                            intent.putExtra("fragmentName", MainActivity.MAIN_FRAGMENT_MAIN);
+                            startActivity(intent);
+                        } else {
+                            LogHelper.e(TAG, "잠금화면 시작!");
+                            Intent lockIntent = new Intent(getApplicationContext(), PinLockActivity.class);
+                            lockIntent.putExtra("isLockMode", true);
+                            lockIntent.putExtra("isStartApplication", true);
+                            startActivity(lockIntent);
+                        }
                         finish();
                     }
-                }, 1500);
+                }, SPLASH_TIME);
 
             }
             return;

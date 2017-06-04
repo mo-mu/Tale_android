@@ -8,7 +8,7 @@ import android.util.Log;
  * Created by Knulps on 2017-01-13.
  */
 public class LogHelper {
-    private static final boolean DEBUG_MODE = false;
+    private static final boolean DEBUG_MODE = true;
 
     /**
      * Log.e 관리 클래스

@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.momu.tale.MySharedPreference;
 import com.momu.tale.R;
+import com.momu.tale.SqliteHelper;
 import com.momu.tale.config.CConfig;
 import com.momu.tale.utility.LogHelper;
 
@@ -36,6 +37,7 @@ public class ModifyActivity extends AppCompatActivity {
     SimpleDateFormat format = new SimpleDateFormat("yyyy/ MM/ dd");
     String sql;
     SQLiteDatabase db;
+    SqliteHelper sqliteHelper = new SqliteHelper(this, CConfig.DBNAME, null, CConfig.DBVERSION);
     boolean isLogined, isSync;
 //    FirebaseDatabase database;
 //    DatabaseReference myRef;
@@ -49,13 +51,14 @@ public class ModifyActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_modify);
         mContext = this;
         ButterKnife.bind(this);
 
         setToolbar();
 
-        db = SplashActivity.sqliteHelper.getWritableDatabase();
+        db = sqliteHelper.getWritableDatabase();
 
         Typeface typeFace1 = Typeface.createFromAsset(getAssets(), CConfig.FONT_SEOUL_NAMSAN_CL);
         Typeface typeFace2 = Typeface.createFromAsset(getAssets(), CConfig.FONT_YANOLJA_YACHE_REGULAR);

@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.momu.tale.R;
+import com.momu.tale.SqliteHelper;
 import com.momu.tale.adapter.SavedQstDetailAdapter;
 import com.momu.tale.config.CConfig;
 import com.momu.tale.item.SavedQstDetailItem;
@@ -33,7 +34,8 @@ import butterknife.ButterKnife;
 public class SavedQstDetailActivity extends AppCompatActivity {
     LinearLayoutManager layoutManager;
     ArrayList<SavedQstDetailItem> items = new ArrayList<>();
-    SQLiteDatabase db = SplashActivity.sqliteHelper.getReadableDatabase();
+    SqliteHelper sqliteHelper = new SqliteHelper(this, CConfig.DBNAME, null, CConfig.DBVERSION);
+    SQLiteDatabase db ;
     Context mContext;
 
     @BindView(R.id.toolbar) Toolbar toolbar;
@@ -48,6 +50,8 @@ public class SavedQstDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_list);
         mContext = this;
         ButterKnife.bind(this);
+
+        db = sqliteHelper.getReadableDatabase();
 
         setToolbar();
         initList();

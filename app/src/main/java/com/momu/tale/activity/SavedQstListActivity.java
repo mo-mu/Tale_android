@@ -19,6 +19,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.momu.tale.R;
+import com.momu.tale.SqliteHelper;
 import com.momu.tale.adapter.SavedQstListAdapter;
 import com.momu.tale.config.CConfig;
 import com.momu.tale.item.SavedQstListItem;
@@ -37,7 +38,8 @@ public class SavedQstListActivity extends AppCompatActivity {
     RecyclerView.LayoutManager layoutManager;
     ArrayList<SavedQstListItem> items = new ArrayList<>();
     Context mContext;
-    SQLiteDatabase db = SplashActivity.sqliteHelper.getReadableDatabase();
+    SqliteHelper sqliteHelper = new SqliteHelper(this, CConfig.DBNAME, null, CConfig.DBVERSION);
+    SQLiteDatabase db;
 
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.imgLogo) ImageView imgLogo;
@@ -55,6 +57,7 @@ public class SavedQstListActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         mContext = this;
 
+        db = sqliteHelper.getReadableDatabase();
         Typeface typeFace = Typeface.createFromAsset(getAssets(), CConfig.FONT_YANOLJA_YACHE_REGULAR);
         txtEmpty.setTypeface(typeFace);
 

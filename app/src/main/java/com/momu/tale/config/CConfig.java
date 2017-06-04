@@ -19,4 +19,8 @@ public class CConfig {
     public static final String URL_STRING = "http://52.78.172.143/api/v1/questions";    //question있는 주소
     static int CONNECTION_TIMEOUT = 3000;
     static int DATARETRIVAL_TIMEOUT = 3000;
+
+    //DB
+    public static final String DBNAME = "wtfs.db";
+    public static final int DBVERSION = 1;
 }
