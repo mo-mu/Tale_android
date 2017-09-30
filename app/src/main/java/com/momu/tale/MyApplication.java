@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.Application;
 import android.app.Application.ActivityLifecycleCallbacks;
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -92,11 +91,11 @@ public class MyApplication extends Application implements ActivityLifecycleCallb
     public void onActivityStarted(Activity activity) {
         LogHelper.e(TAG, "wasinBackground : " + wasInBackground  + ", localclassname : " + activity.getLocalClassName() +", currentActivity : " + currentActivity);
 
-        if(!AppPreference.loadScreenPinNumber(activity).equals("") && wasInBackground && !activity.getLocalClassName().equals("activity.PinLockActivity") && !(currentActivity != null && currentActivity.equals("activity.PinLockActivity"))) {
+        if(!AppPreference.loadScreenPinNumber(getApplicationContext()).equals("") && wasInBackground && !activity.getLocalClassName().equals("activity.PinLockActivity") && !(currentActivity != null && currentActivity.equals("activity.PinLockActivity"))) {
             LogHelper.e(TAG, "잠금화면 시작!");
-            Intent lockIntent = new Intent(activity, PinLockActivity.class);
+            Intent lockIntent = new Intent(getApplicationContext(), PinLockActivity.class);
             lockIntent.putExtra("isLockMode", true);
-            activity.startActivity(lockIntent);
+            startActivity(lockIntent);
         }
 
         currentActivity = activity.getLocalClassName();
