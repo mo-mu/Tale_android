@@ -44,7 +44,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
-                            android:text="닉네임 : "
+                            android:text="@string/nickname"
                             android:textColor="@color/white"
                             android:textSize="16dp"/>
 
@@ -95,7 +95,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
-                            android:text="이메일 : "
+                            android:text="@string/email"
                             android:textColor="@color/white"
                             android:textSize="16dp"/>
 
@@ -141,7 +141,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
-                            android:text="비밀번호 : "
+                            android:text="@string/pwd"
                             android:textColor="@color/white"
                             android:textSize="16dp"/>
 
@@ -185,7 +185,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
-                            android:text="비밀번호 확인 : "
+                            android:text="@string/pwd_check"
                             android:textColor="@color/white"
                             android:textSize="16dp"/>
 
@@ -215,7 +215,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="50dp"
                     android:background="@drawable/thm_btn_login"
-                    android:text="회원가입"
+                    android:text="@string/signup"
                     android:textColor="@color/white"
                     android:textSize="18sp"/>
 
@@ -225,7 +225,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="40dp"
-                    android:text="이미 tale 회원이신가요?"
+                    android:text="@string/move_sign_in"
                     android:textColor="@color/white"/>
             </LinearLayout>
         </ScrollView>

@@ -1,6 +1,16 @@
 <resources>
     <string name="app_name">테일</string>
 
+    <!-- 스플래시 화면 -->
+    <string name="splash">"네가 오후 네 시에 온다면\n 난 세 시부터 행복해지기 시작할거야"</string>
+    <string name="splash_dialog_title">앗!</string>
+    <string name="splash_dialog_msg">"네트워크 연결이 필요해요."</string>
+    <string name="splash_dialog_yes">"종료"</string>
+
+    <!-- -->
+    <string name="main_back_clicked">뒤로 가기 버튼을 한번 더 누르시면 앱이 종료됩니다.</string>
+
+    <!-- 설정 화면 -->
     <string name="about">만든이</string>
     <string name="momu">MOMU</string>
     <string name="lock_setting">잠금 설정</string>
@@ -11,4 +21,51 @@
     <string name="lock_recheck">확인을 위해 한번 더 입력해 주세요.</string>
     <string name="toast_lock_pw_incorrect">비밀번호가 일치하지 않습니다.</string>
     <string name="toast_lock_setting_done">잠금화면이 설정되었습니다.</string>
+
+    <!-- 수정 화면 -->
+    <string name="modify_title">잠깐만</string>
+    <string name="modify_msg">수정을 취소하시겠어요?</string>
+    <string name="modify_yes">네</string>
+    <string name="modify_no">아니요.</string>
+    <string name="remove_msg">글을 삭제하시겠어요?</string>
+    <string name="remove_finished">삭제되었습니다.</string>
+    <string name="logout">로그아웃</string>
+    <string name="login">로그인</string>
+    <string name="setup">설정</string>
+    <string name="check_sync">로그인 후 동기화가 가능합니다.</string>
+    <string name="unlocked">화면 잠금이 해제되었습니다.</string>
+    <string name="main_refresh">다른 질문 보여줘!</string>
+    <string name="write_toast">글 내용을 입력해 주세요.</string>
+    <string name="write_save">글이 저장되었어요.</string>
+    <string name="write_edit">글 내용을 입력해 주세요.</string>
+    <string name="write_finish_edit">수정되었습니다.</string>
+    <string name="write_dialog_title">잠깐만</string>
+    <string name="write_remove_dialog_msg">글을 삭제하시겠어요?</string>
+    <string name="write_dialog_yes">네</string>
+    <string name="write_dialog_finish">삭제되었습니다.</string>
+    <string name="write_dialog_no">아니오</string>
+    <string name="write_dialog_edit_cancel_msg">수정을 취소하시겠어요?</string>
+    <string name="write_dialog_cancel_msg">글쓰기를 취소하시겠어요?</string>
+
+    <string name="write_hint">이 곳에 당신의 이야기를 적어보세요.</string>
+
+    <string name="list_nothing">지난 이야기가 없어요...ㅜㅜ</string>
+
+    <string name="email">이메일 : </string>
+    <string name="pwd">비밀번호 :</string>
+    <string name="forgot_pwd">비밀번호를 잊으셨나요?</string>
+    <string name="nickname">닉네임 :</string>
+    <string name="pwd_check">비밀번호 확인 :</string>
+    <string name="signup">회원가입</string>
+    <string name="move_sign_in">이미 tale 회원이신가요?</string>
+    <string name="lock_title">잠금 암호</string>
+    <string name="lock_msg">4자리의 잠금 번호를 설정해주세요.</string>
+    <string name="version">버전</string>
+    <string name="warning">암호를 분실했을 경우 앱을 삭제하고 재설치 해야 하며, 재설치 시 기존 다이어리 내용은 삭제됩니다.</string>
+
+    <string name="menu_preview">지난 이야기</string>
+    <string name="ok">확인</string>
+    <string name="modify">수정</string>
+    <string name="remove">삭제</string>
+    <!-- -->
 </resources>

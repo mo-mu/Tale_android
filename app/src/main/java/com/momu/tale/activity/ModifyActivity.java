@@ -99,13 +99,13 @@ public class ModifyActivity extends AppCompatActivity {
     public void checkBeforeExist() {
         if (editAnswer.getText().length() > 0) {
             AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-            builder.setTitle("잠깐만");
-            builder.setMessage("수정을 취소하시겠어요?").setPositiveButton("네", new DialogInterface.OnClickListener() {
+            builder.setTitle(R.string.modify_title);
+            builder.setMessage(R.string.modify_msg).setPositiveButton(R.string.modify_yes, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     finish();
                 }
-            }).setNegativeButton("아니요.", new DialogInterface.OnClickListener() {
+            }).setNegativeButton(R.string.modify_no, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                 }
@@ -154,9 +154,9 @@ public class ModifyActivity extends AppCompatActivity {
 
             case R.id.action_remove:    //삭제
                 AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-                builder.setTitle("잠깐만");
-                builder.setMessage("글을 삭제하시겠어요?");
-                builder.setPositiveButton("네", new DialogInterface.OnClickListener() {
+                builder.setTitle(R.string.modify_title);
+                builder.setMessage(R.string.remove_msg);
+                builder.setPositiveButton(R.string.modify_yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         sql = "delete from answer where id=" + getIntent().getIntExtra("answerId", -1) + ";";
@@ -172,11 +172,11 @@ public class ModifyActivity extends AppCompatActivity {
 //                            });
                         }
 
-                        Toast.makeText(mContext, "삭제되었습니다.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, R.string.remove_finished, Toast.LENGTH_SHORT).show();
                         setResult(RESULT_OK);
                         finish();
                     }
-                }).setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+                }).setNegativeButton(R.string.modify_no, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                     }

@@ -27,7 +27,6 @@ import com.momu.tale.MySharedPreference;
 import com.momu.tale.R;
 import com.momu.tale.SqliteHelper;
 import com.momu.tale.activity.MainActivity;
-import com.momu.tale.activity.SplashActivity;
 import com.momu.tale.config.CConfig;
 import com.momu.tale.utility.LogHelper;
 
@@ -177,7 +176,7 @@ public class WriteFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.action_check:     //추가
                 if (editAnswer.getText().toString().trim().equals("")) {
-                    Toast.makeText(mContext, "글 내용을 입력해 주세요.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, R.string.write_toast, Toast.LENGTH_SHORT).show();
                     break;
                 }
 
@@ -217,13 +216,13 @@ public class WriteFragment extends Fragment {
                 }
 
                 finishFragment();
-                Toast.makeText(mContext, "글이 저장되었어요.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, R.string.write_save, Toast.LENGTH_SHORT).show();
                 //      }
                 break;
 
             case R.id.action_edit:      //수정
                 if (editAnswer.getText().toString().trim().equals("")) {
-                    Toast.makeText(mContext, "글 내용을 입력해 주세요.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, R.string.write_edit, Toast.LENGTH_SHORT).show();
                     break;
                 }
                 sql = "update answer set a = '" + editAnswer.getText().toString() + "' where id=" + getArguments().getInt("answerId") + ";";
@@ -243,16 +242,16 @@ public class WriteFragment extends Fragment {
                     LogHelper.e("WriteFragment", "firebase에 저장 안함");
                 }
 
-                Toast.makeText(mContext, "수정되었습니다.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, R.string.write_finish_edit, Toast.LENGTH_SHORT).show();
                 getActivity().setResult(Activity.RESULT_OK);
                 finishFragment();
                 break;
 
             case R.id.action_remove:    //삭제
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setTitle("잠깐만");
-                builder.setMessage("글을 삭제하시겠어요?");
-                builder.setPositiveButton("네", new DialogInterface.OnClickListener() {
+                builder.setTitle(R.string.write_dialog_title);
+                builder.setMessage(R.string.write_remove_dialog_msg);
+                builder.setPositiveButton(R.string.write_dialog_yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         sql = "delete from answer where id=" + getArguments().getInt("answerId") + ";";
@@ -269,11 +268,11 @@ public class WriteFragment extends Fragment {
                         }
 
 
-                        Toast.makeText(mContext, "삭제되었습니다.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, R.string.write_dialog_finish, Toast.LENGTH_SHORT).show();
                         getActivity().setResult(Activity.RESULT_OK);
                         finishFragment();
                     }
-                }).setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+                }).setNegativeButton(R.string.write_dialog_no, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                     }
@@ -290,19 +289,19 @@ public class WriteFragment extends Fragment {
     public void checkBeforeExist() {
         if (editAnswer.getText().length() > 0) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setTitle("잠깐만");
+            builder.setTitle(R.string.write_dialog_title);
             String message;
             if(searchTodayAsw(format.format(now))) {
-                message = "수정을 취소하시겠어요?";
+                message = mContext.getString(R.string.write_dialog_edit_cancel_msg);
             } else {
-                message = "글쓰기를 취소하시겠어요?";
+                message = mContext.getString(R.string.write_dialog_cancel_msg);
             }
-            builder.setMessage(message).setPositiveButton("네", new DialogInterface.OnClickListener() {
+            builder.setMessage(message).setPositiveButton(R.string.write_dialog_yes, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     finishFragment();
                 }
-            }).setNegativeButton("아니요.", new DialogInterface.OnClickListener() {
+            }).setNegativeButton(R.string.write_dialog_no, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                 }

@@ -122,7 +122,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left|center_vertical"
-                android:text="버전"
+                android:text="@string/version"
                 android:textColor="@color/white"
                 android:textSize="16dp"/>
 
@@ -229,7 +229,7 @@
                 android:layout_below="@id/txt_lock_head"
                 android:layout_marginRight="50dp"
                 android:layout_marginTop="5dp"
-                android:text="암호를 분실했을 경우 앱을 삭제하고 재설치 해야 하며, 재설치 시 기존 다이어리 내용은 삭제됩니다."
+                android:text="@string/warning"
                 android:textColor="@color/gray2"
                 android:textSize="12sp"/>
 

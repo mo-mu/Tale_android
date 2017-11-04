@@ -3,12 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/action_preview"
-        android:title="지난 이야기"
+        android:title="@string/menu_preview"
         android:visible="true"
         app:showAsAction="never" />
     <item
         android:id="@+id/action_setup"
-        android:title="설정"
+        android:title="@string/setup"
         android:visible="true"
         app:showAsAction="never" />
 </menu>

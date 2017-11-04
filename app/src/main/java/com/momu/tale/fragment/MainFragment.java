@@ -92,7 +92,7 @@ public class MainFragment extends Fragment {
 
         initView();
 
-        txtRefresh.setText(Html.fromHtml("<u>다른 질문 보여줘!</u>"));   //Underbar 넣기 위해 html 태그 사용
+        txtRefresh.setText(Html.fromHtml("<u>"+R.string.main_refresh+"</u>"));   //Underbar 넣기 위해 html 태그 사용
 
         setHasOptionsMenu(true);
         return v;

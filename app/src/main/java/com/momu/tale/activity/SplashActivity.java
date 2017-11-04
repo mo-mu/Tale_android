@@ -74,7 +74,7 @@ public class SplashActivity extends AppCompatActivity {
 
         Typeface typeFace = Typeface.createFromAsset(getAssets(), CConfig.FONT_SEOUL_NAMSAN_CL);
         txtSaying.setTypeface(typeFace);
-        txtSaying.setText("네가 오후 네 시에 온다면\n 난 세 시부터 행복해지기 시작할거야");
+        txtSaying.setText(R.string.splash);
 
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -164,9 +164,9 @@ public class SplashActivity extends AppCompatActivity {
             LogHelper.e(TAG, "total question : " + totalQst);
             if(totalQst == 0) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-                builder.setTitle("앗!");
+                builder.setTitle(R.string.splash_dialog_title);
                 builder.setCancelable(false);
-                builder.setMessage("네트워크 연결이 필요해요.").setPositiveButton("종료", new DialogInterface.OnClickListener() {
+                builder.setMessage(R.string.splash_dialog_msg).setPositiveButton(R.string.splash_dialog_yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         finish();

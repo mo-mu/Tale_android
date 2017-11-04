@@ -42,7 +42,7 @@
             android:layout_marginTop="14dp"
             android:background="@color/white"
             android:gravity="top"
-            android:hint="이 곳에 당신의 이야기를 적어보세요."
+            android:hint="@string/write_hint"
             android:lineSpacingExtra="7dp"
             android:minHeight="200dp"
             android:textColor="@color/answer"

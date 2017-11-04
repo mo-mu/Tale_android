@@ -102,13 +102,13 @@ public class SetUpActivity extends AppCompatActivity {
 
         if (user != null) {
             // User is signed in
-            txtLoginTitle.setText("로그아웃");
+            txtLoginTitle.setText(R.string.logout);
             txtLoginSub.setText(user.getEmail());
             isLogined = true;
             switchSync.setChecked(sharedPreference.getIsSync());
         } else {
             // No user is signed in
-            txtLoginTitle.setText("로그인");
+            txtLoginTitle.setText(R.string.login);
             txtLoginSub.setText("");
             isLogined = false;
             switchSync.setChecked(false);
@@ -121,7 +121,7 @@ public class SetUpActivity extends AppCompatActivity {
     private void setToolbar() {
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("설정");
+        getSupportActionBar().setTitle(R.string.setup);
         imgLogo.setVisibility(View.GONE);
     }
 
@@ -177,7 +177,7 @@ public class SetUpActivity extends AppCompatActivity {
     @OnClick(R.id.schSync)
     void syncSwitchClick() {
         if (user == null) {
-            Toast.makeText(mContext, "로그인 후 동기화가 가능합니다.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, R.string.check_sync, Toast.LENGTH_SHORT).show();
 //            startActivity(new Intent(mContext, SignUpActivity.class));
         } else {
             MySharedPreference sharedPreference = new MySharedPreference(mContext);
@@ -200,7 +200,7 @@ public class SetUpActivity extends AppCompatActivity {
             startActivity(lockIntent);
 
         } else {    //암호 해제
-            Toast.makeText(mContext, "화면 잠금이 해제되었습니다.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, R.string.unlocked, Toast.LENGTH_SHORT).show();
             AppPreference.saveScreenPinNumber(mContext, "");
             initPinLayout();
         }

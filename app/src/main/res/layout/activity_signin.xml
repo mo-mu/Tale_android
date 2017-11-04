@@ -36,7 +36,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:text="이메일 : "
+                    android:text="@string/email"
                     android:textColor="@color/white"
                     android:textSize="16dp"/>
 
@@ -79,7 +79,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:text="비밀번호 : "
+                    android:text="@string/pwd"
                     android:textColor="@color/white"
                     android:textSize="16dp"/>
 
@@ -110,7 +110,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="50dp"
             android:background="@drawable/thm_btn_login"
-            android:text="로그인"
+            android:text="@string/login"
             android:textColor="@color/white"
             android:textSize="18sp"/>
 
@@ -119,7 +119,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="40dp"
-            android:text="비밀번호를 잊으셨나요?"
+            android:text="@string/forgot_pwd"
             android:textColor="@color/white"
             android:visibility="gone"/>
     </LinearLayout>

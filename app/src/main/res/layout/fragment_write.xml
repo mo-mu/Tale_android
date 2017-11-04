@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="14dp"
             android:minHeight="200dp"
-            android:hint="이 곳에 당신의 이야기를 적어보세요."
+            android:hint="@string/write_hint"
             android:gravity="top"
             android:textSize="16dp"
             android:lineSpacingExtra="7dp"

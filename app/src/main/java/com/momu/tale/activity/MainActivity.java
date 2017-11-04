@@ -168,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
                     super.onBackPressed();
                     return;
                 } else {
-                    Toast.makeText(getBaseContext(), "뒤로 가기 버튼을 한번 더 누르시면 앱이 종료됩니다.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getBaseContext(), R.string.main_back_clicked, Toast.LENGTH_SHORT).show();
                 }
 
                 mBackPressed = System.currentTimeMillis();
