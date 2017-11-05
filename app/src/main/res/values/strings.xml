@@ -4,8 +4,8 @@
     <!-- 스플래시 화면 -->
     <string name="splash">"네가 오후 네 시에 온다면\n 난 세 시부터 행복해지기 시작할거야"</string>
     <string name="splash_dialog_title">앗!</string>
-    <string name="splash_dialog_msg">"네트워크 연결이 필요해요."</string>
-    <string name="splash_dialog_yes">"종료"</string>
+    <string name="splash_dialog_msg">네트워크 연결이 필요해요.</string>
+    <string name="splash_dialog_yes">종료</string>
 
     <!-- -->
     <string name="main_back_clicked">뒤로 가기 버튼을 한번 더 누르시면 앱이 종료됩니다.</string>
