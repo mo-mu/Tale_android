@@ -51,7 +51,7 @@
 
     <string name="list_nothing">지난 이야기가 없어요...ㅜㅜ</string>
 
-    <string name="email">이메일 : </string>
+    <string name="email">이메일 :</string>
     <string name="pwd">비밀번호 :</string>
     <string name="forgot_pwd">비밀번호를 잊으셨나요?</string>
     <string name="nickname">닉네임 :</string>

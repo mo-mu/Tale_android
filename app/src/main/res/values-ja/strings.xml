@@ -1,0 +1,71 @@
+<resources>
+    <string name="app_name">テール</string>
+
+    <!-- 스플래시 화면 -->
+    <string name="splash">"「君が午後4時に来れば、\ n私は3時から幸せになるつもりだ」"</string>
+    <string name="splash_dialog_title">あっ！</string>
+    <string name="splash_dialog_msg">ネットワーク連結が必要です。</string>
+    <string name="splash_dialog_yes">終了</string>
+
+    <!-- -->
+    <string name="main_back_clicked">戻るボタンをもう一度押すと、アプリが終了します。</string>
+
+    <!-- 설정 화면 -->
+    <string name="about">作ったチーム</string>
+    <string name="momu">MOMU</string>
+    <string name="lock_setting">ロック設定</string>
+    <string name="lock_setting_change">パスワード変更</string>
+
+    <!--잠금 화면 -->
+    <string name="lock_pw_insert">ロックパスワードを入力してください。</string>
+    <string name="lock_recheck">確認のためもう一度入力してください。</string>
+    <string name="toast_lock_pw_incorrect">パスワードが一致しません。</string>
+    <string name="toast_lock_setting_done">ロック画面が設定されました。</string>
+
+    <!-- 수정 화면 -->
+    <string name="modify_title">ちょっと</string>
+    <string name="modify_msg">修正をキャンセルしますか？</string>
+    <string name="modify_yes">はい</string>
+    <string name="modify_no">いいえ。</string>
+    <string name="remove_msg">文を削除しますか？</string>
+    <string name="remove_finished">削除されました。</string>
+    <string name="logout">ログアウト</string>
+    <string name="login">ログイン</string>
+    <string name="setup">設定</string>
+    <string name="check_sync">ログイン後、同期化が可能です。</string>
+    <string name="unlocked">画面のロックが解除されました。</string>
+    <string name="main_refresh">他の質問見せて！</string>
+    <string name="write_toast">文の内容を入力してください。</string>
+    <string name="write_save">文を保存しました。</string>
+    <string name="write_edit">文の内容を入力してください。</string>
+    <string name="write_finish_edit">修正されました。</string>
+    <string name="write_dialog_title">ちょっと</string>
+    <string name="write_remove_dialog_msg">文を削除しますか？</string>
+    <string name="write_dialog_yes">はい</string>
+    <string name="write_dialog_finish">削除されました。</string>
+    <string name="write_dialog_no">いいえ</string>
+    <string name="write_dialog_edit_cancel_msg">修正をキャンセルしますか？</string>
+    <string name="write_dialog_cancel_msg">書き込みをキャンセルしますか？</string>
+
+    <string name="write_hint">ここにあなたの話を書いてみましょう。</string>
+
+    <string name="list_nothing">過去の話がありません...（泣）</string>
+
+    <string name="email">メールアドレス：</string>
+    <string name="pwd">パスワード：</string>
+    <string name="forgot_pwd">パスワードを忘れましたか？</string>
+    <string name="nickname">ニックネーム：</string>
+    <string name="pwd_check">パスワードの確認：</string>
+    <string name="signup">会員登録</string>
+    <string name="move_sign_in">すでにtaleメンバーですか？</string>
+    <string name="lock_title">ロックパスワード</string>
+    <string name="lock_msg">4座のロック番号を設定してください。</string>
+    <string name="version">バージョン</string>
+    <string name="warning">パスワードを紛失した場合のアプリを削除して再インストールする必要があり、再インストール時に既存のダイアリーの内容は削除されます。</string>
+
+    <string name="menu_preview">過去の話</string>
+    <string name="ok">確認</string>
+    <string name="modify">修正</string>
+    <string name="remove">削除</string>
+    <!-- -->
+</resources>
