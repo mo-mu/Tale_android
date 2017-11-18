@@ -26,16 +26,15 @@ import android.widget.TextView;
 import com.momu.tale.R;
 import com.momu.tale.SqliteHelper;
 import com.momu.tale.activity.MainActivity;
-import com.momu.tale.activity.ModifyActivity;
 import com.momu.tale.activity.SavedQstDetailActivity;
 import com.momu.tale.activity.SavedQstListActivity;
 import com.momu.tale.activity.SetUpActivity;
-import com.momu.tale.activity.SplashActivity;
 import com.momu.tale.config.CConfig;
 import com.momu.tale.utility.LogHelper;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Random;
 
 import butterknife.BindView;
@@ -212,11 +211,22 @@ public class MainFragment extends Fragment {
      */
     private void questionSelect(int id) {
         SQLiteDatabase db = sqliteHelper.getReadableDatabase();
+
         Cursor cursor = null;
         try {
-            cursor = db.rawQuery("select * from question where id=" + id + ";", null);
-            while (cursor.moveToNext())
-                txtQuestion.setText(cursor.getString(1));
+            Locale systemLocale = getResources().getConfiguration().locale;
+            String strLanguage = systemLocale.getLanguage();
+                 cursor = db.rawQuery("select * from question where id=" + id + ";", null);
+            while (cursor.moveToNext()) {
+                Log.e("adsf",strLanguage);
+                if(strLanguage.compareTo("ko")==0)
+                    txtQuestion.setText(cursor.getString(1));
+
+                else if(strLanguage.compareTo("ja")==0) {
+                    txtQuestion.setText(cursor.getString(3));
+                }
+
+            }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

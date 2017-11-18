@@ -1,8 +1,8 @@
 <resources>
-    <string name="app_name">テール</string>
+    <string name="app_name">Tale</string>
 
     <!-- 스플래시 화면 -->
-    <string name="splash">"「君が午後4時に来れば、\ n私は3時から幸せになるつもりだ」"</string>
+    <string name="splash">"「君が午後4時に来れば、\n私は3時から幸せになるつもりだ」"</string>
     <string name="splash_dialog_title">あっ！</string>
     <string name="splash_dialog_msg">ネットワーク連結が必要です。</string>
     <string name="splash_dialog_yes">終了</string>

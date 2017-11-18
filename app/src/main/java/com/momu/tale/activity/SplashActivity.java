@@ -114,8 +114,8 @@ public class SplashActivity extends AppCompatActivity {
             if (!isExist) {      //Question 데이터 삽입
                 for (int i = 0; i < questionList.size(); i++) {
                     LogHelper.e(TAG, i + "번째 data 삽입");
-                    db.execSQL("insert into question (id, q, created_at) " +
-                            "values (" + questionList.get(i).getId() + ",'" + questionList.get(i).getQ() + "','" + questionList.get(i).getCreated_at() + "');");
+                    db.execSQL("insert into question (id, q, created_at, q_ja) " +
+                            "values (" + questionList.get(i).getId() + ",'" + questionList.get(i).getQ() + "','" + questionList.get(i).getCreated_at() + "', '"+questionList.get(i).getQ_ja()+"');");
                 }
             }
         } catch (Exception e) {
