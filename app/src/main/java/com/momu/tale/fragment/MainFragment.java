@@ -30,6 +30,8 @@ import com.momu.tale.activity.SavedQstDetailActivity;
 import com.momu.tale.activity.SavedQstListActivity;
 import com.momu.tale.activity.SetUpActivity;
 import com.momu.tale.config.CConfig;
+import com.momu.tale.database.AnswerLocal;
+import com.momu.tale.database.QuestionLocal;
 import com.momu.tale.utility.LogHelper;
 
 import java.text.SimpleDateFormat;
@@ -56,6 +58,9 @@ public class MainFragment extends Fragment {
     SqliteHelper sqliteHelper;
     Context mContext;
 
+    QuestionLocal questionLocal;
+    AnswerLocal answerLocal;
+
     private final String DBNAME = "wtfs.db";
     private final int DBVERSION = 1;
 
@@ -81,6 +86,8 @@ public class MainFragment extends Fragment {
         ButterKnife.bind(this, v);
 
         sqliteHelper = new SqliteHelper(mContext, DBNAME, null, DBVERSION);
+        questionLocal = new QuestionLocal(sqliteHelper);
+        answerLocal = new AnswerLocal(sqliteHelper);
         db = sqliteHelper.getReadableDatabase();
 
         Typeface typeFace1 = Typeface.createFromAsset(getActivity().getAssets(), CConfig.FONT_SEOUL_NAMSAN_CL);
@@ -98,17 +105,18 @@ public class MainFragment extends Fragment {
     }
 
     void initView() {
-        if (searchTodayAsw(format.format(now))) {  //내용이 있을 경우 refresh 안보이고, answer보여야
+        if (answerLocal.searchTodayAsw(format.format(now))) {  //내용이 있을 경우 refresh 안보이고, answer보여야
             LogHelper.e(TAG, "오늘 작성한 답변이 있음");
             txtRefresh.setVisibility(View.GONE);
             txtAnswer.setVisibility(View.VISIBLE);
             imgStar.setVisibility(View.VISIBLE);
-            questionSelect(questionId);
+            searchTodayAsw(format.format(now));
+            txtQuestion.setText(questionSelect(questionId));
             answerSelect(questionId, format.format(now));
         } else {
             txtRefresh.setVisibility(View.VISIBLE);
             LogHelper.e(TAG, "오늘 작성한 답변이 없음");
-            questionSelect(getQstIdRand());
+            txtQuestion.setText(questionSelect(getQstIdRand()));
         }
     }
 
@@ -121,20 +129,12 @@ public class MainFragment extends Fragment {
     private int getQstIdRand() {
         int returnQstId, totalQst = -1;
 
-        Cursor cursor = null;
-        try {
-            cursor = db.rawQuery("select count(id) from question;", null);    //총 Question 수 가져오기
-            while (cursor.moveToNext())
-                totalQst = cursor.getInt(0);
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (cursor != null && !cursor.isClosed()) cursor.close();
-        }
+        totalQst = questionLocal.getQstCount();
         Random random = new Random();
+        LogHelper.e("asdfasdf",""+totalQst);
         do returnQstId = random.nextInt(totalQst);
         while (questionId == (returnQstId + 1));
-
+        LogHelper.e("ididididid",""+questionId);
         questionId = returnQstId + 1;
         return returnQstId + 1;
     }
@@ -180,7 +180,7 @@ public class MainFragment extends Fragment {
                 if (cursor.getString(1) != null) {          //답글이 있을 때
                     answerId = cursor.getInt(0);
                     txtAnswer.setText(cursor.getString(1));
-
+                    Log.d("asdfasdf",cursor.getString(1));
                     if (txtAnswer.getLineCount() >= 8) {
                         txtAnswer.post(new Runnable() {
                             @Override
@@ -209,29 +209,11 @@ public class MainFragment extends Fragment {
      *
      * @param id questionId
      */
-    private void questionSelect(int id) {
-        SQLiteDatabase db = sqliteHelper.getReadableDatabase();
+    private String questionSelect(int id) {
+        Locale systemLocale = getResources().getConfiguration().locale;
+        String strLanguage = systemLocale.getLanguage();
+        return questionLocal.getQst(id, strLanguage);
 
-        Cursor cursor = null;
-        try {
-            Locale systemLocale = getResources().getConfiguration().locale;
-            String strLanguage = systemLocale.getLanguage();
-                 cursor = db.rawQuery("select * from question where id=" + id + ";", null);
-            while (cursor.moveToNext()) {
-                Log.e("adsf",strLanguage);
-                if(strLanguage.compareTo("ko")==0)
-                    txtQuestion.setText(cursor.getString(1));
-
-                else if(strLanguage.compareTo("ja")==0) {
-                    txtQuestion.setText(cursor.getString(3));
-                }
-
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (cursor != null && !cursor.isClosed()) cursor.close();
-        }
     }
 
     /**
@@ -239,7 +221,8 @@ public class MainFragment extends Fragment {
      */
     @OnClick(R.id.txtRefresh)
     void btnRefreshClick() {
-        questionSelect(getQstIdRand());
+        txtQuestion.setText(questionSelect(getQstIdRand()));
+
     }
 
     /**

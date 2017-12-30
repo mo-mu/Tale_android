@@ -28,7 +28,11 @@ import com.momu.tale.R;
 import com.momu.tale.SqliteHelper;
 import com.momu.tale.activity.MainActivity;
 import com.momu.tale.config.CConfig;
+import com.momu.tale.database.AnswerLocal;
 import com.momu.tale.utility.LogHelper;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -49,6 +53,7 @@ public class WriteFragment extends Fragment {
     SQLiteDatabase db;
     SqliteHelper sqliteHelper = null;
     Context mContext;
+    AnswerLocal answerLocal = null;
 
     boolean isLogined, isSync;
 
@@ -67,6 +72,8 @@ public class WriteFragment extends Fragment {
         sqliteHelper = new SqliteHelper(mContext, CConfig.DBNAME, null, CConfig.DBVERSION);
         MySharedPreference myShpr = new MySharedPreference(mContext);
         isSync = myShpr.getIsSync();
+        answerLocal = new AnswerLocal(sqliteHelper);
+
 //        database = FirebaseDatabase.getInstance();
 //        myRef = database.getReference().child("Answer");
 //        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -101,7 +108,7 @@ public class WriteFragment extends Fragment {
             }
         });
 
-        if (searchTodayAsw(format.format(now)))           //답이 있을 경우(수정을 하고 싶을 경우)
+        if (answerLocal.searchTodayAsw(format.format(now)))           //답이 있을 경우(수정을 하고 싶을 경우)
             editAnswer.setText(getArguments().getString("answer"));
 
         setHasOptionsMenu(true);
@@ -132,26 +139,6 @@ public class WriteFragment extends Fragment {
         return view;
     }
 
-    /**
-     * 오늘의 답변 있는지 확인하는 메소드
-     *
-     * @param today 오늘 날짜
-     * @return boolean true : 있을 경우, false : 없을 경우
-     */
-    private boolean searchTodayAsw(String today) {
-        Cursor cursor = null;
-        try {
-            cursor = db.rawQuery("select * from answer where created_at='" + today + "';", null);
-            while (cursor.moveToNext())
-                if (cursor.getString(4) != null)
-                    return true;       //있으면 true
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (cursor != null && !cursor.isClosed()) cursor.close();
-        }
-        return false;
-    }
 
     @Override
     public void onResume() {
@@ -162,7 +149,7 @@ public class WriteFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        if (!searchTodayAsw(format.format(now)))    //추가
+        if (!answerLocal.searchTodayAsw(format.format(now)))    //추가
             inflater.inflate(R.menu.menu_write, menu);
         else        //수정, 제거
             inflater.inflate(R.menu.menu_write_edit, menu);
@@ -172,6 +159,7 @@ public class WriteFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = -1;
         Cursor cursor = null;
+        JSONObject o;
 
         switch (item.getItemId()) {
             case R.id.action_check:     //추가
@@ -181,9 +169,15 @@ public class WriteFragment extends Fragment {
                 }
 
                 //local db에 추가하는 코드
-                sql = "insert into answer (question_id, user_id, a, created_at) " +
-                        "values (" + getArguments().getInt("questionId") + ", 0, '" + editAnswer.getText().toString() + "', '" + format.format(now).toString() + "');";
-                db.execSQL(sql);
+                o = new JSONObject();
+                try {
+                    o.put("question_id",getArguments().getInt("questionId"));
+                    o.put("a", editAnswer.getText().toString());
+                    o.put("created_at",format.format(now).toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                answerLocal.saveAnsLocal(o);
 
 //
 //                //현재 입력된db 가져오는 코드
@@ -225,8 +219,15 @@ public class WriteFragment extends Fragment {
                     Toast.makeText(mContext, R.string.write_edit, Toast.LENGTH_SHORT).show();
                     break;
                 }
-                sql = "update answer set a = '" + editAnswer.getText().toString() + "' where id=" + getArguments().getInt("answerId") + ";";
-                db.execSQL(sql);
+
+                o = new JSONObject();
+                try {
+                    o.put("a", editAnswer.getText().toString());
+                    o.put("answer_id", getArguments().getInt("answerId"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                answerLocal.updateAnsLocal(o);
 
                 if (isLogined && isSync) {
 //                    LogHelper.e("WriteFragment", "firebase에 저장");
@@ -254,8 +255,8 @@ public class WriteFragment extends Fragment {
                 builder.setPositiveButton(R.string.write_dialog_yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        sql = "delete from answer where id=" + getArguments().getInt("answerId") + ";";
-                        db.execSQL(sql);
+
+                        answerLocal.delAnsLocal(getArguments().getInt("answerId"));
 
                         if (isLogined && isSync) {
 //                            myRef = myRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(String.valueOf(getArguments().getInt("answerId")));
@@ -291,7 +292,7 @@ public class WriteFragment extends Fragment {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setTitle(R.string.write_dialog_title);
             String message;
-            if(searchTodayAsw(format.format(now))) {
+            if(answerLocal.searchTodayAsw(format.format(now))) {
                 message = mContext.getString(R.string.write_dialog_edit_cancel_msg);
             } else {
                 message = mContext.getString(R.string.write_dialog_cancel_msg);
