@@ -18,11 +18,13 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.momu.tale.MySharedPreference;
 import com.momu.tale.R;
 import com.momu.tale.config.CConfig;
 import com.momu.tale.preference.AppPreference;
+import com.momu.tale.utility.LogHelper;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -98,7 +100,7 @@ public class SetUpActivity extends AppCompatActivity {
      * 동기화 및 로그인 여부 확인, 표시.
      */
     private void initSync() {
-//        user = FirebaseAuth.getInstance().getCurrentUser();
+        user = FirebaseAuth.getInstance().getCurrentUser();
 
         if (user != null) {
             // User is signed in
@@ -219,18 +221,19 @@ public class SetUpActivity extends AppCompatActivity {
     @OnClick(R.id.layout_login)
     void layoutLoginClick() {
         if (isLogined && user != null) {
-//            FirebaseAuth.getInstance().signOut();
-//            user = FirebaseAuth.getInstance().getCurrentUser();
-//            isLogined = false;
-//            Toast.makeText(mContext, "로그아웃 되었습니다.", Toast.LENGTH_SHORT).show();
-//
-//            sharedPreference.changeSync(false); //동기화 값 저장.
-//
-//            initSync();
-//
-//            LogHelper.e(TAG, "로그아웃 함, user : " + user);
+            FirebaseAuth.getInstance().signOut();
+            user = FirebaseAuth.getInstance().getCurrentUser();
+            isLogined = false;
+            Toast.makeText(mContext, "로그아웃 되었습니다.", Toast.LENGTH_SHORT).show();
+
+            sharedPreference.changeSync(false); //동기화 값 저장.
+
+            initSync();
+
+            LogHelper.e(TAG, "로그아웃 함, user : " + user);
         } else {
-//            startActivityForResult(new Intent(mContext, SignInActivity.class), RESULT_SIGN_IN);
+            Toast.makeText(mContext, "hihihi", Toast.LENGTH_SHORT).show();
+            startActivityForResult(new Intent(mContext, SignInActivity.class), RESULT_SIGN_IN);
         }
     }
 

@@ -51,11 +51,11 @@
 
     <string name="list_nothing">지난 이야기가 없어요...ㅜㅜ</string>
 
-    <string name="email">이메일 :</string>
-    <string name="pwd">비밀번호 :</string>
+    <string name="email">이메일 : </string>
+    <string name="pwd">비밀번호 : </string>
     <string name="forgot_pwd">비밀번호를 잊으셨나요?</string>
-    <string name="nickname">닉네임 :</string>
-    <string name="pwd_check">비밀번호 확인 :</string>
+    <string name="nickname">닉네임 : </string>
+    <string name="pwd_check">비밀번호 확인 : </string>
     <string name="signup">회원가입</string>
     <string name="move_sign_in">이미 tale 회원이신가요?</string>
     <string name="lock_title">잠금 암호</string>

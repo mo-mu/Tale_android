@@ -75,10 +75,10 @@
         <activity android:name=".activity.PinLockActivity"
                   android:screenOrientation="portrait"/>
 
-        <!--<activity android:name=".activity.SignUpActivity"-->
-            <!--android:screenOrientation="portrait"/>-->
-        <!--<activity android:name=".activity.SignInActivity"-->
-            <!--android:screenOrientation="portrait"/>-->
+        <activity android:name=".activity.SignUpActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.SignInActivity"
+            android:screenOrientation="portrait"/>
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="2295d3c877f2c4d1bdf03e12c16fbbddd309e5e4" />

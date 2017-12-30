@@ -51,11 +51,11 @@
 
     <string name="list_nothing">過去の話がありません...（泣）</string>
 
-    <string name="email">メールアドレス：</string>
-    <string name="pwd">パスワード：</string>
+    <string name="email">メールアドレス： </string>
+    <string name="pwd">パスワード： </string>
     <string name="forgot_pwd">パスワードを忘れましたか？</string>
-    <string name="nickname">ニックネーム：</string>
-    <string name="pwd_check">パスワードの確認：</string>
+    <string name="nickname">ニックネーム： </string>
+    <string name="pwd_check">パスワードの確認： </string>
     <string name="signup">会員登録</string>
     <string name="move_sign_in">すでにtaleメンバーですか？</string>
     <string name="lock_title">ロックパスワード</string>
